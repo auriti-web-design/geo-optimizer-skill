@@ -1,6 +1,6 @@
-# 🤖 GEO Optimizer Skill — Generative Engine Optimization
+# 🤖 GEO Optimizer — Generative Engine Optimization
 
-[![OpenClaw Skill](https://img.shields.io/badge/OpenClaw-Skill-blue)](https://github.com/auriti-web-design)
+[![GEO Toolkit](https://img.shields.io/badge/GEO-Toolkit-blueviolet)](https://github.com/auriti-web-design/geo-optimizer-skill)
 [![GEO](https://img.shields.io/badge/GEO-Optimization-green)](https://arxiv.org/abs/2311.09735)
 [![Princeton Research](https://img.shields.io/badge/Based_on-Princeton_KDD_2024-orange)](https://arxiv.org/abs/2311.09735)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
@@ -13,7 +13,7 @@
 
 ## ⭐ Why Star This Repo?
 
-If you build websites, run a SaaS, or do SEO for clients — **this will matter to you in 2025**.
+If you build websites, run a SaaS, or do SEO for clients — **this will matter to you in 2026**.
 
 AI search engines (ChatGPT, Perplexity, Gemini) are changing how people find information. They don't show a list of links — they give a direct answer and **cite their sources**. If your site isn't optimized for this, you're invisible to a growing share of your audience.
 
@@ -70,16 +70,30 @@ Once loaded, just describe your site and ask: *"run a GEO audit"*, *"generate my
 
 ```
 geo-optimizer/
-├── SKILL.md                          # Universal AI context document (Claude/ChatGPT/Gemini/Cursor/Windsurf)
+├── SKILL.md                          # AI context document (Claude/ChatGPT/Gemini/Cursor/Windsurf)
+├── README.md                         # This file
+├── CHANGELOG.md                      # Version history
+├── LICENSE                           # MIT License
+├── requirements.txt                  # Python dependencies
+├── install.sh                        # One-line installer
+├── update.sh                         # Updater script
 ├── scripts/
-│   ├── geo_audit.py                  # Full audit with ✅/❌/⚠️ report
-│   ├── generate_llms_txt.py          # Generates llms.txt from XML sitemap
-│   └── schema_injector.py            # Adds JSON-LD schema to HTML/Astro
+│   ├── geo_audit.py                  # Full GEO audit — score 0–100
+│   ├── generate_llms_txt.py          # Auto-generate llms.txt from sitemap
+│   └── schema_injector.py            # Generate/inject JSON-LD schema
 └── references/
-    ├── princeton-geo-methods.md      # The 9 Princeton methods with estimated impact
-    ├── ai-bots-list.md               # 25+ AI bots with user-agent and robots.txt snippet
+    ├── princeton-geo-methods.md      # The 9 Princeton GEO methods
+    ├── ai-bots-list.md               # 25+ AI crawlers with robots.txt snippets
     └── schema-templates.md           # Ready-to-use JSON-LD templates (8 types)
 ```
+
+---
+
+## ✅ Requirements
+
+- **Python 3.8+** — [python.org](https://python.org)
+- **git** — [git-scm.com](https://git-scm.com)
+- A website with a publicly accessible URL
 
 ---
 
@@ -89,6 +103,8 @@ geo-optimizer/
 ```bash
 curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash
 ```
+
+> **Prefer to inspect before running?** [View install.sh →](install.sh) — it clones this repo, creates a Python venv, and installs dependencies.
 
 **Manual install:**
 ```bash
@@ -153,7 +169,7 @@ cd geo-optimizer-skill
 
 ### 3. Generate llms.txt
 ```bash
-python scripts/generate_llms_txt.py \
+./geo scripts/generate_llms_txt.py \
   --base-url https://yoursite.com \
   --output ./public/llms.txt
 ```
@@ -161,18 +177,17 @@ python scripts/generate_llms_txt.py \
 ### 4. Generate JSON-LD schema
 ```bash
 # Analyze existing HTML file
-python scripts/schema_injector.py --file index.html --analyze
+./geo scripts/schema_injector.py --file index.html --analyze
 
 # Generate WebSite snippet
-python scripts/schema_injector.py --type website --name "MySite" --url https://yoursite.com
-
-# Generate Astro snippet
-python scripts/schema_injector.py --type website --url https://yoursite.com --astro
+./geo scripts/schema_injector.py --type website --name "MySite" --url https://yoursite.com
 ```
 
 ---
 
 ## 📋 GEO Workflow in 4 Steps
+
+> **Using an AI assistant?** Load `SKILL.md` as context for the full interactive workflow.
 
 ### Step 1 — Audit 🔍
 Run `geo_audit.py` to discover what's missing.
@@ -219,6 +234,8 @@ Add structured schema in the `<head>`:
 
 ## 🔬 The 9 Princeton GEO Methods
 
+> **Using an AI assistant?** Load `SKILL.md` as context for the full interactive workflow.
+
 | # | Method | AI Impact | Priority |
 |---|--------|-----------|----------|
 | 1 | **Cite Sources** | +30-115% | 🔴 High |
@@ -231,7 +248,7 @@ Add structured schema in the `<head>`:
 | 8 | **Unique Words** | +5-8% | 🟢 Low |
 | 9 | **Keyword Stuffing** | ≈0% ⚠️ | ❌ Avoid |
 
-> Full detail in [`references/princeton-geo-methods.md`](references/princeton-geo-methods.md)
+> Full detail in [`references/princeton-geo-methods.md`](references/princeton-geo-methods.md) and [`SKILL.md`](SKILL.md)
 
 ---
 

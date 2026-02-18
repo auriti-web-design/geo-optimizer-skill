@@ -47,7 +47,8 @@ AI engines (ChatGPT, Perplexity, Gemini) answer questions directly and cite thei
 Run the automated audit first. It scores the site from 0 to 100 and lists what is missing:
 
 ```bash
-cd geo-optimizer-skill
+# Default install path: ~/geo-optimizer-skill
+cd ~/geo-optimizer-skill
 ./geo scripts/geo_audit.py --url https://yoursite.com
 ```
 
@@ -273,17 +274,50 @@ const { title, description, siteUrl, siteName, isTool = false, faqItems = [] } =
 
 ### Next.js
 ```tsx
-// app/layout.tsx or per-page
-export default function Layout() {
+// app/layout.tsx — global WebSite schema
+import Script from 'next/script'
+
+export default function RootLayout({ children }) {
   return (
-    <head>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+    <html>
+      <head>
+        <Script type="application/ld+json" id="website-schema" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "Your Site",
+          "url": "https://yoursite.com"
+        })}} />
+      </head>
+      <body>{children}</body>
+    </html>
+  )
+}
+
+// app/tools/[slug]/page.tsx — WebApplication + FAQPage per ogni tool
+export default function ToolPage({ tool, faqs }) {
+  return (
+    <>
+      <Script type="application/ld+json" id="webapp-schema" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Your Site",
-        "url": "https://yoursite.com"
+        "@type": "WebApplication",
+        "name": tool.name,
+        "url": tool.url,
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
       })}} />
-    </head>
+      {faqs.length > 0 && (
+        <Script type="application/ld+json" id="faq-schema" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.map(f => ({
+            "@type": "Question",
+            "name": f.question,
+            "acceptedAnswer": { "@type": "Answer", "text": f.answer }
+          }))
+        })}} />
+      )}
+    </>
   )
 }
 ```
