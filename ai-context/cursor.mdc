@@ -8,7 +8,7 @@ alwaysApply: false
 
 Always include these user-agents with `Allow: /`:
 - Critical citation bots: `OAI-SearchBot`, `PerplexityBot`, `ClaudeBot`, `Google-Extended`
-- Also include: `GPTBot`, `ChatGPT-User`, `anthropic-ai`, `claude-web`, `Googlebot`, `Bingbot`, `Applebot`, `Applebot-Extended`, `FacebookBot`, `Bytespider`, `cohere-ai`, `DuckAssistBot`
+- Also include: `GPTBot`, `ChatGPT-User`, `anthropic-ai`, `claude-web`, `Googlebot`, `Bingbot`, `Applebot`, `Applebot-Extended`, `meta-externalagent`, `Bytespider`, `cohere-ai`, `DuckAssistBot`
 
 Never block critical citation bots even if blocking training bots.
 Use `Disallow: /` for `GPTBot` and `anthropic-ai` to block training while keeping citations.

@@ -44,7 +44,7 @@ User-agent: Bingbot
 Allow: /
 User-agent: Applebot
 Allow: /
-User-agent: FacebookBot
+User-agent: meta-externalagent
 Allow: /
 User-agent: DuckAssistBot
 Allow: /

@@ -22,8 +22,7 @@
 # Standard audit
 ./geo scripts/geo_audit.py --url https://yoursite.com
 
-# Verbose: shows raw bot detection and full schema dump
-./geo scripts/geo_audit.py --url https://yoursite.com --verbose
+# --verbose flag is coming soon (currently has no effect)
 ```
 
 ### Flags
@@ -31,7 +30,7 @@
 | Flag | Required | Description |
 |------|----------|-------------|
 | `--url` | ✅ Yes | Full URL of the site to audit (must include `https://`) |
-| `--verbose` | No | Print extra debug info: bot UA strings, raw schema JSON, HTTP headers |
+| `--verbose` | No | Coming soon — currently has no effect |
 
 ---
 
@@ -97,7 +96,7 @@ The score is calculated from five weighted categories:
 |-------|-------|---------|
 | 91–100 | 🏆 Excellent | Fully optimized for AI citations |
 | 71–90 | ✅ Good | Strong foundation, apply Princeton content methods |
-| 41–70 | ⚠️ Fair | Core elements present, schema/content gaps remain |
+| 41–70 | ⚠️ Foundation | Core elements present, schema/content gaps remain |
 | 0–40 | ❌ Critical | Missing essential elements — start with robots.txt and llms.txt |
 
 ---
@@ -155,7 +154,7 @@ The score is calculated from five weighted categories:
   ❌ 0 external citations  (target: 3+)
 
 ──────────────────────────────────────────────────────────
-  GEO SCORE   [███████████░░░░░░░░░]   55 / 100   ⚠️  FAIR
+  GEO SCORE   [███████████░░░░░░░░░]   55 / 100   ⚠️  FOUNDATION
 ──────────────────────────────────────────────────────────
 ```
 

@@ -89,7 +89,7 @@ User-agent: Applebot-Extended
 Allow: /
 
 # ——— Meta, ByteDance, Cohere, DuckDuckGo ———
-User-agent: FacebookBot
+User-agent: meta-externalagent
 Allow: /
 User-agent: Bytespider
 Allow: /

@@ -511,7 +511,7 @@ Examples:
         """
     )
     parser.add_argument("--url", required=True, help="URL of the site to audit (e.g. https://example.com)")
-    parser.add_argument("--verbose", action="store_true", help="Verbose output (reserved — not yet implemented)")
+    parser.add_argument("--verbose", action="store_true", help="Verbose output (coming soon — currently has no effect)")
     args = parser.parse_args()
 
     _ensure_deps()
@@ -557,11 +557,11 @@ Examples:
     elif score >= 71:
         print(f"\n  ✅ GOOD — Core optimizations in place, fine-tune content and schema")
     elif score >= 41:
-        print(f"\n  ⚠️  FAIR — Foundation missing, implement priority fixes below")
+        print(f"\n  ⚠️  FOUNDATION — Core elements missing, implement priority fixes below")
     else:
         print(f"\n  ❌ CRITICAL — Site is not visible to AI search engines")
 
-    print(f"\n  Score bands: 0–40 = critical | 41–70 = fair | 71–90 = good | 91–100 = excellent")
+    print(f"\n  Score bands: 0–40 = critical | 41–70 = foundation | 71–90 = good | 91–100 = excellent")
 
     print("\n  📋 NEXT PRIORITY STEPS:")
 

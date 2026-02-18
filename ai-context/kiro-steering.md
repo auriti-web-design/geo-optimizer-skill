@@ -19,7 +19,7 @@ Make this site citable by AI search engines (ChatGPT, Perplexity, Claude, Gemini
 
 Always include these user-agents with `Allow: /`:
 - Citation bots (required): `OAI-SearchBot`, `PerplexityBot`, `ClaudeBot`, `Google-Extended`
-- Also allow: `GPTBot`, `ChatGPT-User`, `anthropic-ai`, `claude-web`, `Googlebot`, `Bingbot`, `Applebot`, `Applebot-Extended`, `FacebookBot`, `Bytespider`, `cohere-ai`, `DuckAssistBot`
+- Also allow: `GPTBot`, `ChatGPT-User`, `anthropic-ai`, `claude-web`, `Googlebot`, `Bingbot`, `Applebot`, `Applebot-Extended`, `meta-externalagent`, `Bytespider`, `cohere-ai`, `DuckAssistBot`
 
 Never block `OAI-SearchBot`, `ClaudeBot`, or `PerplexityBot` — these are citation bots, not training bots.
 Use `Disallow: /` only for training bots (`GPTBot`, `anthropic-ai`) when training opt-out is desired.

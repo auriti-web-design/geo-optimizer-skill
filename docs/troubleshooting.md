@@ -203,13 +203,7 @@ If you have no sitemap at all, generate one first. For Astro, use `@astrojs/site
 
 **Cause:** The target site is slow to respond, or temporarily unreachable.
 
-**Diagnose with --verbose:**
-
-```bash
-./geo scripts/geo_audit.py --url https://yoursite.com --verbose
-```
-
-Verbose mode shows the HTTP response time and headers, which helps identify whether the issue is a slow homepage, a blocked request, or a network problem.
+> ⚠️ Note: `--verbose` is not yet implemented — it currently has no effect.
 
 **Common fixes:**
 

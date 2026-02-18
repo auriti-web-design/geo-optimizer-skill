@@ -235,7 +235,7 @@ Apply in this order:
 
 ```bash
 ./geo scripts/geo_audit.py --url https://yoursite.com
-./geo scripts/geo_audit.py --url https://yoursite.com --verbose
+./geo scripts/geo_audit.py --url https://yoursite.com --verbose  # coming soon
 ```
 
 **Checks:**
