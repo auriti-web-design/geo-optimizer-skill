@@ -7,8 +7,8 @@ Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
 
 
 Usage:
-    python geo_audit.py --url https://example.com
-    python geo_audit.py --url https://example.com --verbose
+    ./geo scripts/geo_audit.py --url https://example.com
+    ./geo scripts/geo_audit.py --url https://example.com --verbose
 """
 
 import argparse
@@ -488,8 +488,8 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python geo_audit.py --url https://example.com
-  python geo_audit.py --url https://example.com --verbose
+  ./geo scripts/geo_audit.py --url https://example.com
+  ./geo scripts/geo_audit.py --url https://example.com --verbose
         """
     )
     parser.add_argument("--url", required=True, help="URL of the site to audit (e.g. https://example.com)")

@@ -7,10 +7,10 @@ Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
 
 
 Usage:
-    python generate_llms_txt.py --base-url https://example.com
-    python generate_llms_txt.py --base-url https://example.com --output ./public/llms.txt
-    python generate_llms_txt.py --base-url https://example.com --sitemap https://example.com/sitemap-0.xml
-    python generate_llms_txt.py --base-url https://example.com --site-name "MySite" --description "Description"
+    ./geo scripts/generate_llms_txt.py --base-url https://example.com
+    ./geo scripts/generate_llms_txt.py --base-url https://example.com --output ./public/llms.txt
+    ./geo scripts/generate_llms_txt.py --base-url https://example.com --sitemap https://example.com/sitemap-0.xml
+    ./geo scripts/generate_llms_txt.py --base-url https://example.com --site-name "MySite" --description "Description"
 """
 
 import argparse
@@ -349,11 +349,11 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python generate_llms_txt.py --base-url https://example.com
-  python generate_llms_txt.py --base-url https://example.com --output ./public/llms.txt
-  python generate_llms_txt.py --base-url https://example.com --site-name "MySite" \\
+  ./geo scripts/generate_llms_txt.py --base-url https://example.com
+  ./geo scripts/generate_llms_txt.py --base-url https://example.com --output ./public/llms.txt
+  ./geo scripts/generate_llms_txt.py --base-url https://example.com --site-name "MySite" \\
       --description "Free online calculators for finance and math"
-  python generate_llms_txt.py --base-url https://example.com \\
+  ./geo scripts/generate_llms_txt.py --base-url https://example.com \\
       --sitemap https://example.com/sitemap-index.xml --fetch-titles
         """
     )

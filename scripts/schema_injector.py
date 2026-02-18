@@ -8,16 +8,16 @@ Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
 
 Usage:
     # Analyze HTML file and show suggested schema
-    python schema_injector.py --file index.html
+    ./geo scripts/schema_injector.py --file index.html
 
     # Inject WebSite schema into an HTML file
-    python schema_injector.py --file index.html --type website --name "MySite" --url https://example.com
+    ./geo scripts/schema_injector.py --file index.html --type website --name "MySite" --url https://example.com
 
     # Inject FAQPage schema
-    python schema_injector.py --file page.html --type faq --faq-file faqs.json
+    ./geo scripts/schema_injector.py --file page.html --type faq --faq-file faqs.json
 
     # Generate Astro snippet for BaseLayout
-    python schema_injector.py --type website --name "MySite" --url https://example.com --astro
+    ./geo scripts/schema_injector.py --type website --name "MySite" --url https://example.com --astro
 """
 
 import argparse
@@ -424,7 +424,7 @@ def main():
             print(f"   ❌ Missing: {', '.join(result['missing'])}")
             print("\n💡 Suggested commands:")
             for t in result["missing"]:
-                print(f"   python schema_injector.py --file {args.file} --type {t} --name 'Name' --url 'URL' --inject")
+                print(f"   ./geo scripts/schema_injector.py --file {args.file} --type {t} --name 'Name' --url 'URL' --inject")
         return
 
     parser.print_help()
