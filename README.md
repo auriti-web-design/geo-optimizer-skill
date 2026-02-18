@@ -294,6 +294,7 @@ Before publishing any page:
 
 | | |
 |---|---|
+| 📖 Full Documentation | [docs/index.md](docs/index.md) |
 | 📄 Princeton Paper | https://arxiv.org/abs/2311.09735 |
 | 🧪 GEO-bench dataset | https://generative-engines.com/GEO/ |
 | 📋 llms.txt spec | https://llmstxt.org |
