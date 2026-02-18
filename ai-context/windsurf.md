@@ -1,3 +1,8 @@
+---
+description: "GEO Optimizer — make websites cited by AI search engines (ChatGPT, Perplexity, Claude, Gemini). Covers robots.txt AI bots, llms.txt generation, JSON-LD schema injection."
+globs: "**/*.html,**/*.astro,**/*.tsx,**/*.jsx,**/*.php,**/robots.txt,**/llms.txt,**/*.json"
+---
+
 # GEO Optimizer — Windsurf Rules
 
 ## robots.txt

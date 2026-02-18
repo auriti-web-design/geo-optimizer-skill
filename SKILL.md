@@ -54,7 +54,7 @@ cp ~/geo-optimizer-skill/ai-context/kiro-steering.md .kiro/steering/geo-optimize
 | `chatgpt-custom-gpt.md` | ~4,500 chars | 8,000 chars | ✅ Safe |
 | `chatgpt-instructions.md` | ~800 chars | 1,500 chars/field | ✅ Fits in one field |
 | `cursor.mdc` | ~4,200 chars | No limit | ✅ Optimized format |
-| `windsurf.md` | ~4,000 chars | No limit | ✅ Optimized format |
+| `windsurf.md` | ~4,000 chars | Glob activation (same as Cursor) | ✅ Optimized format |
 | `kiro-steering.md` | ~3,300 chars | No limit | ✅ fileMatch inclusion |
 
 ## About GEO Optimizer

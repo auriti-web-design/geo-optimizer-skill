@@ -198,7 +198,7 @@ Fluency optimization   →  +15–30%
 | **ChatGPT Custom GPT** | `ai-context/chatgpt-custom-gpt.md` | 8,000 chars (paid) |
 | **ChatGPT Custom Instructions** | `ai-context/chatgpt-instructions.md` | 1,500 chars |
 | **Cursor** | `ai-context/cursor.mdc` → `.cursor/rules/` | No limit |
-| **Windsurf** | `ai-context/windsurf.md` → `.windsurf/rules/` | No limit |
+| **Windsurf** | `ai-context/windsurf.md` → `.windsurf/rules/` | Glob activation (same as Cursor) |
 | **Kiro** | `ai-context/kiro-steering.md` → `.kiro/steering/` | No limit |
 
 Once loaded, just ask: *"audit my site"* · *"generate llms.txt"* · *"add FAQPage schema"*

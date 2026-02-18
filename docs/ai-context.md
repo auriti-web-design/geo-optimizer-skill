@@ -122,9 +122,9 @@ Change `alwaysApply: true` to load the rule in every Cursor session regardless o
 ## Windsurf
 
 **File:** `ai-context/windsurf.md`  
-**Format:** Plain Markdown (no YAML frontmatter)  
+**Format:** Markdown with YAML frontmatter (same as Cursor)  
 **Limit:** No character limit  
-**Activation:** Cascade AI loads rules from `.windsurf/rules/`
+**Activation:** Cascade AI loads rules only when files match the `globs` pattern
 
 ### Setup
 
@@ -136,13 +136,22 @@ cp ~/geo-optimizer-skill/ai-context/windsurf.md .windsurf/rules/geo-optimizer.md
 Or copy manually:
 1. In your project root, create `.windsurf/rules/` directory
 2. Copy `ai-context/windsurf.md` → `.windsurf/rules/geo-optimizer.md`
-3. Windsurf's Cascade AI will load the rule for this project
+3. Windsurf's Cascade AI will load the rule when matching files are open
 
 ### What to expect
 
-- Identical rules to the Cursor file (same content, different format)
-- Windsurf Cascade will follow GEO "Always/Never" rules when editing project files
-- No YAML frontmatter — Windsurf uses plain Markdown in rules files
+- Identical rules to the Cursor file — same content, same frontmatter format
+- Windsurf Cascade will follow GEO "Always/Never" rules when editing HTML/Astro/robots.txt files
+- The `globs` field controls which file types trigger rule activation (avoids loading on unrelated files)
+
+### Frontmatter reference
+
+```yaml
+description: "GEO Optimizer — make websites cited by AI search engines..."
+globs: "**/*.html,**/*.astro,**/*.tsx,**/*.jsx,**/*.php,**/robots.txt,**/llms.txt,**/*.json"
+```
+
+Windsurf uses the same YAML frontmatter format as Cursor. The `globs` pattern activates the rule only when matching files are open in the editor.
 
 ---
 
@@ -154,7 +163,7 @@ Or copy manually:
 | ChatGPT Custom GPT | ⭐⭐⭐⭐ Compressed | Paste in builder | Paid plan | GPT-scoped |
 | ChatGPT Custom Instructions | ⭐⭐ Essentials only | Paste in settings | Free account | Account-wide |
 | Cursor | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped |
-| Windsurf | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped |
+| Windsurf | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped (glob activation) |
 
 ## Updating context files
 
