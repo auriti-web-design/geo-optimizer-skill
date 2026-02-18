@@ -6,6 +6,28 @@ Format: [SemVer](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ---
 
+## [1.2.0] — 2026-02-18
+
+### 🌍 Internationalization
+- Full English translation of SKILL.md, README.md, CHANGELOG.md
+- Documentation now follows open-source English standards
+
+---
+
+## [1.1.0] — 2026-02-18
+
+### 🔧 Fixes & Improvements
+
+- **Critical fix**: removed all hardcoded absolute paths from SKILL.md — all commands now use relative paths (`python scripts/...`)
+- **Fix**: removed `source /home/openclaw/...` from Quick Start — now only `pip install requests beautifulsoup4` is needed
+- **Fix**: removed duplicate `PerplexityBot` entry in the robots.txt block
+- **Fix**: "Astro Implementation" section generalized — removed references to `calcfast.online`, added generic `siteUrl`/`siteName`/`isTool` props
+- **Fix**: GEO Score in README updated with real data from script (85/100, not 78)
+- **Improvement**: Quick Start in README includes `git clone` step
+- **Version bump**: `1.0.0` → `1.1.0`
+
+---
+
 ## [1.0.0] — 2026-02-18
 
 ### 🎉 First Release
@@ -29,21 +51,8 @@ Initial complete implementation of the GEO Optimizer skill for OpenClaw.
 
 ---
 
-## [1.1.0] — 2026-02-18
-
-### 🔧 Fix & Miglioramenti
-
-- **Fix critico**: rimossi tutti i path assoluti hardcoded dal SKILL.md — ora tutti i comandi usano path relativi (`python scripts/...`)
-- **Fix**: rimosso `source /home/openclaw/...` dal Quick Start — ora basta `pip install requests beautifulsoup4`
-- **Fix**: rimosso duplicato `PerplexityBot` nel blocco robots.txt
-- **Fix**: sezione "Implementazione Astro" generalizzata — rimossi riferimenti a `calcfast.online`, aggiunti props `siteUrl`/`siteName`/`isTool` generici
-- **Fix**: GEO Score nel README aggiornato con dato reale da script (85/100, non 78)
-- **Miglioramento**: Quick Start nel README include step `git clone`
-- **Bump version**: `1.0.0` → `1.1.0`
-
 ## [Unreleased]
 
-- EN language support per SKILL.md (audience internazionale ClawHub)
 - ClawHub marketplace listing
 - Automated weekly GEO score tracker cron
-- Test end-to-end su siti diversi da CalcFast
+- End-to-end tests on sites other than CalcFast

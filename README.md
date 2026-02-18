@@ -5,14 +5,14 @@
 [![Princeton Research](https://img.shields.io/badge/Based_on-Princeton_KDD_2024-orange)](https://arxiv.org/abs/2311.09735)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
 
-> Ottimizza siti web per essere **citati** dai motori di ricerca AI: ChatGPT, Perplexity, Claude, Gemini.  
-> Basato sulla ricerca Princeton "GEO: Generative Engine Optimization" (KDD 2024, +40% visibilità AI).
+> Optimize websites to be **cited** by AI search engines: ChatGPT, Perplexity, Claude, Gemini.  
+> Based on Princeton research "GEO: Generative Engine Optimization" (KDD 2024, +40% AI visibility).
 
 ---
 
-## 🎯 Cos'è il GEO?
+## 🎯 What is GEO?
 
-**GEO (Generative Engine Optimization)** è l'evoluzione del SEO per l'era delle AI. Invece di ottimizzare per rankare su Google, si ottimizza per essere **citati e referenziati** dai motori di ricerca AI:
+**GEO (Generative Engine Optimization)** is the evolution of SEO for the AI era. Instead of optimizing to rank on Google, you optimize to be **cited and referenced** by AI search engines:
 
 - 💬 **ChatGPT Search** (OAI-SearchBot)
 - 🔍 **Perplexity AI** (PerplexityBot)
@@ -20,88 +20,88 @@
 - ✨ **Google AI Overviews / Gemini** (Google-Extended)
 - 🔵 **Microsoft Copilot** (Bingbot)
 
-**Risultati comprovati (Princeton KDD 2024):**
-- +40% visibilità media nei motori AI con statistiche e citazioni
-- +115% per alcuni rank positions con Cite Sources method
-- +37% su Perplexity.ai reale nei test
+**Proven results (Princeton KDD 2024):**
+- +40% average visibility in AI engines with statistics and citations
+- +115% for some rank positions with the Cite Sources method
+- +37% on real Perplexity.ai in tests
 
 ---
 
-## 📦 Struttura
+## 📦 Structure
 
 ```
 geo-optimizer/
-├── SKILL.md                          # Skill OpenClaw principale
+├── SKILL.md                          # Main OpenClaw skill
 ├── scripts/
-│   ├── geo_audit.py                  # Audit completo con report ✅/❌/⚠️
-│   ├── generate_llms_txt.py          # Genera llms.txt da sitemap XML
-│   └── schema_injector.py            # Aggiunge schema JSON-LD a HTML/Astro
+│   ├── geo_audit.py                  # Full audit with ✅/❌/⚠️ report
+│   ├── generate_llms_txt.py          # Generates llms.txt from XML sitemap
+│   └── schema_injector.py            # Adds JSON-LD schema to HTML/Astro
 └── references/
-    ├── princeton-geo-methods.md      # I 9 metodi Princeton con impatto stimato
-    ├── ai-bots-list.md               # 25+ bot AI con user-agent e robots.txt snippet
-    └── schema-templates.md           # Template JSON-LD pronti (8 tipi)
+    ├── princeton-geo-methods.md      # The 9 Princeton methods with estimated impact
+    ├── ai-bots-list.md               # 25+ AI bots with user-agent and robots.txt snippet
+    └── schema-templates.md           # Ready-to-use JSON-LD templates (8 types)
 ```
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Clona e installa dipendenze
+### 1. Clone and install dependencies
 ```bash
 git clone https://github.com/auriti-web-design/geo-optimizer-skill.git
 cd geo-optimizer-skill
 pip install requests beautifulsoup4
 ```
 
-### 2. Audit del tuo sito
+### 2. Audit your site
 ```bash
-python scripts/geo_audit.py --url https://tuosito.com
+python scripts/geo_audit.py --url https://yoursite.com
 ```
 
 **Output:**
 ```
-🔍 GEO AUDIT — https://tuosito.com
+🔍 GEO AUDIT — https://yoursite.com
 
 1. ROBOTS.TXT — AI Bot Access
-  ✅ robots.txt trovato (200)
-  ❌ OAI-SearchBot NON configurato — CRITICO per citazioni AI!
-  ✅ ClaudeBot consentito ✓
-  ✅ PerplexityBot consentito ✓
+  ✅ robots.txt found (200)
+  ❌ OAI-SearchBot NOT configured — CRITICAL for AI citations!
+  ✅ ClaudeBot allowed ✓
+  ✅ PerplexityBot allowed ✓
   ...
 
-📊 GEO SCORE FINALE
+📊 FINAL GEO SCORE
   [███████████░░░░░░░░░] 55/100
-  ⚠️  SUFFICIENTE — Implementa le ottimizzazioni mancanti
+  ⚠️  SUFFICIENT — Implement the missing optimizations
 ```
 
-### 3. Genera llms.txt
+### 3. Generate llms.txt
 ```bash
 python scripts/generate_llms_txt.py \
-  --base-url https://tuosito.com \
+  --base-url https://yoursite.com \
   --output ./public/llms.txt
 ```
 
-### 4. Genera schema JSON-LD
+### 4. Generate JSON-LD schema
 ```bash
-# Analizza file HTML esistente
+# Analyze existing HTML file
 python scripts/schema_injector.py --file index.html --analyze
 
-# Genera snippet WebSite
-python scripts/schema_injector.py --type website --name "MioSito" --url https://tuosito.com
+# Generate WebSite snippet
+python scripts/schema_injector.py --type website --name "MySite" --url https://yoursite.com
 
-# Genera snippet Astro
-python scripts/schema_injector.py --type website --url https://tuosito.com --astro
+# Generate Astro snippet
+python scripts/schema_injector.py --type website --url https://yoursite.com --astro
 ```
 
 ---
 
-## 📋 Workflow GEO in 4 Step
+## 📋 GEO Workflow in 4 Steps
 
 ### Step 1 — Audit 🔍
-Esegui `geo_audit.py` per scoprire cosa manca.
+Run `geo_audit.py` to discover what's missing.
 
 ### Step 2 — robots.txt 🤖
-Aggiungi tutti i bot AI search al robots.txt:
+Add all AI search bots to robots.txt:
 ```
 User-agent: OAI-SearchBot
 Allow: /
@@ -112,69 +112,69 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 ```
-> Lista completa in [`references/ai-bots-list.md`](references/ai-bots-list.md)
+> Full list in [`references/ai-bots-list.md`](references/ai-bots-list.md)
 
 ### Step 3 — llms.txt 📋
-Crea `/llms.txt` alla root del sito (come robots.txt ma per AI):
+Create `/llms.txt` at the site root (like robots.txt but for AI):
 ```markdown
-# Nome Sito
+# Site Name
 
-> Descrizione breve per LLM
+> Brief description for LLMs
 
-## Strumenti
+## Tools
 
-- [Tool 1](https://tuosito.com/tool): Descrizione
+- [Tool 1](https://yoursite.com/tool): Description
 
 ## Optional
 
-- [About](https://tuosito.com/about)
+- [About](https://yoursite.com/about)
 ```
 > Spec: https://llmstxt.org
 
 ### Step 4 — Schema JSON-LD 🏗️
-Aggiungi schema strutturato nell'`<head>`:
-- **WebSite** — globale su tutte le pagine
-- **WebApplication** — su ogni tool/calcolatore
-- **FAQPage** — con domande frequenti → massima probabilità di citazione AI
-> Template in [`references/schema-templates.md`](references/schema-templates.md)
+Add structured schema in the `<head>`:
+- **WebSite** — globally on all pages
+- **WebApplication** — on every tool/calculator
+- **FAQPage** — with frequently asked questions → maximum probability of AI citation
+> Templates in [`references/schema-templates.md`](references/schema-templates.md)
 
 ---
 
-## 🔬 I 9 Metodi Princeton GEO
+## 🔬 The 9 Princeton GEO Methods
 
-| # | Metodo | Impatto AI | Priorità |
+| # | Method | AI Impact | Priority |
 |---|--------|-----------|----------|
-| 1 | **Cite Sources** | +30-115% | 🔴 Alta |
-| 2 | **Statistics** | +40% | 🔴 Alta |
-| 3 | **Quotation Addition** | +30-40% | 🟠 Media |
-| 4 | **Authoritative** | +6-12% | 🟠 Media |
-| 5 | **Fluency Optimization** | +15-30% | 🟡 Media |
-| 6 | **Easy-to-Understand** | +8-15% | 🟡 Bassa |
-| 7 | **Technical Terms** | +5-10% | 🟢 Bassa |
-| 8 | **Unique Words** | +5-8% | 🟢 Bassa |
-| 9 | **Keyword Stuffing** | ≈0% ⚠️ | ❌ Evitare |
+| 1 | **Cite Sources** | +30-115% | 🔴 High |
+| 2 | **Statistics** | +40% | 🔴 High |
+| 3 | **Quotation Addition** | +30-40% | 🟠 Medium |
+| 4 | **Authoritative** | +6-12% | 🟠 Medium |
+| 5 | **Fluency Optimization** | +15-30% | 🟡 Medium |
+| 6 | **Easy-to-Understand** | +8-15% | 🟡 Low |
+| 7 | **Technical Terms** | +5-10% | 🟢 Low |
+| 8 | **Unique Words** | +5-8% | 🟢 Low |
+| 9 | **Keyword Stuffing** | ≈0% ⚠️ | ❌ Avoid |
 
-> Dettaglio completo in [`references/princeton-geo-methods.md`](references/princeton-geo-methods.md)
+> Full detail in [`references/princeton-geo-methods.md`](references/princeton-geo-methods.md)
 
 ---
 
-## 🤖 Bot AI Supportati
+## 🤖 Supported AI Bots
 
-| Bot | Vendor | Scopo |
-|-----|--------|-------|
-| `OAI-SearchBot` | OpenAI | ChatGPT Search — citazioni |
-| `GPTBot` | OpenAI | Training modelli |
-| `ClaudeBot` | Anthropic | Claude — citazioni |
-| `anthropic-ai` | Anthropic | Training Claude |
-| `PerplexityBot` | Perplexity | Index AI search |
+| Bot | Vendor | Purpose |
+|-----|--------|---------|
+| `OAI-SearchBot` | OpenAI | ChatGPT Search — citations |
+| `GPTBot` | OpenAI | Model training |
+| `ClaudeBot` | Anthropic | Claude — citations |
+| `anthropic-ai` | Anthropic | Claude training |
+| `PerplexityBot` | Perplexity | AI search index |
 | `Google-Extended` | Google | Gemini + AI Overviews |
 | `Bingbot` | Microsoft | Copilot |
 | `Applebot-Extended` | Apple | Apple Intelligence |
-| `cohere-ai` | Cohere | Modelli Cohere |
+| `cohere-ai` | Cohere | Cohere models |
 | `DuckAssistBot` | DuckDuckGo | DuckAssist AI |
-| + 15 altri... | | |
+| + 15 more... | | |
 
-> Lista completa in [`references/ai-bots-list.md`](references/ai-bots-list.md)
+> Full list in [`references/ai-bots-list.md`](references/ai-bots-list.md)
 
 ---
 
@@ -184,14 +184,14 @@ Aggiungi schema strutturato nell'`<head>`:
 ```
 usage: geo_audit.py [--url URL] [--verbose]
 
-Controlla:
+Checks:
   - robots.txt: 13 AI bots
-  - llms.txt: presenza e qualità
-  - Schema JSON-LD: WebSite, WebApp, FAQPage
+  - llms.txt: presence and quality
+  - JSON-LD Schema: WebSite, WebApp, FAQPage
   - Meta tags: description, canonical, OG
-  - Content: headings, numeri, link esterni
+  - Content: headings, numbers, external links
 
-Output: Report con ✅/❌/⚠️ + GEO Score /100
+Output: Report with ✅/❌/⚠️ + GEO Score /100
 ```
 
 ### `generate_llms_txt.py`
@@ -201,11 +201,11 @@ usage: generate_llms_txt.py --base-url URL [--output FILE]
                              [--description TEXT] [--max-per-section N]
 
 Features:
-  - Auto-detect sitemap da robots.txt
-  - Supporta sitemap index (multi-sitemap)
-  - Raggruppa URL per categoria automaticamente
-  - Genera sezioni markdown strutturate
-  - Gestisce "Optional" section per contenuti secondari
+  - Auto-detect sitemap from robots.txt
+  - Supports sitemap index (multi-sitemap)
+  - Automatically groups URLs by category
+  - Generates structured markdown sections
+  - Handles "Optional" section for secondary content
 ```
 
 ### `schema_injector.py`
@@ -220,28 +220,28 @@ Types: website, webapp, faq, article, organization, breadcrumb
 
 ---
 
-## 📊 Caso Reale: CalcFast
+## 📊 Real Case: CalcFast
 
-Audit su [calcfast.online](https://calcfast.online) (Feb 2026):
+Audit on [calcfast.online](https://calcfast.online) (Feb 2026):
 
 ```
-GEO Score: 85/100 🏆 ECCELLENTE
+GEO Score: 85/100 🏆 EXCELLENT
 
-✅ robots.txt con GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot
-✅ llms.txt presente (46 link, 6 sezioni)
-✅ Schema WebSite + Organization + Person + BreadcrumbList
-✅ Meta description ottimizzata
-✅ OG tags completi
-✅ H1-H4 struttura heading: 31 headings
-✅ Dati numerici: 15 statistiche rilevate
-⚠️ FAQPage schema mancante su homepage (prossimo step)
+✅ robots.txt with GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot
+✅ llms.txt present (46 links, 6 sections)
+✅ WebSite + Organization + Person + BreadcrumbList schema
+✅ Optimized meta description
+✅ Complete OG tags
+✅ H1-H4 heading structure: 31 headings
+✅ Numerical data: 15 statistics detected
+⚠️ FAQPage schema missing on homepage (next step)
 ```
 
 ---
 
-## 📚 Risorse
+## 📚 Resources
 
-- **Paper Princeton**: https://arxiv.org/abs/2311.09735
+- **Princeton Paper**: https://arxiv.org/abs/2311.09735
 - **GEO-bench**: https://generative-engines.com/GEO/
 - **llms.txt spec**: https://llmstxt.org
 - **Schema.org**: https://schema.org
@@ -249,7 +249,7 @@ GEO Score: 85/100 🏆 ECCELLENTE
 
 ---
 
-## 👤 Autore
+## 👤 Author
 
 **Juan Camilo Auriti**  
 Web Developer | GEO Specialist  
@@ -258,6 +258,6 @@ Web Developer | GEO Specialist
 
 ---
 
-## 📄 Licenza
+## 📄 License
 
-MIT License — libero uso, modifica e distribuzione.
+MIT License — free to use, modify and distribute.

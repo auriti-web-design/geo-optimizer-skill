@@ -1,101 +1,101 @@
 ---
 name: geo-optimizer
-version: "1.1.0"
+version: "1.2.0"
 description: >
-  Ottimizza siti web per essere citati dai motori di ricerca AI (ChatGPT, Perplexity, Claude, Gemini).
-  Implementa GEO (Generative Engine Optimization) con i 9 metodi Princeton: audit automatico,
-  generazione llms.txt, schema JSON-LD, robots.txt per AI bots. Aumenta visibilità AI fino al 40%.
-  Trigger: "ottimizza per AI search", "GEO", "llms.txt", "visibilità AI", "citazioni AI",
-  "generative engine optimization", "ChatGPT mi cita", "Perplexity ottimizzazione".
+  Optimizes websites to be cited by AI search engines (ChatGPT, Perplexity, Claude, Gemini).
+  Implements GEO (Generative Engine Optimization) with the 9 Princeton methods: automated audit,
+  llms.txt generation, JSON-LD schema, robots.txt for AI bots. Increases AI visibility by up to 40%.
+  Trigger: "optimize for AI search", "GEO", "llms.txt", "AI visibility", "AI citations",
+  "generative engine optimization", "ChatGPT cites me", "Perplexity optimization".
 ---
 
 # GEO Optimizer — Generative Engine Optimization
 
-> Basato sulla ricerca Princeton KDD 2024 "GEO: Generative Engine Optimization"  
-> Autore skill: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
+> Based on Princeton KDD 2024 research "GEO: Generative Engine Optimization"  
+> Skill author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
 
-## Cos'è il GEO?
+## What is GEO?
 
-GEO = ottimizzare contenuti web per **essere citati da AI search engines** (ChatGPT, Perplexity, Claude, Gemini) invece che solo rankare su Google tradizionale.
+GEO = optimizing web content to **be cited by AI search engines** (ChatGPT, Perplexity, Claude, Gemini) instead of just ranking on traditional Google.
 
-**Dati chiave (Princeton 2024):**
-- Aggiungere statistiche e citazioni → **+40% visibilità** nelle risposte AI
-- Cite Sources (citare fonti nel testo) → **fino a +115%** per certi rank positions  
-- Ottimizzazione fluency → **+15-30%** visibilità media
-- Testato su Perplexity.ai reale → **+37% visibilità** confermata
+**Key data (Princeton 2024):**
+- Adding statistics and citations → **+40% visibility** in AI responses
+- Cite Sources (citing sources in the text) → **up to +115%** for certain rank positions  
+- Fluency optimization → **+15-30%** average visibility
+- Tested on real Perplexity.ai → **+37% visibility** confirmed
 
 ---
 
-## Come Usare Questo Skill con l'AI
+## How to Use This Skill with AI
 
-Per ogni step del workflow, usa il **pattern "ruolo esperto + deliverable specifici"**:
+For each workflow step, use the **"expert role + specific deliverables" pattern**:
 
 ```
-Sei un [ruolo esperto in azienda leader del settore].
-Ho bisogno di [deliverable specifico] per il mio sito [URL].
+You are a [expert role at a leading company in the field].
+I need [specific deliverable] for my site [URL].
 
-Fornisci:
+Provide:
 - [output 1]
 - [output 2]
 - [output 3]
 ```
 
-**Esempi pronti:**
+**Ready-to-use examples:**
 
 ```
-Sei un Senior SEO Engineer di Google.
-Ho bisogno di un robots.txt ottimizzato per AI search engines
-per il mio sito calcfast.online (calcolatori finanziari italiani).
-Fornisci: lista completa AI bots 2026, regole Allow/Disallow,
-commenti esplicativi, gestione Crawl-delay.
-```
-
-```
-Sei uno Schema.org Architect di Bing.
-Ho bisogno di schema JSON-LD completo per una pagina calcolatore
-IRPEF (tasse italiane). Fornisci: WebApplication, FAQPage con 5 domande
-reali, BreadcrumbList, codice pronto per Astro/React/HTML.
+You are a Senior SEO Engineer at Google.
+I need a robots.txt optimized for AI search engines
+for my site calcfast.online (Italian financial calculators).
+Provide: full AI bots list 2026, Allow/Disallow rules,
+explanatory comments, Crawl-delay handling.
 ```
 
 ```
-Sei un AI Search Optimization Lead di Perplexity.
-Analizza questa pagina [URL] e dimmi cosa manca per essere
-citata nelle risposte AI. Fornisci: gap analysis, priorità,
-template llms.txt adattato al mio sito.
+You are a Schema.org Architect at Bing.
+I need complete JSON-LD schema for an IRPEF calculator page
+(Italian taxes). Provide: WebApplication, FAQPage with 5 real questions,
+BreadcrumbList, code ready for Astro/React/HTML.
 ```
 
-> **Principio:** più specifico è il ruolo e i deliverable, migliore è l'output.
-> Sostituisci sempre i valori tra `[...]` con dati reali.
+```
+You are an AI Search Optimization Lead at Perplexity.
+Analyze this page [URL] and tell me what's missing to be
+cited in AI responses. Provide: gap analysis, priorities,
+llms.txt template adapted to my site.
+```
+
+> **Principle:** the more specific the role and deliverables, the better the output.
+> Always replace values between `[...]` with real data.
 
 ---
 
-## Workflow in 4 Step
+## 4-Step Workflow
 
 ### STEP 1 — AUDIT 🔍
 
-Esegui l'audit completo del sito:
+Run the full site audit:
 
 ```bash
-# Dalla directory della skill
+# From the skill directory
 cd /path/to/skills/geo-optimizer
 pip install requests beautifulsoup4 -q
-python scripts/geo_audit.py --url https://tuosito.com
+python scripts/geo_audit.py --url https://yoursite.com
 ```
 
-L'audit verifica:
-- ✅/❌ robots.txt con tutti gli AI bots (GPTBot, ClaudeBot, PerplexityBot, ecc.)
-- ✅/❌ Presenza di `/llms.txt`
-- ✅/❌ Schema JSON-LD (WebSite, FAQPage, WebApplication)
+The audit checks:
+- ✅/❌ robots.txt with all AI bots (GPTBot, ClaudeBot, PerplexityBot, etc.)
+- ✅/❌ Presence of `/llms.txt`
+- ✅/❌ JSON-LD Schema (WebSite, FAQPage, WebApplication)
 - ✅/❌ Meta description, canonical URL, Open Graph tags
-- ⚠️ Warning per configurazioni parziali
+- ⚠️ Warnings for partial configurations
 
-> Ref: [`references/ai-bots-list.md`](references/ai-bots-list.md) per tutti i bot AI
+> Ref: [`references/ai-bots-list.md`](references/ai-bots-list.md) for all AI bots
 
 ---
 
 ### STEP 2 — robots.txt 🤖
 
-Aggiungi questi blocchi al `robots.txt` del sito (permetti tutti i bot AI search):
+Add these blocks to the site's `robots.txt` (allow all AI search bots):
 
 ```
 # ——— OpenAI ———
@@ -145,85 +145,85 @@ User-agent: Bytespider
 Allow: /
 ```
 
-> Se vuoi **bloccare** il training (ma permettere citazioni), usa `Disallow: /` per `anthropic-ai` e `GPTBot`  
-> ma `Allow: /` per `ClaudeBot`, `OAI-SearchBot` e `PerplexityBot`
+> If you want to **block** training (but still allow citations), use `Disallow: /` for `anthropic-ai` and `GPTBot`  
+> but `Allow: /` for `ClaudeBot`, `OAI-SearchBot` and `PerplexityBot`
 
 ---
 
 ### STEP 3 — llms.txt 📋
 
-**Genera automaticamente da sitemap:**
+**Auto-generate from sitemap:**
 
 ```bash
-# Dalla directory della skill
+# From the skill directory
 python scripts/generate_llms_txt.py \
-  --base-url https://tuosito.com \
+  --base-url https://yoursite.com \
   --output ./public/llms.txt
 ```
 
-**Oppure crea manualmente** il file `/llms.txt` seguendo questo template:
+**Or create manually** the `/llms.txt` file following this template:
 
 ```markdown
-# Nome Sito
+# Site Name
 
-> Breve descrizione del sito in 1-2 frasi. Cosa offre, a chi serve.
+> Brief site description in 1-2 sentences. What it offers, who it serves.
 
-Dettagli aggiuntivi facoltativi sul progetto.
+Optional additional details about the project.
 
-## Strumenti / Tools
+## Tools
 
-- [Nome Tool](https://tuosito.com/tool): Descrizione breve
+- [Tool Name](https://yoursite.com/tool): Brief description
 
-## Documentazione
+## Documentation
 
-- [Guida](https://tuosito.com/docs): Documentazione principale
+- [Guide](https://yoursite.com/docs): Main documentation
 
-## Blog / Articoli
+## Blog / Articles
 
-- [Articolo 1](https://tuosito.com/blog/articolo): Descrizione
+- [Article 1](https://yoursite.com/blog/article): Description
 
 ## Optional
 
-- [Pagina secondaria](https://tuosito.com/about): Info opzionali
+- [Secondary page](https://yoursite.com/about): Optional info
 ```
 
-> Spec completa: https://llmstxt.org  
-> Il file va a `/llms.txt` (root del sito, accanto a `robots.txt`)
+> Full spec: https://llmstxt.org  
+> The file goes at `/llms.txt` (site root, next to `robots.txt`)
 
 ---
 
 ### STEP 4 — Schema JSON-LD 🏗️
 
-Aggiungi schema strutturato per aiutare gli AI a capire il contenuto.
+Add structured schema to help AI understand the content.
 
-**Template base (WebSite)** — va nell'`<head>` di tutte le pagine:
+**Base template (WebSite)** — goes in the `<head>` of all pages:
 
 ```html
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Nome Sito",
-  "url": "https://tuosito.com",
-  "description": "Descrizione del sito",
+  "name": "Site Name",
+  "url": "https://yoursite.com",
+  "description": "Site description",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://tuosito.com/search?q={search_term_string}",
+    "target": "https://yoursite.com/search?q={search_term_string}",
     "query-input": "required name=search_term_string"
   }
 }
 </script>
 ```
 
-**Per calcolatori/tool (WebApplication):**
+**For calculators/tools (WebApplication):**
 
 ```html
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Nome Calculator",
-  "url": "https://tuosito.com/calculator",
+  "name": "Calculator Name",
+  "url": "https://yoursite.com/calculator",
   "applicationCategory": "UtilityApplication",
   "operatingSystem": "Web",
   "offers": {
@@ -235,7 +235,7 @@ Aggiungi schema strutturato per aiutare gli AI a capire il contenuto.
 </script>
 ```
 
-**Per FAQ (FAQPage):**
+**For FAQ (FAQPage):**
 
 ```html
 <script type="application/ld+json">
@@ -245,10 +245,10 @@ Aggiungi schema strutturato per aiutare gli AI a capire il contenuto.
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Domanda 1?",
+      "name": "Question 1?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Risposta completa..."
+        "text": "Complete answer..."
       }
     }
   ]
@@ -256,34 +256,34 @@ Aggiungi schema strutturato per aiutare gli AI a capire il contenuto.
 </script>
 ```
 
-> Template completi: [`references/schema-templates.md`](references/schema-templates.md)  
-> Script automatico: `scripts/schema_injector.py`
+> Full templates: [`references/schema-templates.md`](references/schema-templates.md)  
+> Automated script: `scripts/schema_injector.py`
 
 ---
 
-## Metodi GEO Princeton (Priorità)
+## Princeton GEO Methods (Priority Order)
 
-Implementa in ordine di impatto:
+Implement in order of impact:
 
-| # | Metodo | Impatto | Come |
-|---|--------|---------|------|
-| 1 | **Cite Sources** | +40% | Aggiungi link a fonti autorevoli nel testo |
-| 2 | **Statistics** | +40% | Inserisci dati numerici concreti (%, €, date) |
-| 3 | **Quotation Addition** | +30% | Cita esperti con virgolette |
-| 4 | **Authoritative** | +15% | Tono da esperto, non generico |
-| 5 | **Fluency Opt.** | +15-30% | Testo scorrevole, ben strutturato |
-| 6 | **Easy-to-Understand** | +10% | Semplifica linguaggio complesso |
-| 7 | **Technical Terms** | +8% | Usa terminologia settoriale corretta |
-| 8 | **Unique Words** | +5% | Arricchisci vocabolario |
-| 9 | **Keyword Stuffing** | ⚠️ | Non efficace, spesso negativo |
+| # | Method | Impact | How |
+|---|--------|--------|-----|
+| 1 | **Cite Sources** | +40% | Add links to authoritative sources in the text |
+| 2 | **Statistics** | +40% | Include concrete numerical data (%, $, dates) |
+| 3 | **Quotation Addition** | +30% | Quote experts with quotation marks |
+| 4 | **Authoritative** | +15% | Expert tone, not generic |
+| 5 | **Fluency Opt.** | +15-30% | Flowing, well-structured text |
+| 6 | **Easy-to-Understand** | +10% | Simplify complex language |
+| 7 | **Technical Terms** | +8% | Use correct industry terminology |
+| 8 | **Unique Words** | +5% | Enrich vocabulary |
+| 9 | **Keyword Stuffing** | ⚠️ | Not effective, often negative |
 
-> Dettaglio completo: [`references/princeton-geo-methods.md`](references/princeton-geo-methods.md)
+> Full detail: [`references/princeton-geo-methods.md`](references/princeton-geo-methods.md)
 
 ---
 
-## Implementazione Astro
+## Astro Implementation
 
-Per siti Astro, aggiungi nel tuo layout principale (es. `BaseLayout.astro`):
+For Astro sites, add to your main layout (e.g. `BaseLayout.astro`):
 
 ```astro
 ---
@@ -292,14 +292,14 @@ interface Props {
   description: string;
   siteUrl: string;
   siteName: string;
-  isTool?: boolean;    // true per calcolatori/app
+  isTool?: boolean;    // true for calculators/apps
   faqItems?: Array<{ question: string; answer: string }>;
 }
 const { title, description, siteUrl, siteName, isTool = false, faqItems = [] } = Astro.props;
 ---
 
 <head>
-  <!-- WebSite Schema (sempre presente) -->
+  <!-- WebSite Schema (always present) -->
   <script type="application/ld+json">
   {JSON.stringify({
     "@context": "https://schema.org",
@@ -309,7 +309,7 @@ const { title, description, siteUrl, siteName, isTool = false, faqItems = [] } =
   })}
   </script>
 
-  <!-- WebApplication Schema (solo su tool/calcolatori) -->
+  <!-- WebApplication Schema (only on tools/calculators) -->
   {isTool && (
     <script type="application/ld+json">
     {JSON.stringify({
@@ -324,7 +324,7 @@ const { title, description, siteUrl, siteName, isTool = false, faqItems = [] } =
     </script>
   )}
 
-  <!-- FAQPage Schema (quando ci sono domande frequenti) -->
+  <!-- FAQPage Schema (when there are frequently asked questions) -->
   {faqItems.length > 0 && (
     <script type="application/ld+json">
     {JSON.stringify({
@@ -341,68 +341,69 @@ const { title, description, siteUrl, siteName, isTool = false, faqItems = [] } =
 </head>
 ```
 
-**Uso nelle pagine:**
+**Usage in pages:**
 
 ```astro
 <BaseLayout
-  title="Nome Tool"
-  description="Descrizione breve"
-  siteUrl="https://tuosito.com"
-  siteName="Nome Sito"
+  title="Tool Name"
+  description="Brief description"
+  siteUrl="https://yoursite.com"
+  siteName="Site Name"
   isTool={true}
   faqItems={[
-    { question: "Come funziona?", answer: "..." },
-    { question: "È gratuito?", answer: "Sì, completamente gratuito." }
+    { question: "How does it work?", answer: "..." },
+    { question: "Is it free?", answer: "Yes, completely free." }
   ]}
 />
+```
 
 ---
 
-## Checklist GEO Completa
+## Complete GEO Checklist
 
-- [ ] robots.txt: tutti gli AI bots con `Allow: /`
-- [ ] `/llms.txt` presente e strutturato
-- [ ] Schema WebSite nell'`<head>` globale
-- [ ] Schema WebApplication su pagine tool/calcolatori
-- [ ] Schema FAQPage su pagine con domande/risposte
-- [ ] Contenuti con statistiche numeriche concrete
-- [ ] Citazioni di fonti autorevoli nel testo
-- [ ] Meta description accurata e descrittiva
-- [ ] Canonical URL su ogni pagina
+- [ ] robots.txt: all AI bots with `Allow: /`
+- [ ] `/llms.txt` present and structured
+- [ ] WebSite schema in the global `<head>`
+- [ ] WebApplication schema on tool/calculator pages
+- [ ] FAQPage schema on pages with questions/answers
+- [ ] Content with concrete numerical statistics
+- [ ] Citations of authoritative sources in the text
+- [ ] Accurate and descriptive meta description
+- [ ] Canonical URL on every page
 - [ ] Open Graph tags (og:title, og:description, og:image)
-- [ ] Testo fluente e ben strutturato con heading H1/H2/H3
+- [ ] Fluent and well-structured text with H1/H2/H3 headings
 
 ---
 
-## Script Disponibili
+## Available Scripts
 
-| Script | Uso |
-|--------|-----|
-| `scripts/geo_audit.py` | Audit completo con report ✅/❌/⚠️ |
-| `scripts/generate_llms_txt.py` | Genera llms.txt da sitemap XML |
-| `scripts/schema_injector.py` | Inietta schema JSON-LD in HTML/Astro |
+| Script | Usage |
+|--------|-------|
+| `scripts/geo_audit.py` | Full audit with ✅/❌/⚠️ report |
+| `scripts/generate_llms_txt.py` | Generates llms.txt from XML sitemap |
+| `scripts/schema_injector.py` | Injects JSON-LD schema into HTML/Astro |
 
-## Apprendimento Iterativo
+## Iterative Learning
 
-Dopo ogni ottimizzazione completata, chiedi all'AI:
+After each completed optimization, ask the AI:
 
 ```
-Cosa abbiamo imparato da questa ottimizzazione GEO?
-Cosa potremmo fare più velocemente la prossima volta?
-Ci sono pattern comuni da applicare ad altri siti simili?
+What did we learn from this GEO optimization?
+What could we do faster next time?
+Are there common patterns to apply to other similar sites?
 ```
 
-Questo approccio migliora l'efficienza del 30-52% iterazione dopo iterazione
-(tecnica validata da Dane Gregory con Claude).
+This approach improves efficiency by 30-52% iteration after iteration
+(technique validated by Dane Gregory with Claude).
 
-Salva le risposte in un file `memory/geo-learnings.md` nel tuo workspace.
+Save the responses in a `memory/geo-learnings.md` file in your workspace.
 
 ---
 
-## Riferimenti
+## References
 
-| File | Contenuto |
-|------|-----------|
-| `references/princeton-geo-methods.md` | 9 metodi GEO con impatto e implementazione |
-| `references/ai-bots-list.md` | Tutti i bot AI con user-agent e robots.txt snippet |
-| `references/schema-templates.md` | Template JSON-LD pronti all'uso |
+| File | Content |
+|------|---------|
+| `references/princeton-geo-methods.md` | 9 GEO methods with impact and implementation |
+| `references/ai-bots-list.md` | All AI bots with user-agent and robots.txt snippet |
+| `references/schema-templates.md` | Ready-to-use JSON-LD templates |
