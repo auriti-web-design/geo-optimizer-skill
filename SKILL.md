@@ -25,6 +25,49 @@ GEO = ottimizzare contenuti web per **essere citati da AI search engines** (Chat
 
 ---
 
+## Come Usare Questo Skill con l'AI
+
+Per ogni step del workflow, usa il **pattern "ruolo esperto + deliverable specifici"**:
+
+```
+Sei un [ruolo esperto in azienda leader del settore].
+Ho bisogno di [deliverable specifico] per il mio sito [URL].
+
+Fornisci:
+- [output 1]
+- [output 2]
+- [output 3]
+```
+
+**Esempi pronti:**
+
+```
+Sei un Senior SEO Engineer di Google.
+Ho bisogno di un robots.txt ottimizzato per AI search engines
+per il mio sito calcfast.online (calcolatori finanziari italiani).
+Fornisci: lista completa AI bots 2026, regole Allow/Disallow,
+commenti esplicativi, gestione Crawl-delay.
+```
+
+```
+Sei uno Schema.org Architect di Bing.
+Ho bisogno di schema JSON-LD completo per una pagina calcolatore
+IRPEF (tasse italiane). Fornisci: WebApplication, FAQPage con 5 domande
+reali, BreadcrumbList, codice pronto per Astro/React/HTML.
+```
+
+```
+Sei un AI Search Optimization Lead di Perplexity.
+Analizza questa pagina [URL] e dimmi cosa manca per essere
+citata nelle risposte AI. Fornisci: gap analysis, priorità,
+template llms.txt adattato al mio sito.
+```
+
+> **Principio:** più specifico è il ruolo e i deliverable, migliore è l'output.
+> Sostituisci sempre i valori tra `[...]` con dati reali.
+
+---
+
 ## Workflow in 4 Step
 
 ### STEP 1 — AUDIT 🔍
@@ -317,6 +360,23 @@ const { title, description, isCalculator = false, faqItems = [] } = Astro.props;
 | `scripts/geo_audit.py` | Audit completo con report ✅/❌/⚠️ |
 | `scripts/generate_llms_txt.py` | Genera llms.txt da sitemap XML |
 | `scripts/schema_injector.py` | Inietta schema JSON-LD in HTML/Astro |
+
+## Apprendimento Iterativo
+
+Dopo ogni ottimizzazione completata, chiedi all'AI:
+
+```
+Cosa abbiamo imparato da questa ottimizzazione GEO?
+Cosa potremmo fare più velocemente la prossima volta?
+Ci sono pattern comuni da applicare ad altri siti simili?
+```
+
+Questo approccio migliora l'efficienza del 30-52% iterazione dopo iterazione
+(tecnica validata da Dane Gregory con Claude).
+
+Salva le risposte in un file `memory/geo-learnings.md` nel tuo workspace.
+
+---
 
 ## Riferimenti
 
