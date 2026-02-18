@@ -16,12 +16,24 @@ import json
 import sys
 from urllib.parse import urljoin, urlparse
 
-try:
-    import requests
-    from bs4 import BeautifulSoup
-except ImportError:
-    print("❌ Missing dependencies. Install with: pip install requests beautifulsoup4")
-    sys.exit(1)
+# Dependencies are imported lazily inside main() so --help always works.
+requests = None
+BeautifulSoup = None
+
+
+def _ensure_deps():
+    global requests, BeautifulSoup
+    if requests is not None:
+        return
+    try:
+        import requests as _requests
+        from bs4 import BeautifulSoup as _BS
+        requests = _requests
+        BeautifulSoup = _BS
+    except ImportError:
+        print("❌ Missing dependencies. Run: pip install requests beautifulsoup4")
+        print("   Or use the ./geo wrapper which activates the bundled venv automatically.")
+        sys.exit(1)
 
 # ─── AI bots that should be listed in robots.txt ──────────────────────────────
 AI_BOTS = {
@@ -129,11 +141,14 @@ def audit_robots_txt(base_url: str) -> dict:
             continue
         if line.lower().startswith("user-agent:"):
             agent = line.split(":", 1)[1].strip()
+            # Strip inline comments (e.g. "GPTBot # added 2026")
+            agent = agent.split("#")[0].strip()
             current_agents = [agent]
             if agent not in agent_rules:
                 agent_rules[agent] = []
         elif line.lower().startswith("disallow:"):
             path = line.split(":", 1)[1].strip()
+            path = path.split("#")[0].strip()  # strip inline comments
             for agent in current_agents:
                 if agent in agent_rules:
                     agent_rules[agent].append(path)
@@ -305,6 +320,8 @@ def audit_schema(soup: BeautifulSoup, url: str) -> dict:
 
     if not results["has_website"]:
         fail("WebSite schema missing — essential for AI entity understanding")
+    elif results["found_types"].count("WebSite") > 1:
+        warn(f"Multiple WebSite schemas found ({results['found_types'].count('WebSite')}) — keep only one per page")
     if not results["has_faq"]:
         warn("FAQPage schema missing — very useful for AI citations on questions")
 
@@ -495,6 +512,8 @@ Examples:
     parser.add_argument("--url", required=True, help="URL of the site to audit (e.g. https://example.com)")
     parser.add_argument("--verbose", action="store_true", help="Verbose output")
     args = parser.parse_args()
+
+    _ensure_deps()
 
     # Normalize URL
     base_url = args.url.rstrip("/")

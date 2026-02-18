@@ -20,12 +20,25 @@ from urllib.parse import urljoin, urlparse
 from datetime import datetime
 from collections import defaultdict
 
-try:
-    import requests
-    from bs4 import BeautifulSoup
-except ImportError:
-    print("❌ Missing dependencies. Install with: pip install requests beautifulsoup4")
-    sys.exit(1)
+# Dependencies are imported lazily inside main() so --help always works.
+requests = None
+BeautifulSoup = None
+
+
+def _ensure_deps():
+    global requests, BeautifulSoup
+    if requests is not None:
+        return
+    try:
+        import requests as _requests
+        from bs4 import BeautifulSoup as _BS
+        requests = _requests
+        BeautifulSoup = _BS
+    except ImportError:
+        print("❌ Missing dependencies. Run: pip install requests beautifulsoup4")
+        print("   Or use the ./geo wrapper which activates the bundled venv automatically.")
+        sys.exit(1)
+
 
 HEADERS = {
     "User-Agent": "GEO-Optimizer/1.0 (https://github.com/auriti-web-design/geo-optimizer-skill)"
@@ -366,6 +379,8 @@ Examples:
     parser.add_argument("--max-per-section", type=int, default=20, help="Max URLs per section (default: 20)")
 
     args = parser.parse_args()
+
+    _ensure_deps()
 
     base_url = args.base_url.rstrip("/")
     if not base_url.startswith(("http://", "https://")):
