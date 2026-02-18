@@ -46,8 +46,10 @@ geo-optimizer/
 
 ## 🚀 Quick Start
 
-### 1. Installa dipendenze
+### 1. Clona e installa dipendenze
 ```bash
+git clone https://github.com/auriti-web-design/geo-optimizer-skill.git
+cd geo-optimizer-skill
 pip install requests beautifulsoup4
 ```
 
@@ -223,15 +225,16 @@ Types: website, webapp, faq, article, organization, breadcrumb
 Audit su [calcfast.online](https://calcfast.online) (Feb 2026):
 
 ```
-GEO Score: 78/100 ✅ BUONO
+GEO Score: 85/100 🏆 ECCELLENTE
 
-✅ robots.txt con GPTBot, ClaudeBot, PerplexityBot, Google-Extended
+✅ robots.txt con GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot
 ✅ llms.txt presente (46 link, 6 sezioni)
-✅ Schema WebSite + Organization + BreadcrumbList
+✅ Schema WebSite + Organization + Person + BreadcrumbList
 ✅ Meta description ottimizzata
 ✅ OG tags completi
-❌ OAI-SearchBot mancante (critico per ChatGPT Search!)
-⚠️ FAQPage schema mancante
+✅ H1-H4 struttura heading: 31 headings
+✅ Dati numerici: 15 statistiche rilevate
+⚠️ FAQPage schema mancante su homepage (prossimo step)
 ```
 
 ---

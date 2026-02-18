@@ -1,6 +1,6 @@
 ---
 name: geo-optimizer
-version: "1.0.0"
+version: "1.1.0"
 description: >
   Ottimizza siti web per essere citati dai motori di ricerca AI (ChatGPT, Perplexity, Claude, Gemini).
   Implementa GEO (Generative Engine Optimization) con i 9 metodi Princeton: audit automatico,
@@ -76,9 +76,10 @@ template llms.txt adattato al mio sito.
 Esegui l'audit completo del sito:
 
 ```bash
-cd /path/to/project
-source /home/openclaw/.openclaw/workspace/.env/bin/activate
-python /home/openclaw/.openclaw/workspace/skills/geo-optimizer/scripts/geo_audit.py --url https://tuosito.com
+# Dalla directory della skill
+cd /path/to/skills/geo-optimizer
+pip install requests beautifulsoup4 -q
+python scripts/geo_audit.py --url https://tuosito.com
 ```
 
 L'audit verifica:
@@ -140,8 +141,6 @@ User-agent: cohere-ai
 Allow: /
 User-agent: DuckAssistBot
 Allow: /
-User-agent: PerplexityBot
-Allow: /
 User-agent: Bytespider
 Allow: /
 ```
@@ -156,7 +155,8 @@ Allow: /
 **Genera automaticamente da sitemap:**
 
 ```bash
-python /home/openclaw/.openclaw/workspace/skills/geo-optimizer/scripts/generate_llms_txt.py \
+# Dalla directory della skill
+python scripts/generate_llms_txt.py \
   --base-url https://tuosito.com \
   --output ./public/llms.txt
 ```
@@ -281,45 +281,50 @@ Implementa in ordine di impatto:
 
 ---
 
-## Implementazione Astro (esempio CalcFast)
+## Implementazione Astro
 
-Per siti Astro, aggiungi nel `BaseLayout.astro`:
+Per siti Astro, aggiungi nel tuo layout principale (es. `BaseLayout.astro`):
 
 ```astro
 ---
 interface Props {
   title: string;
   description: string;
-  isCalculator?: boolean;
+  siteUrl: string;
+  siteName: string;
+  isTool?: boolean;    // true per calcolatori/app
   faqItems?: Array<{ question: string; answer: string }>;
 }
-const { title, description, isCalculator = false, faqItems = [] } = Astro.props;
+const { title, description, siteUrl, siteName, isTool = false, faqItems = [] } = Astro.props;
 ---
 
 <head>
-  <!-- WebSite Schema (sempre) -->
+  <!-- WebSite Schema (sempre presente) -->
   <script type="application/ld+json">
-  {
+  {JSON.stringify({
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "CalcFast",
-    "url": "https://calcfast.online"
-  }
+    "name": siteName,
+    "url": siteUrl
+  })}
   </script>
 
-  <!-- WebApplication Schema (solo calcolatori) -->
-  {isCalculator && (
+  <!-- WebApplication Schema (solo su tool/calcolatori) -->
+  {isTool && (
     <script type="application/ld+json">
     {JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": title,
-      "url": Astro.url.href
+      "url": Astro.url.href,
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
     })}
     </script>
   )}
 
-  <!-- FAQPage Schema (se ci sono FAQ) -->
+  <!-- FAQPage Schema (quando ci sono domande frequenti) -->
   {faqItems.length > 0 && (
     <script type="application/ld+json">
     {JSON.stringify({
@@ -335,6 +340,21 @@ const { title, description, isCalculator = false, faqItems = [] } = Astro.props;
   )}
 </head>
 ```
+
+**Uso nelle pagine:**
+
+```astro
+<BaseLayout
+  title="Nome Tool"
+  description="Descrizione breve"
+  siteUrl="https://tuosito.com"
+  siteName="Nome Sito"
+  isTool={true}
+  faqItems={[
+    { question: "Come funziona?", answer: "..." },
+    { question: "È gratuito?", answer: "Sì, completamente gratuito." }
+  ]}
+/>
 
 ---
 

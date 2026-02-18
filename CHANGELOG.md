@@ -29,8 +29,21 @@ Initial complete implementation of the GEO Optimizer skill for OpenClaw.
 
 ---
 
+## [1.1.0] — 2026-02-18
+
+### 🔧 Fix & Miglioramenti
+
+- **Fix critico**: rimossi tutti i path assoluti hardcoded dal SKILL.md — ora tutti i comandi usano path relativi (`python scripts/...`)
+- **Fix**: rimosso `source /home/openclaw/...` dal Quick Start — ora basta `pip install requests beautifulsoup4`
+- **Fix**: rimosso duplicato `PerplexityBot` nel blocco robots.txt
+- **Fix**: sezione "Implementazione Astro" generalizzata — rimossi riferimenti a `calcfast.online`, aggiunti props `siteUrl`/`siteName`/`isTool` generici
+- **Fix**: GEO Score nel README aggiornato con dato reale da script (85/100, non 78)
+- **Miglioramento**: Quick Start nel README include step `git clone`
+- **Bump version**: `1.0.0` → `1.1.0`
+
 ## [Unreleased]
 
-- EN language support for llms.txt generation
+- EN language support per SKILL.md (audience internazionale ClawHub)
 - ClawHub marketplace listing
 - Automated weekly GEO score tracker cron
+- Test end-to-end su siti diversi da CalcFast
