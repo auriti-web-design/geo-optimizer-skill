@@ -131,7 +131,7 @@ Counts headings, statistics (numbers/percentages), and external citation links.
 ──────────────────────────────────────────────────────────
 ```
 
-Score ranges: `0–49` Poor · `50–69` Needs Work · `70–84` Good · `85–100` Excellent
+Score ranges: `0–40` Critical · `41–70` Fair · `71–90` Good · `91–100` Excellent
 
 ---
 

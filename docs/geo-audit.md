@@ -155,7 +155,7 @@ The score is calculated from five weighted categories:
   ❌ 0 external citations  (target: 3+)
 
 ──────────────────────────────────────────────────────────
-  GEO SCORE   [███████████░░░░░░░░░]   55 / 100   ⚠️  NEEDS WORK
+  GEO SCORE   [███████████░░░░░░░░░]   55 / 100   ⚠️  FAIR
 ──────────────────────────────────────────────────────────
 ```
 
@@ -193,7 +193,7 @@ The score is calculated from five weighted categories:
   ✅ 31 headings  ·  15 statistics  ·  2 external citations
 
 ──────────────────────────────────────────────────────────
-  GEO SCORE   [█████████████████░░░]   85 / 100   🏆 EXCELLENT
+  GEO SCORE   [█████████████████░░░]   85 / 100   ✅ GOOD
 ──────────────────────────────────────────────────────────
 ```
 
