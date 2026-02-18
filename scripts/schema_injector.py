@@ -4,7 +4,7 @@ Schema Injector — Adds JSON-LD schema to HTML pages and Astro components
 Generative Engine Optimization (GEO) Skill
 
 Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
-Skill: geo-optimizer (OpenClaw)
+
 
 Usage:
     # Analyze HTML file and show suggested schema

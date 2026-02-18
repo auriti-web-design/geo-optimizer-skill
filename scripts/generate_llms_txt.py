@@ -4,7 +4,7 @@ Generate llms.txt — Generates llms.txt from an XML sitemap
 Generative Engine Optimization (GEO) Skill
 
 Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
-Skill: geo-optimizer (OpenClaw)
+
 
 Usage:
     python generate_llms_txt.py --base-url https://example.com

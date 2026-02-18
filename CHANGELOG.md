@@ -19,7 +19,7 @@ Format: [SemVer](https://semver.org/) — `MAJOR.MINOR.PATCH`
 ### 🔧 Fixes & Improvements
 
 - **Critical fix**: removed all hardcoded absolute paths from SKILL.md — all commands now use relative paths (`python scripts/...`)
-- **Fix**: removed `source /home/openclaw/...` from Quick Start — now only `pip install requests beautifulsoup4` is needed
+- **Fix**: removed environment-specific paths from Quick Start — now uses standard `pip install`
 - **Fix**: removed duplicate `PerplexityBot` entry in the robots.txt block
 - **Fix**: "Astro Implementation" section generalized — removed site-specific references, added generic `siteUrl`/`siteName`/`isTool` props
 - **Fix**: GEO Score in README updated with real data from script (85/100, not 78)
@@ -32,7 +32,7 @@ Format: [SemVer](https://semver.org/) — `MAJOR.MINOR.PATCH`
 
 ### 🎉 First Release
 
-Initial complete implementation of the GEO Optimizer skill for OpenClaw.
+Initial complete implementation of GEO Optimizer.
 
 #### Included
 - **SKILL.md** — Full workflow based on Princeton GEO research (9 methods)

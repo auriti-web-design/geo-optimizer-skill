@@ -4,7 +4,7 @@ GEO Audit Script — Generative Engine Optimization
 Checks the GEO configuration of a website.
 
 Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
-Skill: geo-optimizer (OpenClaw)
+
 
 Usage:
     python geo_audit.py --url https://example.com
@@ -503,7 +503,7 @@ Examples:
 
     print("\n" + "🔍 " * 20)
     print(f"  GEO AUDIT — {base_url}")
-    print(f"  Skill: geo-optimizer | Author: Juan Camilo Auriti")
+    print(f"  github.com/auriti-web-design/geo-optimizer-skill")
     print("🔍 " * 20)
 
     # Fetch homepage

@@ -54,7 +54,7 @@ If this saves you time or lands you a client — a ⭐ on GitHub goes a long way
 
 ```
 geo-optimizer/
-├── SKILL.md                          # Main OpenClaw skill
+├── SKILL.md                          # Workflow and usage guide
 ├── scripts/
 │   ├── geo_audit.py                  # Full audit with ✅/❌/⚠️ report
 │   ├── generate_llms_txt.py          # Generates llms.txt from XML sitemap
@@ -72,11 +72,6 @@ geo-optimizer/
 **One-line install (recommended):**
 ```bash
 curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash
-```
-
-**With OpenClaw skill symlink** (detects the skill automatically):
-```bash
-curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash -s -- --openclaw
 ```
 
 **Manual install:**
