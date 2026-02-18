@@ -511,7 +511,7 @@ Examples:
         """
     )
     parser.add_argument("--url", required=True, help="URL of the site to audit (e.g. https://example.com)")
-    parser.add_argument("--verbose", action="store_true", help="Verbose output")
+    parser.add_argument("--verbose", action="store_true", help="Verbose output (reserved — not yet implemented)")
     args = parser.parse_args()
 
     _ensure_deps()

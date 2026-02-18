@@ -1,9 +1,11 @@
----
-description: "GEO Optimizer — make websites cited by AI search engines (ChatGPT, Perplexity, Claude, Gemini). Covers robots.txt AI bots, llms.txt generation, JSON-LD schema injection."
-globs: "**/*.html,**/*.astro,**/*.tsx,**/*.jsx,**/*.php,**/robots.txt,**/llms.txt,**/*.json"
----
-
 # GEO Optimizer — Windsurf Rules
+
+> **Setup:** Copy this file to `.windsurf/rules/geo-optimizer.md` in your project root.
+> Then open Windsurf → Customizations (top-right slider) → Rules → find the file → set activation to **"Always On"** or configure a glob pattern via the UI.
+>
+> ⚠️ **Windsurf does NOT read YAML frontmatter** from rule files — activation mode is configured in the Windsurf UI, not in this file. If you add YAML frontmatter here, Cascade reads it as literal text.
+>
+> ⚠️ **Known Windsurf bug (2025):** complex glob patterns sometimes fail to activate rules. If glob doesn't work, use "Always On" as fallback.
 
 ## robots.txt
 
@@ -45,7 +47,7 @@ Use `Article` for: blog posts, guides, news.
 Use `HowTo` for: step-by-step tutorials.
 
 Inject schema automatically: `./geo scripts/schema_injector.py --type TYPE --url URL`
-Types available: `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`, `howto`, `product`
+Types available: `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`
 
 ## Content (Princeton GEO Methods)
 
@@ -85,14 +87,10 @@ The audit checks: robots.txt, llms.txt, JSON-LD schema, meta tags, content quali
   --description "One-sentence description." \
   --output ./public/llms.txt
 
-# Inject JSON-LD schema (types: website, webapp, faq, article, organization, howto)
+# Inject JSON-LD schema (types: website, webapp, faq, article, organization, breadcrumb)
 ./geo scripts/schema_injector.py --type faq --url https://yoursite.com/page
 ./geo scripts/schema_injector.py --type webapp --url https://yoursite.com/tool
 ```
 
 Always use the exact `./geo` prefix — it is the toolkit entry point.
 Never call scripts with `python3` directly — use the `./geo` wrapper.
-
----
-
-*Save as `.windsurf/rules/geo-optimizer.md` in your project root*

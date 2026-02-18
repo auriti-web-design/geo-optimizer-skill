@@ -15,19 +15,21 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ### Fixed
 
-- `ai-context/windsurf.md` — added YAML frontmatter with `description` and `globs` fields (Windsurf supports the same format as Cursor; previous docs were incorrect)
-- `docs/ai-context.md` — removed incorrect claim "Windsurf uses plain Markdown in rules files"; added frontmatter reference and glob activation explanation
-- `SKILL.md` — Windsurf limit column updated from "No limit" to "Glob activation (same as Cursor)"
-- `geo_audit.py` — schema scoring redistributed: `WebSite=10pt`, `FAQPage=10pt`, `WebApplication=5pt` (webapp is a bonus, not a core requirement; blogs can now reach 100)
-- `geo_audit.py` — score thresholds corrected: `>=91 EXCELLENT`, `>=71 GOOD`, `>=41 FAIR`, `<41 CRITICAL`; score band note printed below result
-- `docs/geo-audit.md` — score band table updated to match code (`91/71/41` breakpoints)
-- `docs/getting-started.md` — score range line corrected to `0–40 Critical · 41–70 Fair · 71–90 Good · 91–100 Excellent`
-- `install.sh` — added comment block explaining that `--dir` cannot be used with `curl | bash`; download-first procedure documented
-- `README.md` / `docs/getting-started.md` — added custom install path note under the `curl | bash` command
+- `ai-context/windsurf.md` — **reverted YAML frontmatter** (incorrect); Windsurf does NOT read frontmatter from `.md` rule files — activation mode is configured via the Windsurf UI (Always On / Glob / Manual). Added setup note with UI instructions and known glob bug warning (2025).
+- `docs/ai-context.md` Windsurf section — corrected format description; added 12,000 char limit; UI-based activation steps; glob bug warning
+- `SKILL.md` / `README.md` — Windsurf entry updated to reflect plain MD + UI activation
+- `ai-context/cursor.mdc`, `kiro-steering.md`, `claude-project.md` — removed `howto` and `product` from schema types list (these types don't exist in `schema_injector.py`; would cause argparse errors)
+- `geo_audit.py` — schema scoring redistributed: `WebSite=10pt`, `FAQPage=10pt`, `WebApplication=5pt` (webapp is a bonus; blogs can now reach 100/100)
+- `geo_audit.py` — score thresholds aligned to docs: `>=91 EXCELLENT`, `>=71 GOOD`, `>=41 FAIR`, `<41 CRITICAL`
+- `geo_audit.py` — `--verbose` flag documented as "reserved — not yet implemented"
+- `docs/geo-audit.md` — score band table and schema description updated to match code
+- `install.sh` — added note: `--dir` cannot be used with `curl | bash`; download-first procedure documented
+- `README.md` / `docs/getting-started.md` — custom install path note added
 
 ### Planned
 
 - PyPI package (`pip install geo-optimizer`)
+- `--verbose` implementation in `geo_audit.py`
 - Weekly GEO score tracker with trend reporting
 - Support for Hugo, Jekyll, Nuxt
 

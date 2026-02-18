@@ -18,7 +18,8 @@ Each platform has different limits and formats:
 - **Claude Projects**: no practical limit — full context with workflow, examples, framework code
 - **ChatGPT Custom Instructions**: 1,500 character limit per field — ultra-compressed essentials only
 - **ChatGPT Custom GPT**: 8,000 character limit (paid plan required) — compressed but complete
-- **Cursor / Windsurf**: YAML frontmatter + imperative rules format (Always/Never style)
+- **Cursor**: `.mdc` with YAML frontmatter (`description`, `globs`, `alwaysApply`); glob activates only on matching files
+- **Windsurf**: plain `.md`, no YAML frontmatter — activation configured via Windsurf UI (Always On / Glob / Manual)
 - **Kiro**: YAML frontmatter with `inclusion: fileMatch` + `fileMatchPattern` array; file goes in `.kiro/steering/`
 
 ## Quick copy commands
