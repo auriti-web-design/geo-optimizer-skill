@@ -67,16 +67,55 @@ geo-optimizer/
 
 ---
 
-## 🚀 Quick Start
+## 📥 Installation
 
-### 1. Clone and install dependencies
+**One-line install (recommended):**
+```bash
+curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash
+```
+
+**With OpenClaw skill symlink** (detects the skill automatically):
+```bash
+curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash -s -- --openclaw
+```
+
+**Manual install:**
 ```bash
 git clone https://github.com/auriti-web-design/geo-optimizer-skill.git
 cd geo-optimizer-skill
-pip install requests beautifulsoup4
+pip install -r requirements.txt
 ```
 
-### 2. Audit your site
+---
+
+## 🔄 Updating
+
+When a new version is released, update with one command:
+
+```bash
+# From the install directory
+bash update.sh
+```
+
+Or manually:
+```bash
+cd geo-optimizer-skill
+git pull origin main
+pip install -r requirements.txt -q
+```
+
+> **Watch this repo** (top-right → Watch → Releases only) to get notified when new features or bot list updates are released.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Install (see above)
+```bash
+curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash
+```
+
+### 2. Run your first audit
 ```bash
 python scripts/geo_audit.py --url https://yoursite.com
 ```
