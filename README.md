@@ -50,7 +50,14 @@ This toolkit fixes that.
 
 ```
 geo-optimizer/
-├── 📄 SKILL.md                     ← AI context: paste into Claude / ChatGPT / Gemini / Cursor
+├── 📄 SKILL.md                     ← Choose your platform — index of ai-context/ files
+│
+├── 🧠 ai-context/
+│   ├── claude-project.md           ← Full context for Claude Projects
+│   ├── chatgpt-custom-gpt.md       ← GPT Builder system prompt (<8k chars)
+│   ├── chatgpt-instructions.md     ← Custom Instructions (<1.5k chars)
+│   ├── cursor.mdc                  ← Cursor rules (YAML frontmatter)
+│   └── windsurf.md                 ← Windsurf rules
 │
 ├── 🐍 scripts/
 │   ├── geo_audit.py                ← Score your site 0–100, find what's missing
@@ -62,6 +69,7 @@ geo-optimizer/
 │   ├── ai-bots-list.md             ← 25+ AI crawlers — ready-to-use robots.txt block
 │   └── schema-templates.md         ← 8 JSON-LD templates (WebSite, FAQPage, WebApp...)
 │
+├── 📁 docs/                        ← Full documentation (9 pages)
 ├── ⚙️  install.sh / update.sh      ← One-line install, one-command update
 └── 📋 requirements.txt             ← requests, beautifulsoup4, lxml
 ```
@@ -179,20 +187,21 @@ Fluency optimization   →  +15–30%
 
 ---
 
-## 🧠 Use SKILL.md as AI Context
+## 🧠 Use as AI Context
 
-`SKILL.md` is a universal context document. Drop it into any AI assistant and it becomes a GEO specialist that can run audits, generate files, and write schema for you.
+`SKILL.md` is the index. Pick the right file for your platform from `ai-context/`:
 
-| Platform | How |
-|----------|-----|
-| **Claude** | Project → Add as Project Knowledge |
-| **ChatGPT** | Custom Instructions → paste content |
-| **Gemini** | Gems → paste as context |
-| **Cursor** | `.cursor/rules/geo-optimizer.md` |
-| **Windsurf** | `.windsurf/rules/geo-optimizer.md` |
+| Platform | File | Limit |
+|----------|------|-------|
+| **Claude Projects** | `ai-context/claude-project.md` | No limit |
+| **ChatGPT Custom GPT** | `ai-context/chatgpt-custom-gpt.md` | 8,000 chars (paid) |
+| **ChatGPT Custom Instructions** | `ai-context/chatgpt-instructions.md` | 1,500 chars |
+| **Cursor** | `ai-context/cursor.mdc` → `.cursor/rules/` | No limit |
+| **Windsurf** | `ai-context/windsurf.md` → `.windsurf/rules/` | No limit |
 
-Then just ask:  
-*"audit my site"* · *"generate llms.txt"* · *"add FAQPage schema to this page"*
+Once loaded, just ask: *"audit my site"* · *"generate llms.txt"* · *"add FAQPage schema"*
+
+> Full setup guide: [`docs/ai-context.md`](docs/ai-context.md)
 
 ---
 

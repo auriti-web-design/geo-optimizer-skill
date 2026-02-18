@@ -1,72 +1,68 @@
 # Changelog
 
-All notable changes to GEO Optimizer are documented here.  
-Format: [SemVer](https://semver.org/) — `MAJOR.MINOR.PATCH`
-
----
-
-## [1.2.0] — 2026-02-18
-
-### Added
-- `SKILL.md` rewritten as a universal AI context document — works with Claude Projects, ChatGPT Custom Instructions, Gemini Gems, Cursor Rules, Windsurf Rules
-- Framework implementation examples: Astro, Next.js (full WebSite + WebApplication + FAQPage), WordPress
-- `install.sh` — one-line installer with automatic Python venv setup and `./geo` wrapper
-- `update.sh` — one-command updater (`bash update.sh`)
-- `requirements.txt`, `LICENSE` (MIT), `.gitignore`
-- "Why Star This Repo?" section in README with before/after comparison table
-- "Requirements" section in README
-- `## ✅ Requirements` section before Installation in README
-
-### Changed
-- Project renamed from "GEO Optimizer Skill" to **GEO Optimizer**
-- All documentation fully translated to English
-- README restructured: AI context section promoted to top, requirements visible before install
-- Quick Start unified to use `./geo` wrapper consistently
-- Installation: now uses isolated Python venv (compatible with all systems including Debian/Ubuntu)
-
-### Fixed
-- Removed all environment-specific absolute paths
-- Removed duplicate `PerplexityBot` entry in robots.txt block
-- Corrected GEO Score example in README (85/100, measured on real site)
-- Removed all references to private projects and internal tooling
+All notable changes to GEO Optimizer are documented here.
+Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semver.org/)
 
 ---
 
 ## [1.0.0] — 2026-02-18
 
-### 🎉 First Release
+### Added
 
-Initial release of GEO Optimizer.
+**Scripts**
+- `scripts/geo_audit.py` — automated GEO audit, scores any website 0–100
+  - Checks: robots.txt (13 AI bots), /llms.txt (structure + links), JSON-LD schema (WebSite/WebApp/FAQPage), meta tags (title/description/canonical/OG), content quality (headings/statistics/citations)
+  - Lazy dependency import — `--help` always works even without dependencies installed
+  - Inline comment stripping in robots.txt parser (e.g. `User-agent: GPTBot # note`)
+  - Duplicate WebSite schema detection with warning
 
-#### Included
-- **`scripts/geo_audit.py`** — Automated GEO audit: scores your site 0–100, checks robots.txt, llms.txt, JSON-LD schema, meta tags, content quality
-- **`scripts/generate_llms_txt.py`** — Auto-generates `llms.txt` from XML sitemap with URL categorization
-- **`scripts/schema_injector.py`** — Generates and injects JSON-LD schema (WebSite, WebApplication, FAQPage, Article, Organization, BreadcrumbList)
-- **`references/princeton-geo-methods.md`** — The 9 Princeton GEO methods with impact data and implementation examples
-- **`references/ai-bots-list.md`** — Complete list of AI crawler user-agents (25+) with robots.txt snippets
-- **`references/schema-templates.md`** — Ready-to-use JSON-LD templates for 8 schema types
+- `scripts/generate_llms_txt.py` — auto-generates `/llms.txt` from XML sitemap
+  - Auto-detects sitemap from robots.txt Sitemap directive
+  - Supports sitemap index files (multi-sitemap)
+  - Groups URLs by category (Tools, Finance, Blog, etc.)
+  - Generates structured markdown with H1, blockquote, sections, links
+  - Lazy dependency import — `--help` always works
+
+- `scripts/schema_injector.py` — generates and injects JSON-LD schema
+  - Schema types: website, webapp, faq, article, organization, breadcrumb
+  - `--analyze`: checks existing HTML file for missing schemas (requires `--file`)
+  - `--astro`: generates complete Astro BaseLayout snippet
+  - `--inject`: injects directly into HTML file with automatic backup
+  - `--faq-file`: generates FAQPage from JSON file
+  - FAQ placeholder mode with `REPLACE:` markers and warning
+
+**AI Context Files** (`ai-context/`)
+- `claude-project.md` — full GEO context for Claude Projects (no size limit)
+- `chatgpt-custom-gpt.md` — compressed for ChatGPT GPT Builder (<8,000 chars)
+- `chatgpt-instructions.md` — ultra-compressed for ChatGPT Custom Instructions (<1,500 chars)
+- `cursor.mdc` — Cursor rules format with YAML frontmatter (`globs`, `alwaysApply`)
+- `windsurf.md` — Windsurf rules format (same content, plain markdown)
+
+**References** (`references/`)
+- `princeton-geo-methods.md` — the 9 GEO methods with measured impact (Princeton KDD 2024)
+- `ai-bots-list.md` — 25+ AI crawlers with purpose, vendor, and robots.txt snippets
+- `schema-templates.md` — 8 ready-to-use JSON-LD templates with `YOUR_LANGUAGE_CODE` placeholder
+
+**Documentation** (`docs/`)
+- `index.md` — navigation overview
+- `getting-started.md` — install, first audit, reading output, update
+- `geo-audit.md` — full script reference, score breakdown, fix guide
+- `llms-txt.md` — generation guide, per-framework examples
+- `schema-injector.md` — all flags, framework examples (Astro/Next.js/WordPress/HTML)
+- `ai-context.md` — per-platform setup with accurate character limits
+- `geo-methods.md` — all 9 Princeton methods with diff examples and 3-phase strategy
+- `ai-bots-reference.md` — citation vs training bots, full table, monitoring guide
+- `troubleshooting.md` — 10 common issues with solutions
+
+**Tooling**
+- `install.sh` — one-line installer: clones repo, creates Python venv, installs deps, creates `./geo` wrapper
+- `update.sh` — one-command updater via `bash update.sh`
+- `requirements.txt` — pinned: requests>=2.28.0, beautifulsoup4>=4.11.0, lxml>=4.9.0
 
 ---
 
-## [1.3.0] — 2026-02-18
-
-### Fixed
-- `--help` now always works even without dependencies installed (lazy import)
-- robots.txt parser: inline comments on `User-agent:` lines no longer cause bot misdetection
-- robots.txt parser: inline comments on `Disallow:` lines stripped correctly
-- `schema_injector.py --analyze` without `--file` now shows a clear error message (exit 1)
-- `install.sh --dir /path` with space separator now works correctly (was a shell `shift` bug)
-- All user-visible messages now use `./geo scripts/...` consistently (no bare `python script.py`)
-- `generate_llms_txt.py` no longer adds an "Auto-generated by" line to the output `llms.txt`
-- Astro template in `schema_injector.py --astro` rewritten — no more confusing `{{}}` escaping
-- FAQ default schema shows `REPLACE:` placeholders with warning instead of generic useless text
-- `inLanguage` in schema-templates.md is now `YOUR_LANGUAGE_CODE` with ISO 639-1 reference
-- `lxml` in `requirements.txt` now has an explanatory comment
-- Duplicate WebSite schema detection added to audit output
-- Sample output in README updated to real audit output (85/100)
-
 ## [Unreleased]
 
-- GEO score tracker — weekly automated audit with trend reporting
 - PyPI package (`pip install geo-optimizer`)
-- Support for additional site frameworks (Hugo, Jekyll, Nuxt)
+- Weekly GEO score tracker with trend reporting
+- Support for Hugo, Jekyll, Nuxt
