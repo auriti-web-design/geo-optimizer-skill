@@ -8,7 +8,6 @@ fileMatchPattern:
   - "**/*.php"
   - "**/robots.txt"
   - "**/llms.txt"
-  - "**/*.json"
 ---
 
 # GEO Optimizer
@@ -49,8 +48,7 @@ Schema type guide:
 - `WebSite` → all pages (global)
 - `WebApplication` → tools, calculators, generators
 - `FAQPage` → FAQ sections, question-based content
-- `Article` → blog posts, guides
-- `HowTo` → step-by-step tutorials
+- `Article` → blog posts, guides, tutorials
 
 Inject: `./geo scripts/schema_injector.py --type TYPE --url URL`
 Types: `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`

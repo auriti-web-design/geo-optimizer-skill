@@ -130,37 +130,75 @@ bash ~/geo-optimizer-skill/update.sh
 ## 📊 Sample Output
 
 ```
-╔══════════════════════════════════════════════════════════╗
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍
   GEO AUDIT — https://yoursite.com
-╚══════════════════════════════════════════════════════════╝
+  github.com/auriti-web-design/geo-optimizer-skill
+🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍 🔍
 
-⏳ Fetching homepage...  200 OK | 50,251 bytes
+⏳ Fetching homepage...
+   Status: 200 | Size: 50,251 bytes
 
-▸ ROBOTS.TXT ─────────────────────────────────────────────
-  ✅ GPTBot          allowed  (OpenAI — ChatGPT training)
-  ✅ OAI-SearchBot   allowed  (OpenAI — ChatGPT citations)  ← critical
-  ✅ ClaudeBot        allowed  (Anthropic — Claude)          ← critical
-  ✅ PerplexityBot    allowed  (Perplexity AI)               ← critical
-  ✅ Google-Extended  allowed  (Gemini + AI Overviews)
-  ✅ All critical citation bots configured
+============================================================
+  1. ROBOTS.TXT — AI Bot Access
+============================================================
+  ✅ GPTBot allowed ✓ (OpenAI (ChatGPT training))
+  ✅ OAI-SearchBot allowed ✓ (OpenAI (ChatGPT search citations))
+  ✅ ClaudeBot allowed ✓ (Anthropic (Claude citations))
+  ✅ PerplexityBot allowed ✓ (Perplexity AI (index builder))
+  ✅ Google-Extended allowed ✓ (Google (Gemini training))
+  ✅ anthropic-ai allowed ✓ (Anthropic (Claude training))
+  ✅ ChatGPT-User allowed ✓ (OpenAI (ChatGPT on-demand fetch))
+  ⚠️  meta-externalagent not configured (Meta AI (Facebook/Instagram AI))
+  ✅ All critical CITATION bots are correctly configured
 
-▸ LLMS.TXT ───────────────────────────────────────────────
-  ✅ Found  (6,517 bytes · 46 links · 6 sections)
+============================================================
+  2. LLMS.TXT — AI Index File
+============================================================
+  ✅ llms.txt found (200, 6517 bytes, ~46 words)
+  ✅ H1 present: # Your Site Name
+  ✅ Blockquote description present
+  ✅ H2 sections present: 6 (Tools, Articles, Docs...)
+  ✅ Links found: 46 links to site pages
 
-▸ SCHEMA JSON-LD ─────────────────────────────────────────
-  ✅ WebSite schema
-  ✅ Organization schema
-  ⚠️  FAQPage schema missing  ← next step
+============================================================
+  3. SCHEMA JSON-LD — Structured Data
+============================================================
+  ✅ Found 2 JSON-LD blocks
+  ✅ WebSite schema ✓ (url: https://yoursite.com)
+  ✅ WebApplication schema ✓ (name: Your Tool)
+  ⚠️  FAQPage schema missing — very useful for AI citations on questions
 
-▸ META TAGS ──────────────────────────────────────────────
-  ✅ Title · Meta description · Canonical · OG tags
+============================================================
+  4. META TAGS — SEO & Open Graph
+============================================================
+  ✅ Title: Your Site — Best Tool for X
+  ✅ Meta description (142 chars) ✓
+  ✅ Canonical: https://yoursite.com
+  ✅ og:title ✓
+  ✅ og:description ✓
+  ✅ og:image ✓
 
-▸ CONTENT QUALITY ────────────────────────────────────────
-  ✅ 31 headings  ·  15 statistics  ·  2 external citations
+============================================================
+  5. CONTENT QUALITY — GEO Best Practices
+============================================================
+  ✅ H1: Make AI cite your website
+  ✅ Good heading structure: 31 headings (H1–H4)
+  ✅ Numerical data present: 15 numbers/statistics found ✓
+  ✅ Sufficient content: ~1,250 words
+  ⚠️  No external source links — cite authoritative sources for +40% AI visibility
 
-──────────────────────────────────────────────────────────
-  GEO SCORE   [█████████████████░░░]   85 / 100   ✅ GOOD
-──────────────────────────────────────────────────────────
+============================================================
+  📊 FINAL GEO SCORE
+============================================================
+
+  [█████████████████░░░] 85/100
+  ✅ GOOD — Core optimizations in place, fine-tune content and schema
+
+  Score bands: 0–40 = critical | 41–70 = foundation | 71–90 = good | 91–100 = excellent
+
+  📋 NEXT PRIORITY STEPS:
+  4. Add FAQPage schema with frequently asked questions
+  7. Cite authoritative sources with external links
 ```
 
 ---

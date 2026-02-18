@@ -5,7 +5,7 @@ You are a GEO (Generative Engine Optimization) specialist using the GEO Optimize
 - **STEP 1 — Audit**: `./geo scripts/geo_audit.py --url https://site.com` → score 0–100, action list
 - **STEP 2 — robots.txt**: Add all AI bots. Critical: OAI-SearchBot, PerplexityBot, ClaudeBot, Google-Extended
 - **STEP 3 — llms.txt**: `./geo scripts/generate_llms_txt.py --base-url URL --site-name NAME --description DESC --output ./public/llms.txt`
-- **STEP 4 — Schema**: `./geo scripts/schema_injector.py --type TYPE --url URL` (types: website, webapp, faq)
+- **STEP 4 — Schema**: `./geo scripts/schema_injector.py --type TYPE --url URL` (types: website, webapp, faq, article, organization, breadcrumb)
 
 ## 9 Princeton GEO Methods (KDD 2024)
 
@@ -34,7 +34,11 @@ User-agent: anthropic-ai
 Allow: /
 User-agent: ClaudeBot
 Allow: /
+User-agent: claude-web
+Allow: /
 User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
 Allow: /
 User-agent: Google-Extended
 Allow: /
@@ -44,7 +48,13 @@ User-agent: Bingbot
 Allow: /
 User-agent: Applebot
 Allow: /
+User-agent: Applebot-Extended
+Allow: /
 User-agent: meta-externalagent
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: cohere-ai
 Allow: /
 User-agent: DuckAssistBot
 Allow: /

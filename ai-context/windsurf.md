@@ -43,8 +43,7 @@ Never use schema without the `"@context": "https://schema.org"` field.
 Use `WebSite` for: all pages (global schema).
 Use `WebApplication` for: tools, calculators, apps, generators.
 Use `FAQPage` for: FAQ sections, how-to pages, question-based content.
-Use `Article` for: blog posts, guides, news.
-Use `HowTo` for: step-by-step tutorials.
+Use `Article` for: blog posts, guides, tutorials.
 
 Inject schema automatically: `./geo scripts/schema_injector.py --type TYPE --url URL`
 Types available: `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`
