@@ -1,7 +1,7 @@
 # AI Bots List — User-Agents for robots.txt
 
 > Last updated: February 2026  
-> Source: server log analysis, official vendor documentation, Momentic Marketing (Nov 2025)
+> Source: server log analysis, official vendor documentation, Momentic Marketing (Feb 2026)
 
 ## Recommended Full robots.txt
 

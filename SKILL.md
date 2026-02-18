@@ -293,7 +293,7 @@ export default function RootLayout({ children }) {
   )
 }
 
-// app/tools/[slug]/page.tsx — WebApplication + FAQPage per ogni tool
+// app/tools/[slug]/page.tsx — WebApplication + FAQPage for each tool page
 export default function ToolPage({ tool, faqs }) {
   return (
     <>

@@ -140,11 +140,12 @@ pip install -r requirements.txt -q
 ### 1. Install (see above)
 ```bash
 curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash
+# Installs to ~/geo-optimizer-skill by default
 ```
 
 ### 2. Run your first audit
 ```bash
-cd geo-optimizer-skill
+cd ~/geo-optimizer-skill
 ./geo scripts/geo_audit.py --url https://yoursite.com
 ```
 
