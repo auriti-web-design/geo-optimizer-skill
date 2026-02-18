@@ -122,9 +122,11 @@ Change `alwaysApply: true` to load the rule in every Cursor session regardless o
 ## Windsurf
 
 **File:** `ai-context/windsurf.md`  
-**Format:** Markdown with YAML frontmatter (same as Cursor)  
-**Limit:** No character limit  
-**Activation:** Cascade AI loads rules only when files match the `globs` pattern
+**Format:** Plain Markdown — NO YAML frontmatter  
+**Limit:** ~12,000 chars (UI activation)  
+**Activation:** Configured via Windsurf UI → Customizations → Rules (4 modes: Always On, Glob, Model Decision, Manual)
+
+> ⚠️ **Windsurf does NOT read YAML frontmatter** from rule files — activation mode is configured in the Windsurf UI, not in this file. If you add YAML frontmatter here, Cascade reads it as literal text.
 
 ### Setup
 
@@ -136,22 +138,25 @@ cp ~/geo-optimizer-skill/ai-context/windsurf.md .windsurf/rules/geo-optimizer.md
 Or copy manually:
 1. In your project root, create `.windsurf/rules/` directory
 2. Copy `ai-context/windsurf.md` → `.windsurf/rules/geo-optimizer.md`
-3. Windsurf's Cascade AI will load the rule when matching files are open
+3. Open Windsurf → **Customizations** (top-right slider icon) → **Rules**
+4. Find `geo-optimizer.md` in the list and set the activation mode
+
+### Activation modes (Windsurf UI)
+
+| Mode | When to use |
+|------|-------------|
+| **Always On** | Rule is injected into every Cascade AI context — most reliable |
+| **Glob** | Rule activates only when files matching a pattern are open (e.g. `**/*.html`) |
+| **Model Decision** | Cascade decides when the rule is relevant |
+| **Manual** | You manually enable/disable the rule per session |
+
+> ⚠️ **Known Windsurf bug (2025):** complex glob patterns sometimes fail to activate rules. If glob doesn't work, use "Always On" as fallback.
 
 ### What to expect
 
-- Identical rules to the Cursor file — same content, same frontmatter format
-- Windsurf Cascade will follow GEO "Always/Never" rules when editing HTML/Astro/robots.txt files
-- The `globs` field controls which file types trigger rule activation (avoids loading on unrelated files)
-
-### Frontmatter reference
-
-```yaml
-description: "GEO Optimizer — make websites cited by AI search engines..."
-globs: "**/*.html,**/*.astro,**/*.tsx,**/*.jsx,**/*.php,**/robots.txt,**/llms.txt,**/*.json"
-```
-
-Windsurf uses the same YAML frontmatter format as Cursor. The `globs` pattern activates the rule only when matching files are open in the editor.
+- Same GEO "Always/Never" rules as the Cursor file — same content, UI-managed activation
+- Windsurf Cascade will follow GEO rules when editing HTML/Astro/robots.txt files
+- Activation is controlled via the UI panel, not via frontmatter in the file
 
 ---
 
@@ -209,7 +214,7 @@ fileMatchPattern:
 | ChatGPT Custom GPT | ⭐⭐⭐⭐ Compressed | Paste in builder | Paid plan | GPT-scoped |
 | ChatGPT Custom Instructions | ⭐⭐ Essentials only | Paste in settings | Free account | Account-wide |
 | Cursor | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped |
-| Windsurf | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped (glob activation) |
+| Windsurf | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped (UI activation) |
 | Kiro | ⭐⭐⭐⭐ Rules format | Copy file | Free | Project-scoped (fileMatch activation) |
 
 ## Updating context files
