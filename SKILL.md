@@ -1,5 +1,6 @@
 ---
 name: geo-optimizer
+version: "1.0.0"
 description: >
   Ottimizza siti web per essere citati dai motori di ricerca AI (ChatGPT, Perplexity, Claude, Gemini).
   Implementa GEO (Generative Engine Optimization) con i 9 metodi Princeton: audit automatico,
