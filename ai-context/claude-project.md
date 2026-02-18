@@ -266,7 +266,7 @@ Score: 11/11 = GEO Score 100. Each missing item drops the score.
 | `generate_llms_txt.py` | `./geo scripts/generate_llms_txt.py --base-url URL --output FILE` | Auto-generate `/llms.txt` from sitemap |
 | `schema_injector.py` | `./geo scripts/schema_injector.py --type TYPE --url URL` | Generate or inject JSON-LD schema into HTML |
 
-**schema_injector.py types:** `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`, `howto`, `product`
+**schema_injector.py types:** `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`
 
 ---
 

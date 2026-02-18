@@ -53,7 +53,7 @@ Schema type guide:
 - `HowTo` → step-by-step tutorials
 
 Inject: `./geo scripts/schema_injector.py --type TYPE --url URL`
-Types: `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`, `howto`, `product`
+Types: `website`, `webapp`, `faq`, `article`, `organization`, `breadcrumb`
 
 ## Content (Princeton GEO Methods)
 
