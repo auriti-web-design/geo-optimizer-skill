@@ -7,19 +7,60 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ## [Unreleased]
 
-### Added
+### Planned
 
-- `ai-context/kiro-steering.md` — Kiro steering file with `inclusion: fileMatch` + `fileMatchPattern` array; place in `.kiro/steering/`
-- Kiro entry in `SKILL.md`, `README.md`, `docs/ai-context.md` (setup, frontmatter reference, platform comparison table, update commands)
-- `meta-externalagent` (Meta AI — Facebook/Instagram AI) added to `AI_BOTS` in `geo_audit.py`
-- **schema_injector.py v2.0** — Complete rewrite with robust schema detection, FAQ auto-extraction, and verbose mode
-  - `--analyze --verbose` — shows full JSON-LD schemas with key properties
-  - Auto-extract FAQ from HTML patterns (dt/dd, details/summary, common CSS classes)
-  - `--auto-extract` flag — extract FAQ from HTML and generate FAQPage schema
-  - Duplicate schema detection with warnings (e.g., 2x WebSite, 2x FAQPage)
-  - Better BeautifulSoup parsing — handles both string and NavigableString content
-  - Comprehensive error handling for malformed JSON-LD scripts
-  - Professional output formatting with structured analysis sections
+- JSON output format for `geo_audit.py` (--format json)
+- Unit tests with pytest
+- PyPI package (`pip install geo-optimizer`)
+- Weekly GEO score tracker
+
+---
+
+## [1.1.0] — 2026-02-21
+
+### Added — Infrastructure & Quality
+
+- **GitHub Actions CI/CD** — `.github/workflows/ci.yml`
+  - Test matrix: Python 3.8, 3.10, 3.12
+  - Syntax check all scripts (py_compile)
+  - Lint with flake8 (syntax errors fail build, warnings only)
+  - Ready for pytest when tests exist
+  
+- **CONTRIBUTING.md** — Comprehensive contributor guide
+  - Dev setup instructions
+  - Conventional Commits standard
+  - PR checklist and code style (PEP 8, line length 120)
+  - Test writing guidelines
+  - Release process (maintainers only)
+
+- **Pinned dependencies** with upper bounds (security + reproducibility)
+  - `requests>=2.28.0,<3.0.0`
+  - `beautifulsoup4>=4.12.0,<5.0.0`
+  - `lxml>=4.9.0,<6.0.0`
+
+- **Improved .gitignore** — pytest_cache, coverage, IDE files, tox, eggs
+
+### Added — Features
+
+- `ai-context/kiro-steering.md` — Kiro steering file with `inclusion: fileMatch`
+- Kiro entry in `SKILL.md`, `README.md`, `docs/ai-context.md`
+- `meta-externalagent` (Meta AI) added to `AI_BOTS` in `geo_audit.py`
+
+- **schema_injector.py v2.0** — Complete rewrite
+  - `--analyze --verbose` — shows full JSON-LD schemas
+  - Auto-extract FAQ from HTML (dt/dd, details/summary, CSS classes)
+  - `--auto-extract` flag — generate FAQPage from detected FAQ
+  - Duplicate schema detection with warnings
+  - Better BeautifulSoup parsing (NavigableString + string)
+  - Comprehensive error handling for malformed JSON
+  - Professional structured output
+
+### Changed — Security & UX
+
+- **README install instructions** — secure method promoted first
+  - Now: Download → Inspect → Run (recommended)
+  - Then: Pipe to bash (quick but less secure)
+  - Addresses enterprise security concerns
 
 ### Fixed
 
