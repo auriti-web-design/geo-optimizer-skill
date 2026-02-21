@@ -162,14 +162,20 @@ bash ~/geo-optimizer-skill/update.sh
 - Branch coverage enabled
 - Coverage badge in README
 
-### 📈 Quality Score: 9.6/10
-- v1.0.0: 7.2/10 (good foundation)
-- v1.1.0: 8.5/10 (infrastructure)
-- v1.2.0: 9.2/10 (CI/CD + JSON)
-- v1.3.0: 9.4/10 (production-hardened)
-- **v1.4.0: 9.6/10** (enterprise-grade) ⭐
+### 📈 Quality Score: 9.25/10
 
-See [CHANGELOG.md](CHANGELOG.md) for full details.
+Latest stable score based on [SCORING_RUBRIC.md](SCORING_RUBRIC.md):
+
+- v1.0.0: 7.2/10 (foundation)
+- v1.1.0: 8.3/10 (infrastructure)
+- v1.2.0: 8.8/10 (JSON + tests)
+- v1.3.0: 9.0/10 (network retry)
+- v1.4.0: 9.15/10 (schema validation, 9/9 audit fixes)
+- **v1.5.0: 9.25/10** (verbose mode + doc cleanup) ⭐
+
+**Current status:** Production-ready, enterprise-grade quality.
+
+See [SCORING_RUBRIC.md](SCORING_RUBRIC.md) for scoring methodology and [CHANGELOG.md](CHANGELOG.md) for full details.
 
 ---
 
