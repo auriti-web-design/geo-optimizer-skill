@@ -92,12 +92,18 @@ geo-optimizer/
 **1. Install**
 
 ```bash
+# RECOMMENDED — Download, inspect, then run:
+curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh -o install.sh
+cat install.sh  # Review the script before executing
+bash install.sh
+
+# Quick install (use only if you trust the source):
 curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh | bash
 ```
 
 > Installs to `~/geo-optimizer-skill`. Creates a Python venv automatically.  
-> Prefer to inspect first? [View install.sh →](install.sh)  
-> **Custom path?** Download first: `curl -sSL https://raw.githubusercontent.com/auriti-web-design/geo-optimizer-skill/main/install.sh -o install.sh && bash install.sh --dir /custom/path`
+> **Custom path?** Add `--dir /custom/path` to the bash command.  
+> **View source first:** [install.sh →](install.sh)
 
 **2. Audit your site**
 
