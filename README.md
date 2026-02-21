@@ -440,6 +440,38 @@ Before publishing any page:
 
 ---
 
+## 🧪 Running Tests
+
+The project includes comprehensive unit tests for all critical functionality.
+
+**Run all tests:**
+```bash
+cd ~/geo-optimizer-skill
+./geo -m pytest tests/ -v
+```
+
+**Run tests with coverage report:**
+```bash
+./geo -m pytest tests/ -v --cov=scripts --cov-report=term-missing
+```
+
+**Run specific test file:**
+```bash
+./geo -m pytest tests/test_audit.py -v
+```
+
+**Test coverage includes:**
+- robots.txt parsing (allow/block/comments)
+- llms.txt validation (structure, H1, sections, links)
+- JSON-LD schema detection (multiple types, invalid JSON)
+- Meta tag validation (SEO, Open Graph)
+- Content quality checks (headings, numbers, external citations)
+- GEO score calculation (0-100 range, score bands)
+
+All tests use mocked HTTP requests — no real network calls are made.
+
+---
+
 ## 📚 Resources
 
 | | |
