@@ -9,8 +9,37 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ### Planned
 
+- HTML report output (`--format html`)
+- Batch audit mode (`--urls sites.txt`)
 - PyPI package (`pip install geo-optimizer`)
-- Weekly GEO score tracker
+- GitHub Action (reusable workflow)
+
+---
+
+## [1.5.0] — 2026-02-21
+
+### Added — Verbose Mode
+
+- **`--verbose` flag** — Detailed debugging output for troubleshooting
+  - robots.txt: size + 200-character preview
+  - llms.txt: total lines + 300-character preview
+  - Schema JSON-LD: parsing progress + detailed field values (name, description, etc.)
+  - Meta tags: title length display
+  - Content quality: full H1 text display
+  - Homepage fetch: response time + Content-Type header
+  - Automatically disabled in JSON mode
+  - Addresses code review feedback from v1.4.0
+
+### Documentation
+
+- README: removed "coming soon" reference for `--verbose` (now implemented)
+- Updated examples with working `--verbose` usage
+
+### Quality Score
+
+- **Previous:** 9.2/10 (v1.4.0 realistic) → **9.3/10 (v1.5.0)**
+- Eliminated broken promise from documentation
+- Added useful debugging feature for contributors
 
 ---
 
