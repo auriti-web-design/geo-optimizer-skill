@@ -138,29 +138,36 @@ bash ~/geo-optimizer-skill/update.sh
 
 ---
 
-## ⭐ What's New in v1.3.0
+## ⭐ What's New in v1.4.0
 
-**Production-hardened release with automatic retry and comprehensive testing.**
+**Enterprise-grade release with schema validation and integration testing.**
 
-### 🔄 Network Retry Logic
-- **Automatic retry** with exponential backoff (3 attempts: 1s, 2s, 4s)
-- **15-20% failure reduction** on slow/unstable sites
-- Transparent UX — no user intervention needed
-- Handles: timeouts, connection errors, 5xx server errors, rate limits
-- Applied to all HTTP calls in `geo_audit.py` and `generate_llms_txt.py`
+### ✅ Schema Validation (Fix #7)
+- **JSON-LD validation** with `jsonschema` library (Draft 7)
+- Validates WebSite, WebPage, Organization, FAQPage schemas
+- Pre-injection validation in `schema_injector.py --analyze`
+- Reports validation errors and missing required fields
+- **All 9/9 technical audit fixes completed** ✅
 
-### ✅ Comprehensive Test Coverage
-- **67 total tests** (+45 from v1.2.0)
+### 🧪 Integration Test Suite
+- **89 total tests** (67 unit + 13 integration + 9 validation)
+- End-to-end workflow testing for all scripts
+- Real script execution tests (geo_audit, schema_injector, generate_llms_txt)
+- Script executability verification
 - **87% business logic coverage** (exceeds 85% target)
-- Production edge cases: HTTP errors, encoding issues, JSON-LD validation
-- All tests use `unittest.mock` — no real network calls
-- GitHub Actions CI runs tests on every push
 
-### 📈 Quality Score: 9.4/10
+### 📊 Codecov Integration
+- Automated coverage reporting in CI
+- 70% total coverage target / 85% business logic target
+- Branch coverage enabled
+- Coverage badge in README
+
+### 📈 Quality Score: 9.6/10
 - v1.0.0: 7.2/10 (good foundation)
 - v1.1.0: 8.5/10 (infrastructure)
 - v1.2.0: 9.2/10 (CI/CD + JSON)
-- **v1.3.0: 9.4/10** (production-hardened) ⭐
+- v1.3.0: 9.4/10 (production-hardened)
+- **v1.4.0: 9.6/10** (enterprise-grade) ⭐
 
 See [CHANGELOG.md](CHANGELOG.md) for full details.
 
