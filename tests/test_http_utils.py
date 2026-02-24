@@ -27,25 +27,13 @@ def test_session_creation():
 
 
 def test_retry_on_connection_error():
-    """Test that session retries on connection error."""
-    with patch('requests.Session.get') as mock_get:
-        # First 2 calls fail, 3rd succeeds
-        mock_get.side_effect = [
-            Exception("Connection refused"),
-            Exception("Connection refused"),
-            MagicMock(status_code=200, text="Success")
-        ]
-        
-        session = create_session_with_retry(total_retries=3)
-        
-        # This should NOT raise exception (retry succeeds on 3rd attempt)
-        try:
-            response = session.get("http://example.com")
-            # If we got here, retry worked
-            assert mock_get.call_count <= 3
-        except Exception:
-            # Retry exhausted — acceptable for test
-            assert mock_get.call_count == 3
+    """Test that session is configured with retry adapter for connection errors."""
+    session = create_session_with_retry(total_retries=3)
+
+    # Verify the session has retry adapters mounted
+    adapter = session.get_adapter("http://example.com")
+    assert adapter.max_retries.total == 3
+    assert adapter.max_retries.backoff_factor == 1.0
 
 
 def test_retry_on_5xx_status():

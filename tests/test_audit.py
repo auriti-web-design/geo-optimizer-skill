@@ -83,7 +83,9 @@ Allow: /
     assert result["found"] is True
     assert "GPTBot" in result["bots_blocked"]
     assert "GPTBot" not in result["bots_allowed"]
-    assert result["citation_bots_ok"] is False  # GPTBot is not a citation bot, but OAI-SearchBot is
+    # Citation bots (OAI-SearchBot, ClaudeBot, PerplexityBot) fall back to wildcard *
+    # which has Allow: /, so they are correctly allowed
+    assert result["citation_bots_ok"] is True
 
 
 def test_robots_txt_with_comments():
@@ -966,7 +968,7 @@ Allow: /
 
 
 def test_robots_txt_wildcard_user_agent():
-    """Test robots.txt with wildcard * blocking specific paths."""
+    """Test robots.txt with wildcard * applies to all unconfigured bots."""
     robots_content = """User-agent: *
 Disallow: /admin/
 Disallow: /private/
@@ -980,8 +982,93 @@ Disallow: /private/
         result = audit_robots_txt("https://example.com")
 
     assert result["found"] is True
-    # Bots not explicitly mentioned should be in missing list
-    assert len(result["bots_missing"]) > 0
+    # With wildcard, bots should match * and be partially allowed (not missing)
+    assert len(result["bots_missing"]) == 0
+    assert len(result["bots_allowed"]) > 0
+
+
+def test_robots_txt_stacking_consecutive_agents():
+    """Test RFC 9309 stacking: consecutive User-agent lines share rules."""
+    robots_content = """
+User-agent: GPTBot
+User-agent: ClaudeBot
+Disallow: /private/
+Allow: /
+"""
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.text = robots_content
+
+    with patch("geo_audit.fetch_url", return_value=(mock_response, None)):
+        result = audit_robots_txt("https://example.com")
+
+    # Both stacked agents share the same rules
+    assert "GPTBot" in result["bots_allowed"]
+    assert "ClaudeBot" in result["bots_allowed"]
+
+
+def test_robots_txt_allow_overrides_disallow():
+    """Test that Allow: / overrides Disallow: / for same agent."""
+    robots_content = """
+User-agent: GPTBot
+Disallow: /
+Allow: /
+"""
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.text = robots_content
+
+    with patch("geo_audit.fetch_url", return_value=(mock_response, None)):
+        result = audit_robots_txt("https://example.com")
+
+    # Allow: / overrides Disallow: /
+    assert "GPTBot" in result["bots_allowed"]
+    assert "GPTBot" not in result["bots_blocked"]
+
+
+def test_robots_txt_wildcard_blocks_all():
+    """Test that User-agent: * with Disallow: / blocks bots without specific rules."""
+    robots_content = """
+User-agent: *
+Disallow: /
+"""
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.text = robots_content
+
+    with patch("geo_audit.fetch_url", return_value=(mock_response, None)):
+        result = audit_robots_txt("https://example.com")
+
+    # All bots should be blocked via wildcard fallback
+    assert len(result["bots_blocked"]) == len(AI_BOTS)
+    assert len(result["bots_allowed"]) == 0
+    assert result["citation_bots_ok"] is False
+
+
+def test_robots_txt_specific_overrides_wildcard():
+    """Test that a specific agent rule takes priority over wildcard."""
+    robots_content = """
+User-agent: *
+Disallow: /
+
+User-agent: GPTBot
+Allow: /
+"""
+
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.text = robots_content
+
+    with patch("geo_audit.fetch_url", return_value=(mock_response, None)):
+        result = audit_robots_txt("https://example.com")
+
+    # GPTBot has specific rule (Allow: /), should be allowed
+    assert "GPTBot" in result["bots_allowed"]
+    # Other bots fall back to wildcard (Disallow: /), should be blocked
+    assert "Bytespider" in result["bots_blocked"]
 
 
 def test_llms_txt_empty_content():
