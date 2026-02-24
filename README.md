@@ -8,11 +8,12 @@
 [![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 [![Based on Princeton KDD 2024](https://img.shields.io/badge/Based_on-Princeton_KDD_2024-f97316?style=flat-square)](https://arxiv.org/abs/2311.09735)
 [![GitHub Stars](https://img.shields.io/github/stars/auriti-web-design/geo-optimizer-skill?style=flat-square&color=facc15&logo=github)](https://github.com/auriti-web-design/geo-optimizer-skill/stargazers)
+[![Docs](https://img.shields.io/badge/docs-auritidesign.it-00b4d8?style=flat-square)](https://auritidesign.it/docs/geo-optimizer/)
 
 **Optimize any website to be cited by ChatGPT, Perplexity, Claude, and Gemini.**  
 Research-backed. Script-powered. Works in 15 minutes.
 
-[**Quick Start**](#quick-start) · [**How it works**](#what-is-geo) · [**Use with AI**](#use-as-ai-context) · [**Changelog**](CHANGELOG.md)
+[**Docs**](https://auritidesign.it/docs/geo-optimizer/) · [**Quick Start**](#quick-start) · [**How it works**](#what-is-geo) · [**Use with AI**](#use-as-ai-context) · [**Changelog**](CHANGELOG.md)
 
 </div>
 
