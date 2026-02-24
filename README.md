@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.svg" alt="Geo Optimizer" width="460"/>
+<img src="assets/logo.svg" alt="Geo Optimizer" width="540"/>
 
 [![Python](https://img.shields.io/badge/Python-3.8+-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![CI](https://github.com/auriti-web-design/geo-optimizer-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/auriti-web-design/geo-optimizer-skill/actions/workflows/ci.yml)
