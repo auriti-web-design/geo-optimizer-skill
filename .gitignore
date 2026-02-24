@@ -39,5 +39,8 @@ Thumbs.db
 .idea/
 *.sublime-*
 
+# Claude Code
+CLAUDE.md
+
 # Other
 node_modules/
