@@ -91,18 +91,30 @@ const faqSchema = faqItems.length > 0 ? {
 
 
 def fill_template(template: dict, values: dict) -> dict:
-    """Replace {{key}} placeholders in the template with provided values."""
+    """Sostituisce segnaposto {{key}} nel template con valori sicuri.
+
+    I valori vengono serializzati con json.dumps per evitare
+    JSON injection tramite caratteri speciali (virgolette, backslash).
+    """
     template_str = json.dumps(template)
     for key, value in values.items():
-        template_str = template_str.replace(
-            f"{{{{{key}}}}}", str(value) if value else ""
-        )
+        safe_value = str(value) if value else ""
+        # Escape sicuro: json.dumps aggiunge le virgolette, le rimuoviamo
+        # ma manteniamo l'escape interno (", \, newline, ecc.)
+        escaped = json.dumps(safe_value)[1:-1]
+        template_str = template_str.replace(f"{{{{{key}}}}}", escaped)
     return json.loads(template_str)
 
 
 def schema_to_html_tag(schema_dict: dict) -> str:
-    """Convert a schema dict to an HTML script tag."""
+    """Converte uno schema dict in un tag HTML script JSON-LD.
+
+    Esegue escape di '</' per prevenire XSS: il browser chiuderebbe
+    prematuramente il tag <script> se incontra '</script>' nel JSON.
+    """
     json_str = json.dumps(schema_dict, indent=2, ensure_ascii=False)
+    # Previeni chiusura prematura del tag <script> (XSS)
+    json_str = json_str.replace("</", r"<\/")
     return f'<script type="application/ld+json">\n{json_str}\n</script>'
 
 
@@ -262,7 +274,9 @@ def inject_schema_into_html(
         return False, "No <head> tag found in HTML"
 
     schema_tag = soup.new_tag("script", type="application/ld+json")
-    schema_tag.string = "\n" + json.dumps(schema_dict, indent=2, ensure_ascii=False) + "\n"
+    # Escape '</' per prevenire XSS da chiusura prematura del tag <script>
+    safe_json = json.dumps(schema_dict, indent=2, ensure_ascii=False).replace("</", r"<\/")
+    schema_tag.string = "\n" + safe_json + "\n"
     head.append(schema_tag)
 
     with open(file_path, "w", encoding="utf-8") as f:
