@@ -23,6 +23,7 @@ from geo_optimizer.models.config import (
 )
 from geo_optimizer.models.results import SitemapUrl
 from geo_optimizer.utils.http import create_session_with_retry
+from geo_optimizer.utils.validators import url_belongs_to_domain
 
 logger = logging.getLogger(__name__)
 
@@ -248,8 +249,8 @@ def generate_llms_txt(
         if not url.startswith("http"):
             url = urljoin(base_url, url)
 
-        # Skip URLs outside the domain
-        if domain not in urlparse(url).netloc:
+        # Filtro dominio sicuro (previene bypass con substring match)
+        if not url_belongs_to_domain(url, domain):
             continue
 
         # Skip unwanted URLs
