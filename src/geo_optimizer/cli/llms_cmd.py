@@ -13,6 +13,7 @@ from geo_optimizer.core.llms_generator import (
     fetch_sitemap,
     generate_llms_txt,
 )
+from geo_optimizer.utils.validators import validate_public_url
 
 
 @click.command()
@@ -28,6 +29,12 @@ def llms(base_url, output, sitemap, site_name, description, fetch_titles, max_pe
     base_url = base_url.rstrip("/")
     if not base_url.startswith(("http://", "https://")):
         base_url = "https://" + base_url
+
+    # Validazione anti-SSRF: blocca URL verso reti private/interne
+    safe, reason = validate_public_url(base_url)
+    if not safe:
+        click.echo(f"\n❌ URL non sicuro: {reason}", err=True)
+        sys.exit(1)
 
     click.echo(f"\n🌐 GEO llms.txt Generator")
     click.echo(f"   Site: {base_url}")

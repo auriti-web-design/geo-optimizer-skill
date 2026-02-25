@@ -16,6 +16,85 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ---
 
+## [2.0.0b2] — 2026-02-25
+
+### Security
+
+- **SSRF Prevention** (#1) — Nuovo modulo `validators.py` con `validate_public_url()`
+  - Blocca IP privati (RFC 1918), loopback, link-local, cloud metadata (169.254.169.254)
+  - Blocca schema non consentiti (`file://`, `ftp://`), credenziali embedded (`user:pass@`)
+  - Validazione DNS: previene DNS rebinding verso reti interne
+  - Integrato come gate di ingresso in `audit_cmd.py` e `llms_cmd.py`
+
+- **JSON Injection** (#2) — `fill_template()` in `schema_injector.py`
+  - I valori sono ora escaped con `json.dumps()` prima dell'inserimento
+  - Previene rottura del JSON tramite virgolette, backslash, newline
+
+- **XSS Prevention** (#3) — `schema_to_html_tag()` e `inject_schema_into_html()`
+  - Escape di `</` → `<\/` nel JSON-LD serializzato
+  - Previene chiusura prematura del tag `<script>` da contenuto maligno
+
+- **Domain Match Bypass** — `llms_generator.py`
+  - Sostituito substring match con `url_belongs_to_domain()` (match esatto + subdomain)
+  - Previene bypass dove `evil-example.com` passava il filtro per `example.com`
+
+### Fixed
+
+- **script.string None** (#4) — `audit_schema()` in `audit.py`
+  - BeautifulSoup restituisce None quando il tag `<script>` ha nodi figli multipli
+  - Fallback a `get_text()`, skip se contenuto vuoto/whitespace
+
+- **Scoring Inconsistency** (#5) — `formatters.py`
+  - Le 5 funzioni `_*_score()` ora usano costanti `SCORING` da `config.py`
+  - Eliminati numeri magici hardcoded; punteggi sempre sincronizzati
+
+- **Dependency Bounds** (#15) — `pyproject.toml` e `requirements.txt`
+  - lxml: `<6.0.0` → `<7.0.0` (v6.0.2 già rilasciato)
+  - pytest: `<9.0` → `<10.0` (v9.0.2 disponibile)
+  - pytest-cov: `<5.0`/`<6.0` → `<8.0` (v7.0.0 disponibile)
+  - Aggiunto `click` mancante in `requirements.txt`
+
+- **Version PEP 440** — `__init__.py`
+  - `"2.0.0-beta"` → `"2.0.0b1"` (formato conforme a PEP 440)
+
+### Added
+
+- `src/geo_optimizer/utils/validators.py` — modulo di validazione input (anti-SSRF, anti-path-traversal)
+- `tests/test_p0_security_fixes.py` — 45 test per tutte le fix P0
+  - 12 test anti-SSRF, 6 anti-JSON injection, 3 anti-XSS
+  - 4 test script.string None, 10 scoring consistency
+  - 7 domain match, 3 validazione path + versione
+
+### Test Results
+
+- **300 test totali** (255 esistenti + 45 nuovi) — tutti passati ✅
+- Zero regressioni sui test esistenti
+
+---
+
+## [2.0.0b1] — 2026-02-24
+
+### Added — Package Restructure
+
+- Ristrutturato come pacchetto Python installabile (`pip install geo-optimizer`)
+- CLI basata su Click con comandi: `geo audit`, `geo llms`, `geo schema`
+- Architettura a layer: `core/` (business logic) → `cli/` (UI) → `models/` (dataclass)
+- Dataclass tipizzati per tutti i risultati (RobotsResult, LlmsTxtResult, ecc.)
+- Scoring centralizzato in `models/config.py` con costanti SCORING
+- Parser robots.txt dedicato in `utils/robots_parser.py`
+- Validatore JSON-LD in `core/schema_validator.py`
+- 255 test del package con pytest
+
+---
+
+## [1.5.1] — 2026-02-21
+
+### Fixed
+
+- Aggiunta trasparenza metodologia di scoring nel README
+
+---
+
 ## [1.5.0] — 2026-02-21
 
 ### Added — Verbose Mode

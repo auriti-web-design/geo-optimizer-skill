@@ -7,6 +7,7 @@ Handles text and JSON output for audit results.
 import json
 from dataclasses import asdict
 
+from geo_optimizer.models.config import SCORING
 from geo_optimizer.models.results import AuditResult
 
 
@@ -189,40 +190,45 @@ def _section_header(text: str) -> str:
 
 
 def _robots_score(r: AuditResult) -> int:
+    """Punteggio robots.txt allineato a SCORING (config.py)."""
     if r.robots.citation_bots_ok:
-        return 20
+        return SCORING["robots_found"] + SCORING["robots_citation_ok"]
     if r.robots.bots_allowed:
-        return 13
+        return SCORING["robots_found"] + SCORING["robots_some_allowed"]
     if r.robots.found:
-        return 5
+        return SCORING["robots_found"]
     return 0
 
 
 def _llms_score(r: AuditResult) -> int:
-    s = 10 if r.llms.found else 0
-    s += 3 if r.llms.has_h1 else 0
-    s += 4 if r.llms.has_sections else 0
-    s += 3 if r.llms.has_links else 0
+    """Punteggio llms.txt allineato a SCORING (config.py)."""
+    s = SCORING["llms_found"] if r.llms.found else 0
+    s += SCORING["llms_h1"] if r.llms.has_h1 else 0
+    s += SCORING["llms_sections"] if r.llms.has_sections else 0
+    s += SCORING["llms_links"] if r.llms.has_links else 0
     return s
 
 
 def _schema_score(r: AuditResult) -> int:
-    s = 10 if r.schema.has_website else 0
-    s += 10 if r.schema.has_faq else 0
-    s += 5 if r.schema.has_webapp else 0
+    """Punteggio schema JSON-LD allineato a SCORING (config.py)."""
+    s = SCORING["schema_website"] if r.schema.has_website else 0
+    s += SCORING["schema_faq"] if r.schema.has_faq else 0
+    s += SCORING["schema_webapp"] if r.schema.has_webapp else 0
     return s
 
 
 def _meta_score(r: AuditResult) -> int:
-    s = 5 if r.meta.has_title else 0
-    s += 8 if r.meta.has_description else 0
-    s += 3 if r.meta.has_canonical else 0
-    s += 4 if (r.meta.has_og_title and r.meta.has_og_description) else 0
+    """Punteggio meta tags allineato a SCORING (config.py)."""
+    s = SCORING["meta_title"] if r.meta.has_title else 0
+    s += SCORING["meta_description"] if r.meta.has_description else 0
+    s += SCORING["meta_canonical"] if r.meta.has_canonical else 0
+    s += SCORING["meta_og"] if (r.meta.has_og_title and r.meta.has_og_description) else 0
     return s
 
 
 def _content_score(r: AuditResult) -> int:
-    s = 4 if r.content.has_h1 else 0
-    s += 6 if r.content.has_numbers else 0
-    s += 5 if r.content.has_links else 0
+    """Punteggio content quality allineato a SCORING (config.py)."""
+    s = SCORING["content_h1"] if r.content.has_h1 else 0
+    s += SCORING["content_numbers"] if r.content.has_numbers else 0
+    s += SCORING["content_links"] if r.content.has_links else 0
     return s

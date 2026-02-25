@@ -119,7 +119,13 @@ def audit_schema(soup, url: str) -> SchemaResult:
 
     for script in scripts:
         try:
-            data = json.loads(script.string)
+            # script.string può essere None se il tag ha nodi figli multipli
+            raw = script.string
+            if not raw:
+                raw = script.get_text()
+            if not raw or not raw.strip():
+                continue
+            data = json.loads(raw)
             schemas = data if isinstance(data, list) else [data]
 
             for schema in schemas:
