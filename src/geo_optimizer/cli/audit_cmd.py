@@ -10,6 +10,7 @@ import click
 
 from geo_optimizer.core.audit import run_full_audit
 from geo_optimizer.cli.formatters import format_audit_json, format_audit_text
+from geo_optimizer.utils.validators import validate_public_url
 
 
 @click.command()
@@ -20,6 +21,12 @@ from geo_optimizer.cli.formatters import format_audit_json, format_audit_text
 @click.option("--verbose", is_flag=True, help="Show detailed check output")
 def audit(url, output_format, output_file, verbose):
     """Audit a website's GEO (Generative Engine Optimization) readiness."""
+    # Validazione anti-SSRF: blocca URL verso reti private/interne
+    safe, reason = validate_public_url(url if url.startswith(("http://", "https://")) else f"https://{url}")
+    if not safe:
+        click.echo(f"\n❌ URL non sicuro: {reason}", err=True)
+        sys.exit(1)
+
     try:
         result = run_full_audit(url)
     except SystemExit:
