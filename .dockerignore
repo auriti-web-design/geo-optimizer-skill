@@ -1,0 +1,23 @@
+# Non includere nel contesto Docker
+.git/
+.github/
+.venv/
+.env
+.geo-cache/
+__pycache__/
+*.egg-info/
+dist/
+build/
+htmlcov/
+.pytest_cache/
+.coverage
+.tox/
+tests/
+scripts/
+*.md
+!README.md
+*.bak
+*.swp
+.vscode/
+.idea/
+node_modules/
