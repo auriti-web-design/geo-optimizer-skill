@@ -9,8 +9,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
-
 # ─── Robots.txt ──────────────────────────────────────────────────────────────
+
 
 @dataclass
 class RobotsResult:
@@ -22,6 +22,7 @@ class RobotsResult:
 
 
 # ─── llms.txt ────────────────────────────────────────────────────────────────
+
 
 @dataclass
 class LlmsTxtResult:
@@ -35,6 +36,7 @@ class LlmsTxtResult:
 
 # ─── Schema JSON-LD ──────────────────────────────────────────────────────────
 
+
 @dataclass
 class SchemaResult:
     found_types: List[str] = field(default_factory=list)
@@ -45,6 +47,7 @@ class SchemaResult:
 
 
 # ─── Meta tags ───────────────────────────────────────────────────────────────
+
 
 @dataclass
 class MetaResult:
@@ -63,6 +66,7 @@ class MetaResult:
 
 # ─── Content quality ─────────────────────────────────────────────────────────
 
+
 @dataclass
 class ContentResult:
     has_h1: bool = False
@@ -76,6 +80,7 @@ class ContentResult:
 
 
 # ─── Full audit ──────────────────────────────────────────────────────────────
+
 
 @dataclass
 class AuditResult:
@@ -95,6 +100,7 @@ class AuditResult:
 
 # ─── Schema analysis ─────────────────────────────────────────────────────────
 
+
 @dataclass
 class SchemaAnalysis:
     found_schemas: List[Dict] = field(default_factory=list)
@@ -107,6 +113,7 @@ class SchemaAnalysis:
 
 
 # ─── llms.txt generation ─────────────────────────────────────────────────────
+
 
 @dataclass
 class SitemapUrl:

@@ -3,21 +3,29 @@
 Generate llms.txt — Generates llms.txt from an XML sitemap
 Generative Engine Optimization (GEO) Toolkit
 
+.. deprecated:: 2.0.0
+    Use ``geo llms`` CLI instead. This script will be removed in v3.0.
+
 Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
 
-
 Usage:
-    ./geo scripts/generate_llms_txt.py --base-url https://example.com
-    ./geo scripts/generate_llms_txt.py --base-url https://example.com --output ./public/llms.txt
-    ./geo scripts/generate_llms_txt.py --base-url https://example.com --sitemap https://example.com/sitemap-0.xml
-    ./geo scripts/generate_llms_txt.py --base-url https://example.com --site-name "MySite" --description "Description"
+    geo llms --base-url https://example.com
 """
 
+import warnings
+
+warnings.warn(
+    "scripts/generate_llms_txt.py is deprecated. Use 'geo llms' CLI instead. "
+    "This script will be removed in v3.0.",
+    DeprecationWarning,
+    stacklevel=1,
+)
+
 import argparse
-import sys
 import re
-from urllib.parse import urljoin, urlparse
+import sys
 from collections import defaultdict
+from urllib.parse import urljoin, urlparse
 
 # Dependencies are imported lazily inside main() so --help always works.
 requests = None
@@ -31,6 +39,7 @@ def _ensure_deps():
     try:
         import requests as _requests
         from bs4 import BeautifulSoup as _BS
+
         requests = _requests
         BeautifulSoup = _BS
     except ImportError:
@@ -39,9 +48,7 @@ def _ensure_deps():
         sys.exit(1)
 
 
-HEADERS = {
-    "User-Agent": "GEO-Optimizer/1.0 (https://github.com/auriti-labs/geo-optimizer-skill)"
-}
+HEADERS = {"User-Agent": "GEO-Optimizer/1.0 (https://github.com/auriti-labs/geo-optimizer-skill)"}
 
 # Category mapping — URL pattern → section name
 CATEGORY_PATTERNS = [
@@ -66,21 +73,30 @@ CATEGORY_PATTERNS = [
 ]
 
 SKIP_PATTERNS = [
-    r"/wp-", r"/admin", r"/login", r"/logout", r"/register",
-    r"/cart", r"/checkout", r"/account", r"/user/",
+    r"/wp-",
+    r"/admin",
+    r"/login",
+    r"/logout",
+    r"/register",
+    r"/cart",
+    r"/checkout",
+    r"/account",
+    r"/user/",
     r"\.(xml|json|rss|atom|pdf|jpg|png|css|js)$",
-    r"/tag/", r"/category/\w+/page/", r"/page/\d+",
+    r"/tag/",
+    r"/category/\w+/page/",
+    r"/page/\d+",
 ]
 
 
 def fetch_sitemap(sitemap_url: str) -> list:
     """
     Download and parse an XML sitemap, including sitemap index files.
-    
+
     Uses automatic retry with exponential backoff for transient failures.
     """
     from http_utils import create_session_with_retry
-    
+
     urls = []
     print(f"⏳ Fetching sitemap: {sitemap_url}")
 
@@ -169,12 +185,12 @@ def categorize_url(url: str, base_domain: str) -> str:
 def fetch_page_title(url: str) -> str:
     """
     Attempt to fetch the page title (with short timeout and retry).
-    
+
     Uses automatic retry for transient failures to improve success rate
     on slow/unreliable sites.
     """
     from http_utils import create_session_with_retry
-    
+
     try:
         session = create_session_with_retry(total_retries=2, backoff_factor=0.5)
         r = session.get(url, headers=HEADERS, timeout=5)
@@ -261,11 +277,13 @@ def generate_llms_txt(
         if not label:
             label = url_to_label(url, domain)
 
-        categorized[category].append({
-            "url": url,
-            "label": label,
-            "priority": url_data.get("priority", 0.5),
-        })
+        categorized[category].append(
+            {
+                "url": url,
+                "label": label,
+                "priority": url_data.get("priority", 0.5),
+            }
+        )
 
     # Build llms.txt
     lines = []
@@ -286,14 +304,26 @@ def generate_llms_txt(
 
     # Category order by importance
     priority_order = [
-        "Tools", "Calculators", "Finance Tools", "Health & Wellness",
-        "Math", "Applications", "Main Pages",
-        "Documentation", "Guides", "Tutorials",
-        "Blog & Articles", "Articles", "Posts",
-        "Products", "Services",
-        "About", "Contact",
+        "Tools",
+        "Calculators",
+        "Finance Tools",
+        "Health & Wellness",
+        "Math",
+        "Applications",
+        "Main Pages",
+        "Documentation",
+        "Guides",
+        "Tutorials",
+        "Blog & Articles",
+        "Articles",
+        "Posts",
+        "Products",
+        "Services",
+        "About",
+        "Contact",
         "Other",
-        "Privacy & Legal", "Terms",
+        "Privacy & Legal",
+        "Terms",
     ]
 
     # Main sections
@@ -351,9 +381,9 @@ def discover_sitemap(base_url: str) -> str:
     ]
 
     from http_utils import create_session_with_retry
-    
+
     session = create_session_with_retry(total_retries=2, backoff_factor=0.5)
-    
+
     # First check robots.txt for Sitemap: directive
     robots_url = urljoin(base_url, "/robots.txt")
     try:
@@ -393,7 +423,7 @@ Examples:
       --description "Free online calculators for finance and math"
   ./geo scripts/generate_llms_txt.py --base-url https://example.com \\
       --sitemap https://example.com/sitemap-index.xml --fetch-titles
-        """
+        """,
     )
     parser.add_argument("--base-url", required=True, help="Base URL of the site (e.g. https://example.com)")
     parser.add_argument("--output", default=None, help="Output file (default: stdout)")
@@ -411,7 +441,7 @@ Examples:
     if not base_url.startswith(("http://", "https://")):
         base_url = "https://" + base_url
 
-    print(f"\n🌐 GEO llms.txt Generator")
+    print("\n🌐 GEO llms.txt Generator")
     print(f"   Site: {base_url}")
 
     # Auto-detect sitemap
@@ -469,7 +499,7 @@ Examples:
         print("\n" + "─" * 50)
         print(content)
         print("─" * 50)
-        print(f"\n✅ Save with: --output /path/to/public/llms.txt")
+        print("\n✅ Save with: --output /path/to/public/llms.txt")
 
 
 if __name__ == "__main__":

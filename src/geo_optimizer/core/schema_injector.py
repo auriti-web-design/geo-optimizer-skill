@@ -15,7 +15,6 @@ from geo_optimizer.core.schema_validator import validate_jsonld
 from geo_optimizer.models.config import SCHEMA_TEMPLATES
 from geo_optimizer.models.results import SchemaAnalysis
 
-
 ASTRO_TEMPLATE = """\
 ---
 // src/layouts/BaseLayout.astro — GEO-optimized layout
@@ -153,9 +152,7 @@ def extract_faq_from_html(soup: BeautifulSoup) -> List[Dict[str, str]]:
     # Pattern 3: Common FAQ class patterns
     faq_containers = soup.find_all(class_=re.compile(r"faq|question|qa", re.I))
     for container in faq_containers:
-        q_elem = container.find(["h3", "h4", "strong"]) or container.find(
-            class_=re.compile(r"question", re.I)
-        )
+        q_elem = container.find(["h3", "h4", "strong"]) or container.find(class_=re.compile(r"question", re.I))
         if q_elem:
             question = q_elem.get_text(strip=True)
             full_text = container.get_text(strip=True)
@@ -183,14 +180,10 @@ def analyze_html_file(file_path: str) -> SchemaAnalysis:
                 if isinstance(data, list):
                     for item in data:
                         schema_type = item.get("@type", "Unknown")
-                        found_schemas.append(
-                            {"type": schema_type, "data": item, "index": idx}
-                        )
+                        found_schemas.append({"type": schema_type, "data": item, "index": idx})
                 else:
                     schema_type = data.get("@type", "Unknown")
-                    found_schemas.append(
-                        {"type": schema_type, "data": data, "index": idx}
-                    )
+                    found_schemas.append({"type": schema_type, "data": data, "index": idx})
         except (json.JSONDecodeError, Exception):
             pass
 

@@ -16,6 +16,7 @@ from typing import Dict, List, Optional
 @dataclass
 class AgentRules:
     """Rules for a single User-agent in robots.txt."""
+
     allow: List[str] = field(default_factory=list)
     disallow: List[str] = field(default_factory=list)
 
@@ -23,6 +24,7 @@ class AgentRules:
 @dataclass
 class BotStatus:
     """Classification result for a single bot."""
+
     bot: str
     description: str
     status: str  # "allowed", "blocked", "missing"
@@ -119,16 +121,24 @@ def classify_bot(
 
     if is_blocked and not has_allow_root:
         return BotStatus(
-            bot=bot, description=description, status="blocked",
-            matched_agent=found_agent, disallow_paths=rules.disallow,
+            bot=bot,
+            description=description,
+            status="blocked",
+            matched_agent=found_agent,
+            disallow_paths=rules.disallow,
         )
     elif not rules.disallow or all(d == "" for d in rules.disallow):
         return BotStatus(
-            bot=bot, description=description, status="allowed",
+            bot=bot,
+            description=description,
+            status="allowed",
             matched_agent=found_agent,
         )
     else:
         return BotStatus(
-            bot=bot, description=description, status="allowed",
-            matched_agent=found_agent, disallow_paths=rules.disallow,
+            bot=bot,
+            description=description,
+            status="allowed",
+            matched_agent=found_agent,
+            disallow_paths=rules.disallow,
         )

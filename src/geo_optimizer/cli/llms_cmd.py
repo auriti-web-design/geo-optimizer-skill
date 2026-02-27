@@ -36,7 +36,7 @@ def llms(base_url, output, sitemap, site_name, description, fetch_titles, max_pe
         click.echo(f"\n❌ URL non sicuro: {reason}", err=True)
         sys.exit(1)
 
-    click.echo(f"\n🌐 GEO llms.txt Generator")
+    click.echo("\n🌐 GEO llms.txt Generator")
     click.echo(f"   Site: {base_url}")
 
     sitemap_url = sitemap
@@ -87,4 +87,4 @@ def llms(base_url, output, sitemap, site_name, description, fetch_titles, max_pe
         click.echo("\n" + "─" * 50)
         click.echo(content)
         click.echo("─" * 50)
-        click.echo(f"\n✅ Save with: --output /path/to/public/llms.txt")
+        click.echo("\n✅ Save with: --output /path/to/public/llms.txt")

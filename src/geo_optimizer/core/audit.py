@@ -12,20 +12,20 @@ from urllib.parse import urljoin, urlparse
 from geo_optimizer.models.config import (  # noqa: F401 (VALUABLE_SCHEMAS re-exported)
     AI_BOTS,
     CITATION_BOTS,
-    VALUABLE_SCHEMAS,
-    SCORING,
     SCORE_BANDS,
+    SCORING,
+    VALUABLE_SCHEMAS,
 )
 from geo_optimizer.models.results import (
-    RobotsResult,
-    LlmsTxtResult,
-    SchemaResult,
-    MetaResult,
-    ContentResult,
     AuditResult,
+    ContentResult,
+    LlmsTxtResult,
+    MetaResult,
+    RobotsResult,
+    SchemaResult,
 )
 from geo_optimizer.utils.http import fetch_url
-from geo_optimizer.utils.robots_parser import parse_robots_txt, classify_bot
+from geo_optimizer.utils.robots_parser import classify_bot, parse_robots_txt
 
 
 def audit_robots_txt(base_url: str) -> RobotsResult:
@@ -62,9 +62,7 @@ def audit_robots_txt(base_url: str) -> RobotsResult:
             result.bots_allowed.append(bot)
 
     # Check citation bots
-    result.citation_bots_ok = all(
-        b in result.bots_allowed for b in CITATION_BOTS
-    )
+    result.citation_bots_ok = all(b in result.bots_allowed for b in CITATION_BOTS)
 
     return result
 
@@ -213,7 +211,7 @@ def audit_content_quality(soup, url: str) -> ContentResult:
 
     # Check for numbers/statistics
     body_text = soup.get_text()
-    numbers = re.findall(r'\b\d+[%\u20ac$\u00a3]|\b\d+\.\d+|\b\d{3,}\b', body_text)
+    numbers = re.findall(r"\b\d+[%\u20ac$\u00a3]|\b\d+\.\d+|\b\d{3,}\b", body_text)
     result.numbers_count = len(numbers)
     if len(numbers) >= 3:
         result.has_numbers = True
@@ -226,10 +224,7 @@ def audit_content_quality(soup, url: str) -> ContentResult:
     parsed = urlparse(url)
     base_domain = parsed.netloc
     all_links = soup.find_all("a", href=True)
-    external_links = [
-        link for link in all_links
-        if link["href"].startswith("http") and base_domain not in link["href"]
-    ]
+    external_links = [link for link in all_links if link["href"].startswith("http") and base_domain not in link["href"]]
     result.external_links_count = len(external_links)
     if external_links:
         result.has_links = True
@@ -303,9 +298,7 @@ def build_recommendations(base_url, robots, llms, schema, meta, content) -> list
     if not robots.citation_bots_ok:
         recommendations.append("Update robots.txt with all AI bots (see SKILL.md)")
     if not llms.found:
-        recommendations.append(
-            f"Create /llms.txt: ./geo scripts/generate_llms_txt.py --base-url {base_url}"
-        )
+        recommendations.append(f"Create /llms.txt: ./geo scripts/generate_llms_txt.py --base-url {base_url}")
     if not schema.has_website:
         recommendations.append("Add WebSite JSON-LD schema")
     if not schema.has_faq:

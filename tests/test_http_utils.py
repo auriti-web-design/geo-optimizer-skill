@@ -12,6 +12,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+pytestmark = pytest.mark.legacy
+
 # Add scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
@@ -43,11 +45,11 @@ def test_retry_on_5xx_status():
         mock_500 = MagicMock(status_code=500)
         mock_200 = MagicMock(status_code=200, text="Success")
         mock_get.side_effect = [mock_500, mock_200]
-        
+
         session = create_session_with_retry(total_retries=3)
-        
+
         response = session.get("http://example.com")
-        
+
         # Should have made 2 calls (1st failed, 2nd succeeded)
         assert mock_get.call_count >= 1  # At least one retry attempted
 
@@ -57,11 +59,11 @@ def test_no_retry_on_404():
     with patch('requests.Session.get') as mock_get:
         mock_404 = MagicMock(status_code=404)
         mock_get.return_value = mock_404
-        
+
         session = create_session_with_retry(total_retries=3)
-        
+
         response = session.get("http://example.com")
-        
+
         # Should only make 1 call (404 is not in status_forcelist)
         assert mock_get.call_count == 1
         assert response.status_code == 404
@@ -75,6 +77,6 @@ def test_custom_retry_params():
         status_forcelist=[503],
         allowed_methods=["POST"]
     )
-    
+
     # Verify session is created (actual retry behavior tested in integration)
     assert session is not None

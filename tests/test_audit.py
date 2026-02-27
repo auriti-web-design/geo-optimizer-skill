@@ -10,22 +10,25 @@ Tests critical functions for GEO website auditing including:
 - score calculation
 
 Author: Juan Camilo Auriti
+
+.. deprecated:: 2.0.0
+    Questi test importano da scripts/ legacy. Usare test_core.py per il package moderno.
 """
 
-import json
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
+
+# Marker: test legacy che importano da scripts/ (deprecati, verranno rimossi in v3.0)
+pytestmark = pytest.mark.legacy
 
 # Add scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from geo_audit import (
     AI_BOTS,
-    CITATION_BOTS,
-    VALUABLE_SCHEMAS,
     audit_content_quality,
     audit_llms_txt,
     audit_meta_tags,
@@ -33,7 +36,6 @@ from geo_audit import (
     audit_schema,
     compute_geo_score,
 )
-
 
 # ============================================================================
 # ROBOTS.TXT TESTS

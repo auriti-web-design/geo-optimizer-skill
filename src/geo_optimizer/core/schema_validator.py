@@ -63,15 +63,10 @@ def validate_jsonld(
         if primary_type_normalized != schema_type_normalized:
             return False, f"Expected @type '{schema_type}', got '{primary_type}'"
 
-        required_fields = SCHEMA_ORG_REQUIRED.get(
-            schema_type_normalized, ["@context", "@type"]
-        )
+        required_fields = SCHEMA_ORG_REQUIRED.get(schema_type_normalized, ["@context", "@type"])
         missing_fields = [f for f in required_fields if f not in schema_dict]
         if missing_fields:
-            return False, (
-                f"Missing required fields for {primary_type}: "
-                f"{', '.join(missing_fields)}"
-            )
+            return False, (f"Missing required fields for {primary_type}: {', '.join(missing_fields)}")
 
     url_fields = ["url", "sameAs", "logo", "image"]
     for fld in url_fields:
@@ -85,13 +80,10 @@ def validate_jsonld(
                 continue
 
             for url in urls_to_check:
-                if isinstance(url, str) and not url.startswith(
-                    ("http://", "https://", "/")
-                ):
+                if isinstance(url, str) and not url.startswith(("http://", "https://", "/")):
                     if strict:
                         return False, (
-                            f"Invalid URL format in '{fld}': '{url}' "
-                            f"(must start with http://, https://, or /)"
+                            f"Invalid URL format in '{fld}': '{url}' (must start with http://, https://, or /)"
                         )
 
     return True, None
