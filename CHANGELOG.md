@@ -11,7 +11,41 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 - Batch audit mode (`--urls sites.txt`)
 - Remove legacy `scripts/` directory
-- Web demo hosted (FastAPI)
+
+---
+
+## [3.0.0a2] — 2026-02-27
+
+### Added
+
+- **Web demo** (#31) — FastAPI micro-service with `geo-web` CLI
+  - `GET /` — Homepage with dark theme and audit form
+  - `GET|POST /api/audit` — JSON API with in-memory cache (1h TTL)
+  - `GET /report/{id}` — Shareable HTML reports
+  - `GET /badge?url=` — Dynamic SVG badge (Shields.io style)
+  - `GET /health` — Health check for monitoring
+  - SSRF validation on all URL inputs
+  - XSS-safe frontend (textContent + DOM methods, no innerHTML)
+  - Optional dependency: `pip install geo-optimizer-skill[web]`
+
+- **Badge SVG** (#30) — Dynamic GEO Score badge
+  - `generate_badge_svg()` with color per score band
+  - Embeddable in README, portfolio, footer
+  - Cache-Control headers for CDN caching
+  - Usage: `![GEO Score](https://geo.example.com/badge?url=https://yoursite.com)`
+
+- **Docker image** (#33) — Multi-stage Dockerfile
+  - Base: python:3.12-slim, non-root user
+  - Usage: `docker run auritilabs/geo-optimizer audit --url https://example.com`
+  - GitHub Actions workflow for Docker Hub + GHCR publishing on tags
+
+### Changed
+
+- **CONTRIBUTING.md** (#32) — Updated for v3.0 architecture
+  - Reflects modern package structure (web/, i18n/, registry)
+  - Updated commands: ruff (not flake8), pip install -e ".[dev]"
+  - Added plugin development guide
+  - Added optional dependencies reference
 
 ---
 
