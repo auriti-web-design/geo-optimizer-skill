@@ -62,6 +62,9 @@ geo = "geo_optimizer.cli.main:cli"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"geo_optimizer" = ["py.typed", "i18n/locales/*/LC_MESSAGES/*.mo", "i18n/locales/*/LC_MESSAGES/*.po"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src", "scripts"]

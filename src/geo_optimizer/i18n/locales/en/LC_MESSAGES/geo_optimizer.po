@@ -1,0 +1,87 @@
+# English translations for GEO Optimizer
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: geo-optimizer-skill 2.2.0\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# ─── Audit ───────────────────────────────────────────────────────────────
+
+msgid "GEO AUDIT REPORT"
+msgstr "GEO AUDIT REPORT"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "Band"
+msgstr "Band"
+
+msgid "excellent"
+msgstr "excellent"
+
+msgid "good"
+msgstr "good"
+
+msgid "foundation"
+msgstr "foundation"
+
+msgid "critical"
+msgstr "critical"
+
+# ─── Check names ─────────────────────────────────────────────────────────
+
+msgid "Robots.txt"
+msgstr "Robots.txt"
+
+msgid "llms.txt"
+msgstr "llms.txt"
+
+msgid "Schema JSON-LD"
+msgstr "Schema JSON-LD"
+
+msgid "Meta Tags"
+msgstr "Meta Tags"
+
+msgid "Content Quality"
+msgstr "Content Quality"
+
+# ─── Status ──────────────────────────────────────────────────────────────
+
+msgid "Found"
+msgstr "Found"
+
+msgid "Not found"
+msgstr "Not found"
+
+msgid "Passed"
+msgstr "Passed"
+
+msgid "Failed"
+msgstr "Failed"
+
+# ─── Recommendations ────────────────────────────────────────────────────
+
+msgid "NEXT PRIORITY STEPS"
+msgstr "NEXT PRIORITY STEPS"
+
+msgid "No recommendations — great job!"
+msgstr "No recommendations — great job!"
+
+# ─── Cache ───────────────────────────────────────────────────────────────
+
+msgid "Cache cleared"
+msgstr "Cache cleared"
+
+msgid "files removed"
+msgstr "files removed"
+
+# ─── Errors ──────────────────────────────────────────────────────────────
+
+msgid "Unsafe URL"
+msgstr "Unsafe URL"
+
+msgid "Missing --url option"
+msgstr "Missing --url option"
