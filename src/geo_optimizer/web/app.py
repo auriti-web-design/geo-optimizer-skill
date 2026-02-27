@@ -104,7 +104,7 @@ async def report(report_id: str):
 @app.get("/badge")
 async def badge(
     url: str = Query(..., description="URL del sito per il badge"),
-    label: str = Query("GEO Score", description="Etichetta lato sinistro"),
+    label: str = Query("GEO Score", max_length=50, description="Etichetta lato sinistro"),
 ):
     """Badge SVG dinamico con GEO Score (stile Shields.io).
 

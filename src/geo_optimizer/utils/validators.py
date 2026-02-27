@@ -13,12 +13,17 @@ from urllib.parse import urlparse
 
 # Reti private/riservate da bloccare (RFC 1918, loopback, link-local, metadata cloud)
 _BLOCKED_NETWORKS = [
+    ipaddress.ip_network("0.0.0.0/8"),  # "this network" RFC 1122
     ipaddress.ip_network("127.0.0.0/8"),  # loopback IPv4
     ipaddress.ip_network("10.0.0.0/8"),  # privato RFC 1918
     ipaddress.ip_network("172.16.0.0/12"),  # privato RFC 1918
     ipaddress.ip_network("192.168.0.0/16"),  # privato RFC 1918
+    ipaddress.ip_network("100.64.0.0/10"),  # CGNAT RFC 6598
+    ipaddress.ip_network("192.0.0.0/24"),  # IETF Protocol Assignments
+    ipaddress.ip_network("198.18.0.0/15"),  # benchmark testing RFC 2544
     ipaddress.ip_network("169.254.0.0/16"),  # link-local (AWS/GCP/Azure metadata)
     ipaddress.ip_network("::1/128"),  # loopback IPv6
+    ipaddress.ip_network("::ffff:0:0/96"),  # IPv4-mapped IPv6
     ipaddress.ip_network("fc00::/7"),  # IPv6 ULA
     ipaddress.ip_network("fe80::/10"),  # IPv6 link-local
 ]
@@ -32,6 +37,20 @@ _BLOCKED_HOSTNAMES = {
     "metadata.google.internal",
     "169.254.169.254",
 }
+
+
+def _is_ip_blocked(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+    """Verifica se un IP è privato/riservato usando le API standard di Python.
+
+    Fallback per catturare reti non nella blocklist esplicita.
+    """
+    return (
+        ip_obj.is_private
+        or ip_obj.is_loopback
+        or ip_obj.is_link_local
+        or ip_obj.is_reserved
+        or ip_obj.is_multicast
+    )
 
 
 def validate_public_url(url: str) -> Tuple[bool, Optional[str]]:
@@ -80,9 +99,21 @@ def validate_public_url(url: str) -> Tuple[bool, Optional[str]]:
             ip_obj = ipaddress.ip_address(ip_str)
         except ValueError:
             continue
+
+        # Controlla blocklist esplicita
         for network in _BLOCKED_NETWORKS:
             if ip_obj in network:
-                return False, (f"L'indirizzo '{ip_str}' risolto per '{hostname}' è in una rete privata/riservata.")
+                return False, (
+                    f"L'indirizzo '{ip_str}' risolto per '{hostname}' "
+                    f"è in una rete privata/riservata."
+                )
+
+        # Fallback: cattura reti private non nella blocklist esplicita
+        if _is_ip_blocked(ip_obj):
+            return False, (
+                f"L'indirizzo '{ip_str}' risolto per '{hostname}' "
+                f"è in una rete privata/riservata."
+            )
 
     return True, None
 
