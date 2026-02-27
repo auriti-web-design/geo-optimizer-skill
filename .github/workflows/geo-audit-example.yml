@@ -1,0 +1,33 @@
+# Esempio di workflow per audit GEO in CI/CD
+# Copia questo file nel tuo progetto e personalizza url e min-score
+name: GEO Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  # Esegui anche su schedule settimanale per monitorare regressioni
+  schedule:
+    - cron: '0 9 * * 1'  # Ogni lunedì alle 9:00 UTC
+
+jobs:
+  geo-audit:
+    name: GEO Score Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run GEO Audit
+        uses: auriti-labs/geo-optimizer-skill/.github/actions/geo-audit@main
+        id: geo
+        with:
+          url: https://example.com
+          min-score: 50
+
+      - name: Print results
+        env:
+          GEO_SCORE: ${{ steps.geo.outputs.score }}
+          GEO_BAND: ${{ steps.geo.outputs.band }}
+        run: |
+          echo "GEO Score: $GEO_SCORE/100"
+          echo "Band: $GEO_BAND"
