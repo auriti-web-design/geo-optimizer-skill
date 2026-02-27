@@ -11,10 +11,12 @@ from pathlib import Path
 
 import pytest
 
+pytestmark = pytest.mark.legacy
+
 # Add scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
-from schema_validator import validate_jsonld, validate_jsonld_string, get_required_fields
+from schema_validator import get_required_fields, validate_jsonld, validate_jsonld_string
 
 
 def test_valid_website_schema():
@@ -25,7 +27,7 @@ def test_valid_website_schema():
         "url": "https://example.com",
         "name": "Example Site"
     }
-    
+
     is_valid, error = validate_jsonld(schema, "website")
     assert is_valid is True
     assert error is None
@@ -38,7 +40,7 @@ def test_missing_context():
         "url": "https://example.com",
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema)
     assert is_valid is False
     assert "@context" in error
@@ -51,7 +53,7 @@ def test_missing_type():
         "url": "https://example.com",
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema)
     assert is_valid is False
     assert "@type" in error
@@ -65,7 +67,7 @@ def test_invalid_context_url():
         "url": "https://example.com",
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema)
     assert is_valid is False
     assert "schema.org" in error
@@ -79,7 +81,7 @@ def test_missing_required_field_for_type():
         "name": "Example"
         # Missing 'url' which is required for WebSite
     }
-    
+
     is_valid, error = validate_jsonld(schema, "website")
     assert is_valid is False
     assert "url" in error
@@ -93,7 +95,7 @@ def test_array_context():
         "url": "https://example.com",
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema, "website")
     assert is_valid is True
     assert error is None
@@ -107,7 +109,7 @@ def test_array_type():
         "url": "https://example.com",
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema, "website")
     assert is_valid is True
     assert error is None
@@ -129,7 +131,7 @@ def test_faqpage_schema():
             }
         ]
     }
-    
+
     is_valid, error = validate_jsonld(schema, "faqpage")
     assert is_valid is True
     assert error is None
@@ -143,7 +145,7 @@ def test_organization_schema():
         "name": "Example Inc",
         "url": "https://example.com"
     }
-    
+
     is_valid, error = validate_jsonld(schema, "organization")
     assert is_valid is True
     assert error is None
@@ -157,7 +159,7 @@ def test_invalid_url_format_strict():
         "url": "not-a-url",  # Invalid URL
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema, "website", strict=True)
     assert is_valid is False
     assert "Invalid URL format" in error
@@ -171,7 +173,7 @@ def test_invalid_url_format_non_strict():
         "url": "not-a-url",  # Invalid URL but in non-strict mode
         "name": "Example"
     }
-    
+
     is_valid, error = validate_jsonld(schema, "website", strict=False)
     # Should pass in non-strict mode (just a warning)
     assert is_valid is True
@@ -180,7 +182,7 @@ def test_invalid_url_format_non_strict():
 def test_validate_jsonld_string_valid():
     """Test validation from JSON string."""
     json_str = '{"@context": "https://schema.org", "@type": "WebSite", "url": "https://example.com", "name": "Example"}'
-    
+
     is_valid, error = validate_jsonld_string(json_str, "website")
     assert is_valid is True
     assert error is None
@@ -189,7 +191,7 @@ def test_validate_jsonld_string_valid():
 def test_validate_jsonld_string_invalid_json():
     """Test validation fails on malformed JSON string."""
     json_str = '{"@context": "https://schema.org", "@type": "WebSite"'  # Missing closing brace
-    
+
     is_valid, error = validate_jsonld_string(json_str)
     assert is_valid is False
     assert "Invalid JSON" in error
@@ -225,7 +227,7 @@ def test_empty_type():
         "@context": "https://schema.org",
         "@type": []  # Empty array
     }
-    
+
     is_valid, error = validate_jsonld(schema)
     assert is_valid is False
     assert "@type" in error  # Either "empty" or "Missing" is fine

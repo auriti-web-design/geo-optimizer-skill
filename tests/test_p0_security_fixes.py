@@ -11,29 +11,26 @@ Copre:
 - #7 Versione PEP 440: __version__ conforme
 """
 
-import json
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
-import pytest
 from bs4 import BeautifulSoup
 
-from geo_optimizer.utils.validators import (
-    validate_public_url,
-    validate_safe_path,
-    url_belongs_to_domain,
-)
-from geo_optimizer.core.schema_injector import fill_template, schema_to_html_tag
-from geo_optimizer.core.audit import audit_schema
 from geo_optimizer.cli.formatters import (
-    _robots_score,
-    _llms_score,
-    _schema_score,
-    _meta_score,
     _content_score,
+    _llms_score,
+    _meta_score,
+    _robots_score,
+    _schema_score,
 )
+from geo_optimizer.core.audit import audit_schema
+from geo_optimizer.core.schema_injector import fill_template, schema_to_html_tag
 from geo_optimizer.models.config import SCORING
 from geo_optimizer.models.results import AuditResult
-
+from geo_optimizer.utils.validators import (
+    url_belongs_to_domain,
+    validate_public_url,
+    validate_safe_path,
+)
 
 # ============================================================================
 # #1 — SSRF: validate_public_url

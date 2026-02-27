@@ -16,27 +16,25 @@ Author: Juan Camilo Auriti
 
 import sys
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch, mock_open
+from unittest.mock import MagicMock, Mock, patch
 
 import pytest
+
+pytestmark = pytest.mark.legacy
 
 # Add scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from generate_llms_txt import (
-    should_skip,
+    _ensure_deps,
     categorize_url,
-    url_to_label,
-    generate_llms_txt,
-    fetch_sitemap,
     discover_sitemap,
     fetch_page_title,
-    _ensure_deps,
-    SKIP_PATTERNS,
-    CATEGORY_PATTERNS,
-    HEADERS,
+    fetch_sitemap,
+    generate_llms_txt,
+    should_skip,
+    url_to_label,
 )
-
 
 # ============================================================================
 # Ensure lazy deps are loaded before tests that use BeautifulSoup

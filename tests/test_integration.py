@@ -18,10 +18,11 @@ import sys
 import tempfile
 from io import StringIO
 from pathlib import Path
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
+pytestmark = pytest.mark.legacy
 
 SCRIPTS_DIR = Path(__file__).parent.parent / "scripts"
 
@@ -170,6 +171,7 @@ def test_geo_audit_missing_url():
     assert result.returncode != 0
 
 
+@pytest.mark.network
 def test_geo_audit_invalid_url():
     """Test that invalid URL format causes non-zero exit."""
     result = run_script("geo_audit.py", ["--url", "not-a-valid-url"])

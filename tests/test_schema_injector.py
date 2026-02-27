@@ -15,26 +15,26 @@ Author: Juan Camilo Auriti
 
 import json
 import sys
-from io import StringIO
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
+
+pytestmark = pytest.mark.legacy
 
 # Add scripts directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 from schema_injector import (
     SCHEMA_TEMPLATES,
-    fill_template,
-    schema_to_html_tag,
-    extract_faq_from_html,
     analyze_html_file,
+    extract_faq_from_html,
+    fill_template,
     generate_faq_schema,
     inject_schema_into_html,
     print_analysis,
+    schema_to_html_tag,
 )
-
 
 # ============================================================================
 # fill_template TESTS
@@ -1007,6 +1007,7 @@ class TestEdgeCases:
             with pytest.raises(SystemExit):
                 # Force reimport to trigger ImportError
                 import importlib
+
                 import schema_injector
                 importlib.reload(schema_injector)
                 schema_injector.analyze_html_file(str(html_file))

@@ -23,79 +23,75 @@ from unittest.mock import MagicMock, Mock, patch
 from bs4 import BeautifulSoup
 
 # ─── Core imports ────────────────────────────────────────────────────────────
-
 from geo_optimizer.core.audit import (
-    audit_robots_txt,
-    audit_llms_txt,
-    audit_schema,
-    audit_meta_tags,
     audit_content_quality,
+    audit_llms_txt,
+    audit_meta_tags,
+    audit_robots_txt,
+    audit_schema,
+    build_recommendations,
     compute_geo_score,
     get_score_band,
-    build_recommendations,
     run_full_audit,
 )
 from geo_optimizer.core.llms_generator import (
-    fetch_sitemap,
-    should_skip,
     categorize_url,
-    fetch_page_title,
-    url_to_label,
-    generate_llms_txt,
     discover_sitemap,
-)
-from geo_optimizer.core.schema_validator import (
-    validate_jsonld,
-    validate_jsonld_string,
-    get_required_fields,
+    fetch_page_title,
+    fetch_sitemap,
+    generate_llms_txt,
+    should_skip,
+    url_to_label,
 )
 from geo_optimizer.core.schema_injector import (
-    fill_template,
-    schema_to_html_tag,
-    extract_faq_from_html,
     analyze_html_file,
+    extract_faq_from_html,
+    fill_template,
+    generate_astro_snippet,
     generate_faq_schema,
     inject_schema_into_html,
-    generate_astro_snippet,
+    schema_to_html_tag,
 )
-
-# ─── Utils imports ───────────────────────────────────────────────────────────
-
-from geo_optimizer.utils.http import create_session_with_retry, fetch_url
-from geo_optimizer.utils.robots_parser import (
-    parse_robots_txt,
-    classify_bot,
-    AgentRules,
+from geo_optimizer.core.schema_validator import (
+    get_required_fields,
+    validate_jsonld,
+    validate_jsonld_string,
 )
 
 # ─── Models imports ──────────────────────────────────────────────────────────
-
 from geo_optimizer.models.config import (
     AI_BOTS,
-    CITATION_BOTS,
-    SCORING,
-    SCORE_BANDS,
-    SCHEMA_TEMPLATES,
-    SCHEMA_ORG_REQUIRED,
-    HEADERS,
     CATEGORY_PATTERNS,
-    SKIP_PATTERNS,
-    VALUABLE_SCHEMAS,
-    SECTION_PRIORITY_ORDER,
+    CITATION_BOTS,
+    HEADERS,
     OPTIONAL_CATEGORIES,
+    SCHEMA_ORG_REQUIRED,
+    SCHEMA_TEMPLATES,
+    SCORE_BANDS,
+    SCORING,
+    SECTION_PRIORITY_ORDER,
+    SKIP_PATTERNS,
     USER_AGENT,
+    VALUABLE_SCHEMAS,
 )
 from geo_optimizer.models.results import (
-    RobotsResult,
-    LlmsTxtResult,
-    SchemaResult,
-    MetaResult,
-    ContentResult,
     AuditResult,
+    ContentResult,
+    LlmsTxtResult,
+    MetaResult,
+    RobotsResult,
     SchemaAnalysis,
+    SchemaResult,
     SitemapUrl,
 )
 
+# ─── Utils imports ───────────────────────────────────────────────────────────
+from geo_optimizer.utils.http import create_session_with_retry, fetch_url
+from geo_optimizer.utils.robots_parser import (
+    AgentRules,
+    classify_bot,
+    parse_robots_txt,
+)
 
 # ============================================================================
 # 1. ROBOTS PARSER (geo_optimizer.utils.robots_parser)

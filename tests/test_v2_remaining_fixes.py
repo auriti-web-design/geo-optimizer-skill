@@ -12,16 +12,14 @@ Copre:
 - #14 extract_faq_from_html non muta il tree BeautifulSoup
 """
 
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
-import pytest
 from bs4 import BeautifulSoup
 
-from geo_optimizer.core.audit import audit_robots_txt, audit_llms_txt, audit_schema
+from geo_optimizer.core.audit import audit_llms_txt, audit_robots_txt, audit_schema
 from geo_optimizer.core.llms_generator import fetch_page_title, fetch_sitemap
 from geo_optimizer.core.schema_injector import extract_faq_from_html
 from geo_optimizer.utils.http import fetch_url
-
 
 # ============================================================================
 # #12 — audit_robots_txt / audit_llms_txt ignorano non-200
