@@ -1,0 +1,88 @@
+# Traduzioni italiane per GEO Optimizer
+# Italiano è la lingua primaria — le stringhe sono identiche ai msgid.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: geo-optimizer-skill 2.2.0\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# ─── Audit ───────────────────────────────────────────────────────────────
+
+msgid "GEO AUDIT REPORT"
+msgstr "REPORT AUDIT GEO"
+
+msgid "Score"
+msgstr "Punteggio"
+
+msgid "Band"
+msgstr "Fascia"
+
+msgid "excellent"
+msgstr "eccellente"
+
+msgid "good"
+msgstr "buono"
+
+msgid "foundation"
+msgstr "base"
+
+msgid "critical"
+msgstr "critico"
+
+# ─── Check names ─────────────────────────────────────────────────────────
+
+msgid "Robots.txt"
+msgstr "Robots.txt"
+
+msgid "llms.txt"
+msgstr "llms.txt"
+
+msgid "Schema JSON-LD"
+msgstr "Schema JSON-LD"
+
+msgid "Meta Tags"
+msgstr "Meta Tags"
+
+msgid "Content Quality"
+msgstr "Qualità Contenuti"
+
+# ─── Status ──────────────────────────────────────────────────────────────
+
+msgid "Found"
+msgstr "Trovato"
+
+msgid "Not found"
+msgstr "Non trovato"
+
+msgid "Passed"
+msgstr "Superato"
+
+msgid "Failed"
+msgstr "Non superato"
+
+# ─── Raccomandazioni ─────────────────────────────────────────────────────
+
+msgid "NEXT PRIORITY STEPS"
+msgstr "PROSSIMI PASSI PRIORITARI"
+
+msgid "No recommendations — great job!"
+msgstr "Nessuna raccomandazione — ottimo lavoro!"
+
+# ─── Cache ───────────────────────────────────────────────────────────────
+
+msgid "Cache cleared"
+msgstr "Cache svuotata"
+
+msgid "files removed"
+msgstr "file rimossi"
+
+# ─── Errori ──────────────────────────────────────────────────────────────
+
+msgid "Unsafe URL"
+msgstr "URL non sicuro"
+
+msgid "Missing --url option"
+msgstr "Manca l'opzione --url"

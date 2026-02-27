@@ -10,6 +10,31 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 ### Planned
 
 - Batch audit mode (`--urls sites.txt`)
+- Remove legacy `scripts/` directory
+- Web demo hosted (FastAPI)
+
+---
+
+## [3.0.0a1] — 2026-02-27
+
+### Added
+
+- **Python API** (#27) — Public API with `__all__` and explicit imports
+  - `from geo_optimizer import audit, AuditResult` works out of the box
+  - 11 symbols exported: `audit`, `audit_async`, `CheckRegistry`, `AuditCheck`, `CheckResult`, and all result dataclasses
+  - PEP 561 `py.typed` marker for IDE autocomplete
+
+- **Plugin system** (#28) — Registry pattern with entry points
+  - `AuditCheck` Protocol (PEP 544) for type-safe custom checks
+  - `CheckRegistry` singleton with `register()`, `load_entry_points()`
+  - Entry point group: `geo_optimizer.checks` in pyproject.toml
+  - `--no-plugins` CLI flag for security
+
+- **i18n** (#29) — Internationalization with gettext (IT/EN)
+  - Italian as primary language, English as secondary
+  - `--lang` CLI flag or `GEO_LANG` environment variable
+  - 23 translated messages per language
+  - Uses Python stdlib gettext (no external dependencies)
 
 ---
 
