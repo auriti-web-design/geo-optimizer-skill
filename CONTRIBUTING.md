@@ -16,13 +16,13 @@ git checkout -b feature/your-feature-name
 # 4. Set up development environment
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-pip install pytest pytest-cov flake8
+pip install -e ".[dev]"
 
 # 5. Make your changes
 # 6. Run tests and linting
 pytest tests/ -v
-flake8 scripts/ --max-line-length=120
+ruff check src/ tests/
+ruff format --check src/ tests/
 
 # 7. Commit (use Conventional Commits)
 git commit -m "feat(audit): add timeout handling for network requests"
@@ -30,6 +30,38 @@ git commit -m "feat(audit): add timeout handling for network requests"
 # 8. Push and open a Pull Request
 git push origin feature/your-feature-name
 ```
+
+## Project Architecture
+
+```
+src/geo_optimizer/
+├── cli/             # Click commands — handles display, I/O
+│   ├── main.py      # CLI group: geo audit, geo llms, geo schema
+│   ├── audit_cmd.py # Audit command with multiple output formats
+│   ├── formatters.py, rich_formatter.py, html_formatter.py
+│   └── github_formatter.py  # GitHub Actions annotations
+├── core/            # Business logic — returns dataclasses, NEVER prints
+│   ├── audit.py     # run_full_audit() + run_full_audit_async()
+│   ├── registry.py  # Plugin system (CheckRegistry + AuditCheck Protocol)
+│   └── ...
+├── models/
+│   ├── config.py    # ALL constants: AI_BOTS, SCORING, SCHEMA_TEMPLATES
+│   ├── results.py   # Result dataclasses (AuditResult, RobotsResult, etc.)
+│   └── project_config.py  # YAML project configuration
+├── utils/
+│   ├── http.py          # requests Session with retry + backoff
+│   ├── http_async.py    # httpx async client
+│   ├── cache.py         # FileCache with TTL
+│   ├── validators.py    # Anti-SSRF, path validation
+│   └── robots_parser.py # RFC 9309 compliant parser
+├── web/             # FastAPI web demo
+│   ├── app.py       # Endpoints: /, /api/audit, /badge, /report
+│   ├── badge.py     # SVG badge generator
+│   └── cli.py       # geo-web CLI entry point
+└── i18n/            # Internationalization (gettext IT/EN)
+```
+
+**Key design pattern**: core modules return dataclasses (`models/results.py`), CLI layer formats output. All constants are centralized in `models/config.py`.
 
 ## Commit Convention
 
@@ -42,23 +74,37 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - `test(scope): add tests` — adding missing tests
 - `chore(scope): update build` — build process, dependencies, tooling
 
-**Scopes:** `audit`, `llms`, `schema`, `install`, `docs`, `ci`
+**Scopes:** `audit`, `llms`, `schema`, `web`, `i18n`, `cli`, `docs`, `ci`
 
 Examples:
 ```
 feat(audit): add JSON output format with --format json
 fix(llms): handle malformed XML sitemap gracefully
-docs(readme): update installation instructions for Windows
+feat(web): add badge SVG endpoint
 test(audit): add unit tests for robots.txt parser
 ```
 
 ## Code Style
 
-- **Python:** PEP 8 compliant (checked by flake8)
+- **Linter/Formatter:** ruff (replaces flake8)
 - **Line length:** 120 characters max
-- **Imports:** Standard library → third-party → local, alphabetically sorted
+- **Imports:** Standard library → third-party → local, sorted by ruff
 - **Docstrings:** Required for all public functions
-- **Type hints:** Encouraged but not mandatory
+- **Type hints:** Encouraged but not mandatory (Python 3.9+ syntax)
+
+```bash
+# Check lint
+ruff check src/ tests/
+
+# Auto-fix lint issues
+ruff check --fix src/ tests/
+
+# Check formatting
+ruff format --check src/ tests/
+
+# Auto-format
+ruff format src/ tests/
+```
 
 ## Testing
 
@@ -69,53 +115,61 @@ test(audit): add unit tests for robots.txt parser
 pytest tests/ -v
 
 # Run with coverage
-pytest tests/ --cov=scripts --cov-report=term-missing
+pytest tests/ -v --cov=geo_optimizer --cov-report=term-missing
 
 # Run specific test file
 pytest tests/test_audit.py -v
-```
 
-### Test Structure
+# Run single test
+pytest tests/test_audit.py::test_name -v
 
-```
-tests/
-├── test_audit.py       # geo_audit.py tests
-├── test_llms.py        # generate_llms_txt.py tests
-├── test_schema.py      # schema_injector.py tests
-└── fixtures/           # Test data (HTML, XML, JSON)
+# Skip network-dependent tests
+pytest tests/ -v -m "not network"
 ```
 
 ### Writing Good Tests
 
 ```python
-import pytest
-from scripts.geo_audit import check_robots_txt
+from unittest.mock import patch, MagicMock
+from geo_optimizer.core.audit import run_full_audit
+from geo_optimizer.models.results import AuditResult
 
-def test_robots_allows_gptbot():
-    """Test that GPTBot is correctly identified as allowed."""
-    content = "User-agent: GPTBot\nAllow: /"
-    result = check_robots_txt(content)
-    assert result['gptbot'] is True
-
-def test_robots_blocks_gptbot():
-    """Test that GPTBot is correctly identified as blocked."""
-    content = "User-agent: GPTBot\nDisallow: /"
-    result = check_robots_txt(content)
-    assert result['gptbot'] is False
+def test_audit_returns_result():
+    """Test that audit returns a valid AuditResult."""
+    with patch("geo_optimizer.core.audit.fetch_url") as mock_fetch:
+        mock_fetch.return_value = MagicMock(status_code=200, text="<html>...</html>")
+        result = run_full_audit("https://example.com")
+        assert isinstance(result, AuditResult)
+        assert 0 <= result.score <= 100
 ```
 
-## Documentation
+## Writing Plugins
 
-- **README.md:** User-facing installation and usage
-- **docs/*.md:** In-depth guides and references
-- **SKILL.md:** AI context files (update when adding features)
-- **CHANGELOG.md:** Keep a Changelog format, update with every PR
+GEO Optimizer supports custom audit checks via the plugin system:
 
-When adding new features:
-1. Update README.md with usage examples
-2. Add relevant documentation in docs/
-3. Update CHANGELOG.md under `[Unreleased]`
-4. Update ai-context files if it changes tool behavior
+```python
+# In your package's pyproject.toml:
+# [project.entry-points."geo_optimizer.checks"]
+# my_check = "my_package:MyCheck"
+
+from geo_optimizer import AuditCheck, CheckResult
+
+class MyCheck:
+    name = "my_custom_check"
+    description = "Checks for something custom"
+    max_score = 10
+
+    def run(self, url: str, html: str, **kwargs) -> CheckResult:
+        passed = "my-element" in html
+        return CheckResult(
+            name=self.name,
+            score=10 if passed else 0,
+            max_score=self.max_score,
+            passed=passed,
+            details={"found": passed},
+            message="Custom check passed" if passed else "Custom check failed",
+        )
+```
 
 ## Pull Request Process
 
@@ -124,13 +178,13 @@ When adding new features:
 3. **Update CHANGELOG.md** — add your change under `[Unreleased]`
 4. **Describe the problem** — what issue does this solve?
 5. **Show the impact** — example output, before/after screenshots if applicable
-6. **Be patient** — maintainers will review within 3-5 days
 
 ### PR Checklist
 
 Before submitting:
 
-- [ ] Code follows PEP 8 (checked with `flake8 scripts/`)
+- [ ] Code passes lint (`ruff check src/ tests/`)
+- [ ] Code is formatted (`ruff format --check src/ tests/`)
 - [ ] Tests added and passing (`pytest tests/ -v`)
 - [ ] CHANGELOG.md updated under `[Unreleased]`
 - [ ] Documentation updated (if adding features)
@@ -139,28 +193,21 @@ Before submitting:
 
 ## Reporting Bugs
 
-Use [GitHub Issues](https://github.com/auriti-labs/geo-optimizer-skill/issues) with this template:
+Use [GitHub Issues](https://github.com/auriti-labs/geo-optimizer-skill/issues) with:
 
-**Expected behavior:**  
-What should happen?
+**Expected behavior:** What should happen?
 
-**Actual behavior:**  
-What actually happens?
+**Actual behavior:** What actually happens?
 
 **Steps to reproduce:**
 ```bash
-./geo scripts/geo_audit.py --url https://example.com
+geo audit --url https://example.com
 ```
 
 **Environment:**
 - OS: Ubuntu 22.04 / macOS 14 / Windows 11
 - Python version: `python --version`
-- Installed via: `install.sh` / `pip install` / manual
-
-**Error output:**
-```
-Paste full error traceback here
-```
+- geo-optimizer version: `geo --version`
 
 ## Suggesting Features
 
@@ -171,59 +218,24 @@ Open a GitHub Issue with:
 - **Impact:** Who benefits? (developers, marketers, agencies)
 - **Princeton KDD reference:** Does the feature implement a specific GEO method?
 
-## Development Tips
-
-### Running Scripts Without Install
-
-```bash
-# Activate venv first
-source .venv/bin/activate
-
-# Run directly
-python scripts/geo_audit.py --url https://example.com
-
-# Or use the wrapper (creates venv if missing)
-./geo scripts/geo_audit.py --url https://example.com
-```
-
-### Testing Against Real Sites
-
-```bash
-# Test against your own site
-./geo scripts/geo_audit.py --url https://yoursite.com
-
-# Test schema injection (creates backup automatically)
-./geo scripts/schema_injector.py --file test.html --type website --name "Test" --url https://test.com --inject
-```
-
-### Debugging
-
-```python
-# Add breakpoints
-import pdb; pdb.set_trace()
-
-# Or use ipdb for better experience
-import ipdb; ipdb.set_trace()
-
-# Print JSON structures nicely
-import json
-print(json.dumps(data, indent=2))
-```
-
 ## Release Process (Maintainers Only)
 
 1. Update `CHANGELOG.md` — move `[Unreleased]` to `[X.Y.Z] - YYYY-MM-DD`
-2. Tag release: `git tag vX.Y.Z && git push origin vX.Y.Z`
-3. GitHub Actions will run CI on the tag
-4. Create GitHub Release with changelog excerpt
-5. (Future) Publish to PyPI: `python -m build && twine upload dist/*`
+2. Update version in `pyproject.toml` and `src/geo_optimizer/__init__.py`
+3. Tag release: `git tag vX.Y.Z && git push origin vX.Y.Z`
+4. GitHub Actions publishes to PyPI (OIDC trusted publisher)
+5. Create GitHub Release with changelog excerpt
 
-## Questions?
+## Optional Dependencies
 
-- Open a [GitHub Discussion](https://github.com/auriti-labs/geo-optimizer-skill/discussions)
-- Check existing [Issues](https://github.com/auriti-labs/geo-optimizer-skill/issues)
-- Read the [docs](docs/)
+```bash
+pip install geo-optimizer-skill[rich]    # Colored CLI tables
+pip install geo-optimizer-skill[config]  # YAML project config
+pip install geo-optimizer-skill[async]   # Parallel HTTP fetch
+pip install geo-optimizer-skill[web]     # Web demo (FastAPI)
+pip install geo-optimizer-skill[dev]     # pytest + ruff
+```
 
 ---
 
-**Thank you for contributing to making the web more AI-discoverable! 🚀**
+**Thank you for contributing to making the web more AI-discoverable!**
