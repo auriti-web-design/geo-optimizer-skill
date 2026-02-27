@@ -3,13 +3,23 @@
 GEO Audit Script — Generative Engine Optimization
 Checks the GEO configuration of a website.
 
+.. deprecated:: 2.0.0
+    Use ``geo audit`` CLI instead. This script will be removed in v3.0.
+
 Author: Juan Camilo Auriti (juancamilo.auriti@gmail.com)
 
-
 Usage:
-    ./geo scripts/geo_audit.py --url https://example.com
-    ./geo scripts/geo_audit.py --url https://example.com --verbose
+    geo audit --url https://example.com
 """
+
+import warnings
+
+warnings.warn(
+    "scripts/geo_audit.py is deprecated. Use 'geo audit' CLI instead. "
+    "This script will be removed in v3.0.",
+    DeprecationWarning,
+    stacklevel=1,
+)
 
 import argparse
 import json
@@ -29,12 +39,14 @@ def _ensure_deps():
     try:
         import requests as _requests
         from bs4 import BeautifulSoup as _BS
+
         requests = _requests
         BeautifulSoup = _BS
     except ImportError:
         print("❌ Missing dependencies. Run: pip install requests beautifulsoup4")
         print("   Or use the ./geo wrapper which activates the bundled venv automatically.")
         sys.exit(1)
+
 
 # ─── AI bots that should be listed in robots.txt ──────────────────────────────
 AI_BOTS = {
@@ -59,13 +71,20 @@ CITATION_BOTS = {"OAI-SearchBot", "ClaudeBot", "PerplexityBot"}
 
 # ─── Schema types to look for ─────────────────────────────────────────────────
 VALUABLE_SCHEMAS = [
-    "WebSite", "WebApplication", "FAQPage", "Article", "BlogPosting",
-    "HowTo", "Recipe", "Product", "Organization", "Person", "BreadcrumbList"
+    "WebSite",
+    "WebApplication",
+    "FAQPage",
+    "Article",
+    "BlogPosting",
+    "HowTo",
+    "Recipe",
+    "Product",
+    "Organization",
+    "Person",
+    "BreadcrumbList",
 ]
 
-HEADERS = {
-    "User-Agent": "GEO-Audit/1.0 (https://github.com/auriti-labs/geo-optimizer-skill)"
-}
+HEADERS = {"User-Agent": "GEO-Audit/1.0 (https://github.com/auriti-labs/geo-optimizer-skill)"}
 
 # Global verbose flag (set in main())
 VERBOSE = False
@@ -97,21 +116,19 @@ def info(msg: str):
 def fetch_url(url: str, timeout: int = 10):
     """
     Fetch a URL with automatic retry on transient failures.
-    
+
     Retry strategy:
     - 3 attempts with exponential backoff (1s, 2s, 4s)
     - Retries on: connection errors, timeouts, 5xx server errors, 429 rate limit
-    
+
     Returns:
         tuple: (response, error_msg) where response is None on failure
     """
     from http_utils import create_session_with_retry
-    
+
     try:
         session = create_session_with_retry(
-            total_retries=3,
-            backoff_factor=1.0,
-            status_forcelist=[408, 429, 500, 502, 503, 504]
+            total_retries=3, backoff_factor=1.0, status_forcelist=[408, 429, 500, 502, 503, 504]
         )
         r = session.get(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
         return r, None
@@ -280,7 +297,7 @@ def audit_llms_txt(base_url: str) -> dict:
     results["word_count"] = len(content.split())
 
     ok(f"llms.txt found ({r.status_code}, {len(content)} bytes, ~{results['word_count']} words)")
-    
+
     if VERBOSE:
         print(f"     → Total lines: {len(lines)}")
         print(f"     → Preview: {content[:300]}...")
@@ -312,6 +329,7 @@ def audit_llms_txt(base_url: str) -> dict:
 
     # Check markdown links
     import re
+
     links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", content)
     if links:
         results["has_links"] = True
@@ -341,7 +359,7 @@ def audit_schema(soup: BeautifulSoup, url: str) -> dict:
         return results
 
     ok(f"Found {len(scripts)} JSON-LD blocks")
-    
+
     if VERBOSE:
         print(f"     → Parsing {len(scripts)} schema blocks...")
         print()
@@ -385,7 +403,7 @@ def audit_schema(soup: BeautifulSoup, url: str) -> dict:
                         info(f"Schema type: {t}")
 
         except json.JSONDecodeError as e:
-            warn(f"JSON-LD #{i+1} invalid: {e}")
+            warn(f"JSON-LD #{i + 1} invalid: {e}")
 
     if not results["has_website"]:
         fail("WebSite schema missing — essential for AI entity understanding")
@@ -504,8 +522,9 @@ def audit_content_quality(soup: BeautifulSoup, url: str) -> dict:
 
     # Check for numbers/statistics
     import re
+
     body_text = soup.get_text()
-    numbers = re.findall(r'\b\d+[%€$£]|\b\d+\.\d+|\b\d{3,}\b', body_text)
+    numbers = re.findall(r"\b\d+[%€$£]|\b\d+\.\d+|\b\d{3,}\b", body_text)
     if len(numbers) >= 3:
         results["has_numbers"] = True
         ok(f"Numerical data present: {len(numbers)} numbers/statistics found ✓")
@@ -549,25 +568,38 @@ def compute_geo_score(robots: dict, llms: dict, schema: dict, meta: dict, conten
     # llms.txt (20 points)
     if llms["found"]:
         score += 10
-        if llms["has_h1"]: score += 3
-        if llms["has_sections"]: score += 4
-        if llms["has_links"]: score += 3
+        if llms["has_h1"]:
+            score += 3
+        if llms["has_sections"]:
+            score += 4
+        if llms["has_links"]:
+            score += 3
 
     # Schema (25 points)
-    if schema["has_website"]: score += 10
-    if schema["has_faq"]: score += 10
-    if schema["has_webapp"]: score += 5
+    if schema["has_website"]:
+        score += 10
+    if schema["has_faq"]:
+        score += 10
+    if schema["has_webapp"]:
+        score += 5
 
     # Meta tags (20 points)
-    if meta["has_title"]: score += 5
-    if meta["has_description"]: score += 8
-    if meta["has_canonical"]: score += 3
-    if meta["has_og_title"] and meta["has_og_description"]: score += 4
+    if meta["has_title"]:
+        score += 5
+    if meta["has_description"]:
+        score += 8
+    if meta["has_canonical"]:
+        score += 3
+    if meta["has_og_title"] and meta["has_og_description"]:
+        score += 4
 
     # Content (15 points)
-    if content["has_h1"]: score += 4
-    if content["has_numbers"]: score += 6
-    if content["has_links"]: score += 5
+    if content["has_h1"]:
+        score += 4
+    if content["has_numbers"]:
+        score += 6
+    if content["has_links"]:
+        score += 5
 
     return min(score, 100)
 
@@ -582,16 +614,18 @@ Examples:
   ./geo scripts/geo_audit.py --url https://example.com --verbose
   ./geo scripts/geo_audit.py --url https://example.com --format json
   ./geo scripts/geo_audit.py --url https://example.com --format json --output report.json
-        """
+        """,
     )
     parser.add_argument("--url", required=True, help="URL of the site to audit (e.g. https://example.com)")
     parser.add_argument("--verbose", action="store_true", help="Show detailed check output with raw data for debugging")
-    parser.add_argument("--format", choices=["text", "json"], default="text", help="Output format: text (default) or json")
+    parser.add_argument(
+        "--format", choices=["text", "json"], default="text", help="Output format: text (default) or json"
+    )
     parser.add_argument("--output", help="Output file path (optional, writes to stdout if not specified)")
     args = parser.parse_args()
 
     _ensure_deps()
-    
+
     # Set global verbose flag
     global VERBOSE
     VERBOSE = args.verbose
@@ -605,11 +639,11 @@ Examples:
     json_mode = args.format == "json"
     if json_mode:
         VERBOSE = False  # JSON mode overrides verbose
-    
+
     if not json_mode:
         print("\n" + "🔍 " * 20)
         print(f"  GEO AUDIT — {base_url}")
-        print(f"  github.com/auriti-labs/geo-optimizer-skill")
+        print("  github.com/auriti-labs/geo-optimizer-skill")
         print("🔍 " * 20)
 
     # Fetch homepage
@@ -632,8 +666,8 @@ Examples:
             print(f"   Content-Type: {r.headers.get('Content-Type', 'n/a')}")
 
     # Run audits (suppressing print output in JSON mode)
-    import io
     import contextlib
+    import io
 
     if json_mode:
         devnull = io.StringIO()
@@ -687,7 +721,9 @@ Examples:
             "band": band,
             "checks": {
                 "robots_txt": {
-                    "score": 20 if robots_results["citation_bots_ok"] else (13 if robots_results["bots_allowed"] else (5 if robots_results["found"] else 0)),
+                    "score": 20
+                    if robots_results["citation_bots_ok"]
+                    else (13 if robots_results["bots_allowed"] else (5 if robots_results["found"] else 0)),
                     "max": 20,
                     "passed": robots_results["citation_bots_ok"],
                     "details": {
@@ -695,14 +731,14 @@ Examples:
                         "citation_bots_ok": robots_results["citation_bots_ok"],
                         "bots_allowed": robots_results["bots_allowed"],
                         "bots_blocked": robots_results["bots_blocked"],
-                        "bots_missing": robots_results["bots_missing"]
-                    }
+                        "bots_missing": robots_results["bots_missing"],
+                    },
                 },
                 "llms_txt": {
-                    "score": (10 if llms_results["found"] else 0) + 
-                             (3 if llms_results["has_h1"] else 0) +
-                             (4 if llms_results["has_sections"] else 0) +
-                             (3 if llms_results["has_links"] else 0),
+                    "score": (10 if llms_results["found"] else 0)
+                    + (3 if llms_results["has_h1"] else 0)
+                    + (4 if llms_results["has_sections"] else 0)
+                    + (3 if llms_results["has_links"] else 0),
                     "max": 20,
                     "passed": llms_results["found"] and llms_results["has_h1"],
                     "details": {
@@ -711,27 +747,27 @@ Examples:
                         "has_description": llms_results["has_description"],
                         "has_sections": llms_results["has_sections"],
                         "has_links": llms_results["has_links"],
-                        "word_count": llms_results["word_count"]
-                    }
+                        "word_count": llms_results["word_count"],
+                    },
                 },
                 "schema_jsonld": {
-                    "score": (10 if schema_results["has_website"] else 0) +
-                             (10 if schema_results["has_faq"] else 0) +
-                             (5 if schema_results["has_webapp"] else 0),
+                    "score": (10 if schema_results["has_website"] else 0)
+                    + (10 if schema_results["has_faq"] else 0)
+                    + (5 if schema_results["has_webapp"] else 0),
                     "max": 25,
                     "passed": schema_results["has_website"],
                     "details": {
                         "has_website": schema_results["has_website"],
                         "has_webapp": schema_results["has_webapp"],
                         "has_faq": schema_results["has_faq"],
-                        "found_types": schema_results["found_types"]
-                    }
+                        "found_types": schema_results["found_types"],
+                    },
                 },
                 "meta_tags": {
-                    "score": (5 if meta_results["has_title"] else 0) +
-                             (8 if meta_results["has_description"] else 0) +
-                             (3 if meta_results["has_canonical"] else 0) +
-                             (4 if (meta_results["has_og_title"] and meta_results["has_og_description"]) else 0),
+                    "score": (5 if meta_results["has_title"] else 0)
+                    + (8 if meta_results["has_description"] else 0)
+                    + (3 if meta_results["has_canonical"] else 0)
+                    + (4 if (meta_results["has_og_title"] and meta_results["has_og_description"]) else 0),
                     "max": 20,
                     "passed": meta_results["has_title"] and meta_results["has_description"],
                     "details": {
@@ -740,13 +776,13 @@ Examples:
                         "has_canonical": meta_results["has_canonical"],
                         "has_og_title": meta_results["has_og_title"],
                         "has_og_description": meta_results["has_og_description"],
-                        "has_og_image": meta_results["has_og_image"]
-                    }
+                        "has_og_image": meta_results["has_og_image"],
+                    },
                 },
                 "content": {
-                    "score": (4 if content_results["has_h1"] else 0) +
-                             (6 if content_results["has_numbers"] else 0) +
-                             (5 if content_results["has_links"] else 0),
+                    "score": (4 if content_results["has_h1"] else 0)
+                    + (6 if content_results["has_numbers"] else 0)
+                    + (5 if content_results["has_links"] else 0),
                     "max": 15,
                     "passed": content_results["has_h1"],
                     "details": {
@@ -754,22 +790,22 @@ Examples:
                         "heading_count": content_results["heading_count"],
                         "has_numbers": content_results["has_numbers"],
                         "has_links": content_results["has_links"],
-                        "word_count": content_results["word_count"]
-                    }
-                }
+                        "word_count": content_results["word_count"],
+                    },
+                },
             },
-            "recommendations": recommendations
+            "recommendations": recommendations,
         }
-        
+
         json_output = json.dumps(output_data, indent=2)
-        
+
         if args.output:
             with open(args.output, "w", encoding="utf-8") as f:
                 f.write(json_output)
             print(f"✅ JSON report written to: {args.output}")
         else:
             print(json_output)
-    
+
     # Text output (default)
     else:
         print_header("📊 FINAL GEO SCORE")
@@ -779,15 +815,15 @@ Examples:
         print(f"\n  [{bar}] {score}/100")
 
         if score >= 91:
-            print(f"\n  🏆 EXCELLENT — Site is well optimized for AI search engines!")
+            print("\n  🏆 EXCELLENT — Site is well optimized for AI search engines!")
         elif score >= 71:
-            print(f"\n  ✅ GOOD — Core optimizations in place, fine-tune content and schema")
+            print("\n  ✅ GOOD — Core optimizations in place, fine-tune content and schema")
         elif score >= 41:
-            print(f"\n  ⚠️  FOUNDATION — Core elements missing, implement priority fixes below")
+            print("\n  ⚠️  FOUNDATION — Core elements missing, implement priority fixes below")
         else:
-            print(f"\n  ❌ CRITICAL — Site is not visible to AI search engines")
+            print("\n  ❌ CRITICAL — Site is not visible to AI search engines")
 
-        print(f"\n  Score bands: 0–40 = critical | 41–70 = foundation | 71–90 = good | 91–100 = excellent")
+        print("\n  Score bands: 0–40 = critical | 41–70 = foundation | 71–90 = good | 91–100 = excellent")
 
         print("\n  📋 NEXT PRIORITY STEPS:")
 
