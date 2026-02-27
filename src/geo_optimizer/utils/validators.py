@@ -39,7 +39,7 @@ _BLOCKED_HOSTNAMES = {
 }
 
 
-def _is_ip_blocked(ip_obj: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+def _is_ip_blocked(ip_obj) -> bool:
     """Verifica se un IP è privato/riservato usando le API standard di Python.
 
     Fallback per catturare reti non nella blocklist esplicita.

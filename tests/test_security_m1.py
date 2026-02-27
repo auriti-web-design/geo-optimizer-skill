@@ -14,15 +14,18 @@ Copre:
 import time
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from geo_optimizer.core.schema_injector import generate_astro_snippet
-from geo_optimizer.web.app import (
-    _MAX_CACHE_SIZE,
-    _audit_cache,
-    _check_rate_limit,
-    _evict_expired,
-    _rate_limit_store,
-    _set_cached,
-)
+
+# web.app richiede FastAPI (dipendenza opzionale [web])
+app_module = pytest.importorskip("geo_optimizer.web.app", reason="FastAPI non installato")
+_MAX_CACHE_SIZE = app_module._MAX_CACHE_SIZE
+_audit_cache = app_module._audit_cache
+_check_rate_limit = app_module._check_rate_limit
+_evict_expired = app_module._evict_expired
+_rate_limit_store = app_module._rate_limit_store
+_set_cached = app_module._set_cached
 
 
 # ============================================================================
