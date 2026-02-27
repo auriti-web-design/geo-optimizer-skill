@@ -23,8 +23,9 @@ from geo_optimizer.utils.validators import validate_safe_path
 
 @click.command()
 @click.option("--file", "file_path", default=None, help="HTML file to analyze/modify")
-@click.option("--type", "schema_type", type=click.Choice(list(SCHEMA_TEMPLATES.keys())),
-              help="Type of schema to generate")
+@click.option(
+    "--type", "schema_type", type=click.Choice(list(SCHEMA_TEMPLATES.keys())), help="Type of schema to generate"
+)
 @click.option("--name", default=None, help="Site/application name")
 @click.option("--url", default=None, help="Site URL")
 @click.option("--description", default=None, help="Description")
@@ -38,9 +39,23 @@ from geo_optimizer.utils.validators import validate_safe_path
 @click.option("--no-validate", is_flag=True, help="Skip schema validation before injection")
 @click.option("--analyze", is_flag=True, help="Analyze file for existing schemas")
 @click.option("--verbose", is_flag=True, help="Show full schema JSON in analysis")
-def schema(file_path, schema_type, name, url, description, author, logo_url,
-           faq_file, auto_extract, astro, inject, no_backup, no_validate,
-           analyze, verbose):
+def schema(
+    file_path,
+    schema_type,
+    name,
+    url,
+    description,
+    author,
+    logo_url,
+    faq_file,
+    auto_extract,
+    astro,
+    inject,
+    no_backup,
+    no_validate,
+    analyze,
+    verbose,
+):
     """Manage JSON-LD schema for GEO optimization."""
 
     # Validazione anti-path-traversal per tutti i percorsi file
@@ -156,7 +171,7 @@ def _print_analysis(analysis, verbose=False):
                 click.echo(f"      items: {items}")
 
             if verbose:
-                click.echo(f"\n      Full schema:")
+                click.echo("\n      Full schema:")
                 click.echo(f"      {json.dumps(data, indent=6, ensure_ascii=False)}\n")
             click.echo()
     else:

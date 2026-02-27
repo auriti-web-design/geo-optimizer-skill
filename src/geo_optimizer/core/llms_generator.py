@@ -128,6 +128,7 @@ def fetch_sitemap(
 # URL filtering & classification
 # ---------------------------------------------------------------------------
 
+
 def should_skip(url: str) -> bool:
     """Check whether *url* should be skipped based on :data:`SKIP_PATTERNS`."""
     for pattern in SKIP_PATTERNS:
@@ -167,6 +168,7 @@ def categorize_url(url: str, base_domain: str) -> str:
 # ---------------------------------------------------------------------------
 # Title helpers
 # ---------------------------------------------------------------------------
+
 
 def fetch_page_title(url: str) -> Optional[str]:
     """Attempt to fetch the ``<title>`` (or ``<h1>``) of a page.
@@ -223,6 +225,7 @@ def url_to_label(url: str, base_domain: str) -> str:
 # ---------------------------------------------------------------------------
 # llms.txt generation
 # ---------------------------------------------------------------------------
+
 
 def generate_llms_txt(
     base_url: str,
@@ -290,11 +293,13 @@ def generate_llms_txt(
         if not label:
             label = url_to_label(url, domain)
 
-        categorized[category].append({
-            "url": url,
-            "label": label,
-            "priority": url_data.priority,
-        })
+        categorized[category].append(
+            {
+                "url": url,
+                "label": label,
+                "priority": url_data.priority,
+            }
+        )
 
     # Build llms.txt
     lines: List[str] = []
@@ -314,14 +319,8 @@ def generate_llms_txt(
         lines.append("")
 
     # Main sections
-    important_categories = [
-        c for c in SECTION_PRIORITY_ORDER
-        if c in categorized and c != "_homepage"
-    ]
-    remaining = [
-        c for c in categorized
-        if c not in SECTION_PRIORITY_ORDER and c != "_homepage"
-    ]
+    important_categories = [c for c in SECTION_PRIORITY_ORDER if c in categorized and c != "_homepage"]
+    remaining = [c for c in categorized if c not in SECTION_PRIORITY_ORDER and c != "_homepage"]
 
     all_categories = important_categories + sorted(remaining)
 
@@ -363,6 +362,7 @@ def generate_llms_txt(
 # ---------------------------------------------------------------------------
 # Sitemap discovery
 # ---------------------------------------------------------------------------
+
 
 def discover_sitemap(
     base_url: str,

@@ -11,17 +11,16 @@ from pathlib import Path
 from typing import Optional, Set, Tuple
 from urllib.parse import urlparse
 
-
 # Reti private/riservate da bloccare (RFC 1918, loopback, link-local, metadata cloud)
 _BLOCKED_NETWORKS = [
-    ipaddress.ip_network("127.0.0.0/8"),       # loopback IPv4
-    ipaddress.ip_network("10.0.0.0/8"),         # privato RFC 1918
-    ipaddress.ip_network("172.16.0.0/12"),      # privato RFC 1918
-    ipaddress.ip_network("192.168.0.0/16"),     # privato RFC 1918
-    ipaddress.ip_network("169.254.0.0/16"),     # link-local (AWS/GCP/Azure metadata)
-    ipaddress.ip_network("::1/128"),            # loopback IPv6
-    ipaddress.ip_network("fc00::/7"),           # IPv6 ULA
-    ipaddress.ip_network("fe80::/10"),          # IPv6 link-local
+    ipaddress.ip_network("127.0.0.0/8"),  # loopback IPv4
+    ipaddress.ip_network("10.0.0.0/8"),  # privato RFC 1918
+    ipaddress.ip_network("172.16.0.0/12"),  # privato RFC 1918
+    ipaddress.ip_network("192.168.0.0/16"),  # privato RFC 1918
+    ipaddress.ip_network("169.254.0.0/16"),  # link-local (AWS/GCP/Azure metadata)
+    ipaddress.ip_network("::1/128"),  # loopback IPv6
+    ipaddress.ip_network("fc00::/7"),  # IPv6 ULA
+    ipaddress.ip_network("fe80::/10"),  # IPv6 link-local
 ]
 
 _ALLOWED_SCHEMES = {"https", "http"}
@@ -83,10 +82,7 @@ def validate_public_url(url: str) -> Tuple[bool, Optional[str]]:
             continue
         for network in _BLOCKED_NETWORKS:
             if ip_obj in network:
-                return False, (
-                    f"L'indirizzo '{ip_str}' risolto per '{hostname}' "
-                    f"è in una rete privata/riservata."
-                )
+                return False, (f"L'indirizzo '{ip_str}' risolto per '{hostname}' è in una rete privata/riservata.")
 
     return True, None
 
@@ -123,8 +119,7 @@ def validate_safe_path(
     if allowed_extensions:
         if resolved.suffix.lower() not in allowed_extensions:
             return False, (
-                f"Estensione non consentita: '{resolved.suffix}'. "
-                f"Consentite: {', '.join(sorted(allowed_extensions))}"
+                f"Estensione non consentita: '{resolved.suffix}'. Consentite: {', '.join(sorted(allowed_extensions))}"
             )
 
     return True, None

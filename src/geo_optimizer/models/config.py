@@ -36,8 +36,17 @@ CITATION_BOTS = {"OAI-SearchBot", "ClaudeBot", "PerplexityBot"}
 # ─── Schema types ────────────────────────────────────────────────────────────
 
 VALUABLE_SCHEMAS = [
-    "WebSite", "WebApplication", "FAQPage", "Article", "BlogPosting",
-    "HowTo", "Recipe", "Product", "Organization", "Person", "BreadcrumbList",
+    "WebSite",
+    "WebApplication",
+    "FAQPage",
+    "Article",
+    "BlogPosting",
+    "HowTo",
+    "Recipe",
+    "Product",
+    "Organization",
+    "Person",
+    "BreadcrumbList",
 ]
 
 # Required fields for each schema.org type (keys are lowercase)
@@ -114,9 +123,7 @@ SCHEMA_TEMPLATES = {
     "breadcrumb": {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{url}}"}
-        ],
+        "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "{{url}}"}],
     },
 }
 
@@ -144,22 +151,43 @@ CATEGORY_PATTERNS = [
 ]
 
 SKIP_PATTERNS = [
-    r"/wp-", r"/admin", r"/login", r"/logout", r"/register",
-    r"/cart", r"/checkout", r"/account", r"/user/",
+    r"/wp-",
+    r"/admin",
+    r"/login",
+    r"/logout",
+    r"/register",
+    r"/cart",
+    r"/checkout",
+    r"/account",
+    r"/user/",
     r"\.(xml|json|rss|atom|pdf|jpg|png|css|js)$",
-    r"/tag/", r"/category/\w+/page/", r"/page/\d+",
+    r"/tag/",
+    r"/category/\w+/page/",
+    r"/page/\d+",
 ]
 
 # llms.txt section ordering
 SECTION_PRIORITY_ORDER = [
-    "Tools", "Calculators", "Finance Tools", "Health & Wellness",
-    "Math", "Applications", "Main Pages",
-    "Documentation", "Guides", "Tutorials",
-    "Blog & Articles", "Articles", "Posts",
-    "Products", "Services",
-    "About", "Contact",
+    "Tools",
+    "Calculators",
+    "Finance Tools",
+    "Health & Wellness",
+    "Math",
+    "Applications",
+    "Main Pages",
+    "Documentation",
+    "Guides",
+    "Tutorials",
+    "Blog & Articles",
+    "Articles",
+    "Posts",
+    "Products",
+    "Services",
+    "About",
+    "Contact",
     "Other",
-    "Privacy & Legal", "Terms",
+    "Privacy & Legal",
+    "Terms",
 ]
 
 OPTIONAL_CATEGORIES = {"Privacy & Legal", "Terms", "Contact", "Other"}

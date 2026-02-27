@@ -32,7 +32,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests/ -v --tb=short --cov=geo_optimizer --cov=scripts --cov-report=xml --cov-report=term-missing
+          pytest tests/ -v --tb=short --cov=geo_optimizer --cov-report=xml --cov-report=term-missing
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
@@ -64,11 +64,14 @@ jobs:
           python-version: '3.12'
 
       - name: Install linting tools
-        run: pip install flake8
+        run: pip install ruff pip-audit
 
-      - name: Run flake8
+      - name: Run ruff
         run: |
-          flake8 scripts/ --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 src/geo_optimizer/ --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 scripts/ --count --exit-zero --max-complexity=15 --max-line-length=120 --statistics
-          flake8 src/geo_optimizer/ --count --exit-zero --max-complexity=15 --max-line-length=120 --statistics
+          ruff check src/geo_optimizer/ scripts/
+          ruff format --check src/geo_optimizer/ scripts/
+
+      - name: Audit dependencies
+        run: |
+          pip install -e .
+          pip-audit --strict

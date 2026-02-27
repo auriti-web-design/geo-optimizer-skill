@@ -8,15 +8,20 @@ import sys
 
 import click
 
-from geo_optimizer.core.audit import run_full_audit
 from geo_optimizer.cli.formatters import format_audit_json, format_audit_text
+from geo_optimizer.core.audit import run_full_audit
 from geo_optimizer.utils.validators import validate_public_url
 
 
 @click.command()
 @click.option("--url", required=True, help="URL of the site to audit (e.g. https://example.com)")
-@click.option("--format", "output_format", type=click.Choice(["text", "json"]), default="text",
-              help="Output format: text (default) or json")
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["text", "json"]),
+    default="text",
+    help="Output format: text (default) or json",
+)
 @click.option("--output", "output_file", default=None, help="Output file path (optional)")
 @click.option("--verbose", is_flag=True, help="Show detailed check output")
 def audit(url, output_format, output_file, verbose):
@@ -34,6 +39,7 @@ def audit(url, output_format, output_file, verbose):
     except Exception as e:
         if output_format == "json":
             import json
+
             error_data = {"error": str(e), "url": url}
             click.echo(json.dumps(error_data, indent=2))
         else:
