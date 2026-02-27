@@ -2,7 +2,7 @@
 
 <img src="assets/logo.svg" alt="Geo Optimizer" width="540"/>
 
-[![PyPI](https://img.shields.io/pypi/v/geo-optimizer-skill?style=flat-square&color=blue)](https://pypi.org/project/geo-optimizer-skill/)
+[![PyPI](https://img.shields.io/pypi/v/geo-optimizer-skill?style=flat-square&color=blue&include_prereleases)](https://pypi.org/project/geo-optimizer-skill/)
 [![Python](https://img.shields.io/badge/Python-3.9+-3776ab?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![CI](https://github.com/auriti-labs/geo-optimizer-skill/actions/workflows/ci.yml/badge.svg)](https://github.com/auriti-labs/geo-optimizer-skill/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/auriti-labs/geo-optimizer-skill/branch/main/graph/badge.svg)](https://codecov.io/gh/auriti-labs/geo-optimizer-skill)
