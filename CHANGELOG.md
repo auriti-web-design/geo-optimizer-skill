@@ -11,8 +11,52 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 - HTML report output (`--format html`)
 - Batch audit mode (`--urls sites.txt`)
-- PyPI package (`pip install geo-optimizer`)
 - GitHub Action (reusable workflow)
+
+---
+
+## [2.1.0b1] — 2026-02-27
+
+### Added
+
+- **PyPI Publish Pipeline** (#19) — `.github/workflows/publish.yml`
+  - OIDC trusted publisher via `pypa/gh-action-pypi-publish@release/v1`
+  - Triggered on version tags (`v*`), no API token needed
+  - Package renamed to `geo-optimizer-skill` (PyPI name available)
+  - PEP 561 `py.typed` marker for typed package support
+
+- **50 Coverage Tests** (#20) — `tests/test_v21_coverage.py`
+  - Covers formatters, schema_cmd, llms_generator, schema_validator, validators
+  - Coverage: 94% → 98% (22 lines remaining)
+
+### Changed
+
+- **Migrated flake8 → ruff** (#34) — `pyproject.toml`, `.github/workflows/ci.yml`
+  - ruff check + ruff format replaces flake8 for linting
+  - Added `pip-audit --strict` to CI for dependency vulnerability scanning
+  - All source files reformatted to ruff standards
+
+- **Eliminated requirements.txt** (#16)
+  - Single source of truth: `pyproject.toml` dependencies
+  - Added `urllib3>=1.26.0,<3.0.0` as explicit dependency
+  - Updated README: Python 3.9+ requirement, CLI reference, PyPI badge
+
+- **Deprecated scripts/ legacy** (#18)
+  - All 5 scripts emit `DeprecationWarning` on import
+  - Docstrings updated with `.. deprecated:: 2.0.0` notice
+  - Scripts will be removed in v3.0
+
+- **Migrated test markers** (#17)
+  - 6 legacy test files marked with `pytestmark = pytest.mark.legacy`
+  - Added `@pytest.mark.network` for tests requiring network access
+  - Coverage config: `source = ["geo_optimizer"]`, omits `scripts/`
+  - CI measures coverage on package only (not legacy scripts)
+
+### Test Results
+
+- **653 total tests** — all passing ✅
+- **98% code coverage** on `geo_optimizer` package
+- Zero regressions
 
 ---
 
