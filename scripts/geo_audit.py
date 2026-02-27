@@ -15,8 +15,7 @@ Usage:
 import warnings
 
 warnings.warn(
-    "scripts/geo_audit.py is deprecated. Use 'geo audit' CLI instead. "
-    "This script will be removed in v3.0.",
+    "scripts/geo_audit.py is deprecated. Use 'geo audit' CLI instead. This script will be removed in v3.0.",
     DeprecationWarning,
     stacklevel=1,
 )

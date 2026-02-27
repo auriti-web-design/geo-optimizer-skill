@@ -15,8 +15,7 @@ Usage:
 import warnings
 
 warnings.warn(
-    "scripts/generate_llms_txt.py is deprecated. Use 'geo llms' CLI instead. "
-    "This script will be removed in v3.0.",
+    "scripts/generate_llms_txt.py is deprecated. Use 'geo llms' CLI instead. This script will be removed in v3.0.",
     DeprecationWarning,
     stacklevel=1,
 )

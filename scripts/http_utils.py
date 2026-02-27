@@ -11,8 +11,7 @@ Created: 2026-02-21
 import warnings
 
 warnings.warn(
-    "scripts/http_utils.py is deprecated. Use 'geo_optimizer.utils.http' instead. "
-    "This module will be removed in v3.0.",
+    "scripts/http_utils.py is deprecated. Use 'geo_optimizer.utils.http' instead. This module will be removed in v3.0.",
     DeprecationWarning,
     stacklevel=1,
 )

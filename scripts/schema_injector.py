@@ -15,8 +15,7 @@ Usage:
 import warnings
 
 warnings.warn(
-    "scripts/schema_injector.py is deprecated. Use 'geo schema' CLI instead. "
-    "This script will be removed in v3.0.",
+    "scripts/schema_injector.py is deprecated. Use 'geo schema' CLI instead. This script will be removed in v3.0.",
     DeprecationWarning,
     stacklevel=1,
 )
