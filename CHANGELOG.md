@@ -9,9 +9,44 @@ Format: [Keep a Changelog](https://keepachangelog.com/) · [SemVer](https://semv
 
 ### Planned
 
-- HTML report output (`--format html`)
 - Batch audit mode (`--urls sites.txt`)
-- GitHub Action (reusable workflow)
+
+---
+
+## [2.2.0b1] — 2026-02-27
+
+### Added
+
+- **GitHub Action** (#21) — `.github/actions/geo-audit/action.yml`
+  - Composite action with inputs: url, min-score, python-version, version
+  - Outputs: score, band, report (JSON path)
+  - Job Summary with Markdown table of check results
+  - Example workflow: `.github/workflows/geo-audit-example.yml`
+
+- **Rich CLI output** (#22) — `--format rich`
+  - Colored tables, score panels, visual progress bars
+  - Optional dependency: `pip install geo-optimizer-skill[rich]`
+  - Graceful fallback to text if rich not installed
+
+- **HTML report** (#23) — `--format html`
+  - Standalone self-contained HTML with embedded CSS
+  - Dark theme, circular score ring, progress bars per check
+  - GitHub Actions annotations: `--format github` (::notice/::warning/::error)
+
+- **HTTP cache** (#24) — `--cache` / `--clear-cache`
+  - FileCache with SHA-256 keys, JSON storage in `~/.geo-cache/`
+  - 1-hour TTL, automatic expiration, stats support
+
+- **Project configuration** (#25) — `.geo-optimizer.yml`
+  - YAML config file for project defaults (url, format, cache, etc.)
+  - Optional dependency: `pip install geo-optimizer-skill[config]`
+  - `--config` flag to specify config file path
+  - URL fallback from config when not specified via CLI
+
+- **Async HTTP fetch** (#26) — `pip install geo-optimizer-skill[async]`
+  - `run_full_audit_async()` with parallel fetch (homepage + robots + llms)
+  - httpx-based client with 2-3x speedup vs sequential requests
+  - `fetch_urls_async()` for batch URL fetching
 
 ---
 

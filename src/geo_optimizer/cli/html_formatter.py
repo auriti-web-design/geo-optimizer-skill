@@ -1,0 +1,179 @@
+"""
+Formatter HTML per report audit GEO standalone.
+
+Genera un file HTML auto-contenuto con CSS embedded, apribile
+direttamente nel browser. Usato con ``geo audit --format html``.
+"""
+
+from datetime import datetime, timezone
+
+from geo_optimizer.models.config import SCORING
+from geo_optimizer.models.results import AuditResult
+
+
+def format_audit_html(result: AuditResult) -> str:
+    """Genera report HTML standalone con CSS embedded."""
+    band_colors = {
+        "excellent": "#22c55e",
+        "good": "#06b6d4",
+        "foundation": "#eab308",
+        "critical": "#ef4444",
+    }
+    band_labels = {
+        "excellent": "EXCELLENT",
+        "good": "GOOD",
+        "foundation": "FOUNDATION",
+        "critical": "CRITICAL",
+    }
+    color = band_colors.get(result.band, "#888")
+    band_label = band_labels.get(result.band, result.band.upper())
+
+    # Costruisci righe tabella check
+    checks = [
+        ("Robots.txt", _robots_score(result), 20, result.robots.citation_bots_ok),
+        ("llms.txt", _llms_score(result), 20, result.llms.found and result.llms.has_h1),
+        ("Schema JSON-LD", _schema_score(result), 25, result.schema.has_website),
+        ("Meta Tags", _meta_score(result), 20, result.meta.has_title and result.meta.has_description),
+        ("Content Quality", _content_score(result), 15, result.content.has_h1),
+    ]
+
+    check_rows = ""
+    for name, score, max_score, passed in checks:
+        icon = "✅" if passed else "❌"
+        pct = int(score / max_score * 100) if max_score > 0 else 0
+        check_rows += f"""
+        <tr>
+            <td>{name}</td>
+            <td>{score}/{max_score}</td>
+            <td>
+                <div class="bar-bg"><div class="bar-fill" style="width:{pct}%"></div></div>
+            </td>
+            <td class="status">{icon}</td>
+        </tr>"""
+
+    # Raccomandazioni
+    recs_html = ""
+    if result.recommendations:
+        recs_items = "".join(f"<li>{_escape(r)}</li>" for r in result.recommendations)
+        recs_html = f"""
+        <div class="section">
+            <h2>Recommendations</h2>
+            <ol>{recs_items}</ol>
+        </div>"""
+
+    # Schema trovati
+    schemas_html = ""
+    if result.schema.found_types:
+        tags = " ".join(f'<span class="tag">{_escape(t)}</span>' for t in result.schema.found_types)
+        schemas_html = f'<div class="schemas">Found schemas: {tags}</div>'
+
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GEO Audit — {_escape(result.url)}</title>
+<style>
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+background:#0f172a;color:#e2e8f0;padding:2rem;max-width:800px;margin:0 auto}}
+h1{{font-size:1.5rem;margin-bottom:.5rem}}
+h2{{font-size:1.1rem;margin-bottom:.75rem;color:#94a3b8}}
+.header{{text-align:center;margin-bottom:2rem}}
+.url{{color:#94a3b8;font-size:.9rem;word-break:break-all}}
+.score-ring{{display:inline-flex;align-items:center;justify-content:center;
+width:140px;height:140px;border-radius:50%;border:6px solid {color};
+margin:1.5rem 0;font-size:2.5rem;font-weight:700;color:{color}}}
+.band{{font-size:1.1rem;font-weight:600;color:{color};margin-bottom:1rem}}
+.section{{background:#1e293b;border-radius:8px;padding:1.25rem;margin-bottom:1rem}}
+table{{width:100%;border-collapse:collapse}}
+th,td{{padding:.5rem .75rem;text-align:left}}
+th{{color:#94a3b8;font-weight:500;font-size:.85rem;border-bottom:1px solid #334155}}
+td{{border-bottom:1px solid #1e293b}}
+.bar-bg{{background:#334155;border-radius:4px;height:8px;width:100px}}
+.bar-fill{{background:{color};border-radius:4px;height:8px;transition:width .3s}}
+.status{{text-align:center}}
+.tag{{display:inline-block;background:#334155;padding:.15rem .5rem;border-radius:4px;
+font-size:.8rem;margin:.15rem}}
+.schemas{{margin-top:.75rem}}
+ol{{padding-left:1.5rem}}
+li{{margin-bottom:.4rem;line-height:1.5}}
+.footer{{text-align:center;margin-top:2rem;color:#64748b;font-size:.8rem}}
+.footer a{{color:#60a5fa}}
+</style>
+</head>
+<body>
+<div class="header">
+    <h1>GEO Audit Report</h1>
+    <div class="url">{_escape(result.url)}</div>
+    <div class="score-ring">{result.score}</div>
+    <div class="band">{band_label}</div>
+</div>
+
+<div class="section">
+    <h2>Check Results</h2>
+    <table>
+        <thead>
+            <tr><th>Check</th><th>Score</th><th>Progress</th><th>Status</th></tr>
+        </thead>
+        <tbody>{check_rows}
+        </tbody>
+    </table>
+    {schemas_html}
+</div>
+
+{recs_html}
+
+<div class="footer">
+    Generated on {timestamp} by
+    <a href="https://github.com/auriti-labs/geo-optimizer-skill">GEO Optimizer</a>
+</div>
+</body>
+</html>"""
+
+
+def _escape(text: str) -> str:
+    """Escape HTML speciali."""
+    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def _robots_score(r: AuditResult) -> int:
+    if r.robots.citation_bots_ok:
+        return SCORING["robots_found"] + SCORING["robots_citation_ok"]
+    if r.robots.bots_allowed:
+        return SCORING["robots_found"] + SCORING["robots_some_allowed"]
+    if r.robots.found:
+        return SCORING["robots_found"]
+    return 0
+
+
+def _llms_score(r: AuditResult) -> int:
+    s = SCORING["llms_found"] if r.llms.found else 0
+    s += SCORING["llms_h1"] if r.llms.has_h1 else 0
+    s += SCORING["llms_sections"] if r.llms.has_sections else 0
+    s += SCORING["llms_links"] if r.llms.has_links else 0
+    return s
+
+
+def _schema_score(r: AuditResult) -> int:
+    s = SCORING["schema_website"] if r.schema.has_website else 0
+    s += SCORING["schema_faq"] if r.schema.has_faq else 0
+    s += SCORING["schema_webapp"] if r.schema.has_webapp else 0
+    return s
+
+
+def _meta_score(r: AuditResult) -> int:
+    s = SCORING["meta_title"] if r.meta.has_title else 0
+    s += SCORING["meta_description"] if r.meta.has_description else 0
+    s += SCORING["meta_canonical"] if r.meta.has_canonical else 0
+    s += SCORING["meta_og"] if (r.meta.has_og_title and r.meta.has_og_description) else 0
+    return s
+
+
+def _content_score(r: AuditResult) -> int:
+    s = SCORING["content_h1"] if r.content.has_h1 else 0
+    s += SCORING["content_numbers"] if r.content.has_numbers else 0
+    s += SCORING["content_links"] if r.content.has_links else 0
+    return s

@@ -1,0 +1,166 @@
+# Composite GitHub Action per GEO Audit
+# Verifica la visibilità di un sito agli AI search engines
+name: 'GEO Audit'
+description: 'Audit a website for Generative Engine Optimization (GEO) readiness'
+author: 'Auriti Labs'
+
+branding:
+  icon: 'search'
+  color: 'blue'
+
+inputs:
+  url:
+    description: 'URL of the website to audit (e.g. https://example.com)'
+    required: true
+  min-score:
+    description: 'Minimum GEO score to pass (0-100). Build fails if score is below this threshold.'
+    required: false
+    default: '0'
+  python-version:
+    description: 'Python version to use'
+    required: false
+    default: '3.12'
+  version:
+    description: 'geo-optimizer-skill version to install (e.g. "2.1.0b1"). Default: latest.'
+    required: false
+    default: ''
+
+outputs:
+  score:
+    description: 'GEO score (0-100)'
+    value: ${{ steps.audit.outputs.score }}
+  band:
+    description: 'Score band (critical, foundation, good, excellent)'
+    value: ${{ steps.audit.outputs.band }}
+  report:
+    description: 'Path to the JSON report file'
+    value: ${{ steps.audit.outputs.report }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install geo-optimizer-skill
+      shell: bash
+      run: |
+        if [ -n "${{ inputs.version }}" ]; then
+          pip install "geo-optimizer-skill==${{ inputs.version }}"
+        else
+          pip install geo-optimizer-skill
+        fi
+
+    - name: Run GEO Audit
+      id: audit
+      shell: bash
+      run: |
+        # Esegui audit e salva report JSON
+        REPORT_FILE="geo-audit-report.json"
+        geo audit --url "${{ inputs.url }}" --format json --output "$REPORT_FILE" || true
+
+        if [ ! -f "$REPORT_FILE" ]; then
+          echo "::error::GEO Audit failed — unable to generate report"
+          echo "score=0" >> "$GITHUB_OUTPUT"
+          echo "band=error" >> "$GITHUB_OUTPUT"
+          echo "report=" >> "$GITHUB_OUTPUT"
+          exit 1
+        fi
+
+        # Estrai score e band dal report JSON
+        SCORE=$(python3 -c "import json; d=json.load(open('$REPORT_FILE')); print(d.get('score', 0))")
+        BAND=$(python3 -c "import json; d=json.load(open('$REPORT_FILE')); print(d.get('band', 'unknown'))")
+
+        echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+        echo "band=$BAND" >> "$GITHUB_OUTPUT"
+        echo "report=$REPORT_FILE" >> "$GITHUB_OUTPUT"
+
+        echo "GEO Score: $SCORE/100 ($BAND)"
+
+    - name: Write Job Summary
+      shell: bash
+      env:
+        REPORT_FILE: ${{ steps.audit.outputs.report }}
+        GEO_SCORE: ${{ steps.audit.outputs.score }}
+        GEO_BAND: ${{ steps.audit.outputs.band }}
+        GEO_URL: ${{ inputs.url }}
+      run: |
+        python3 -c "
+        import json, os, sys
+
+        report_file = os.environ.get('REPORT_FILE', '')
+        score = os.environ.get('GEO_SCORE', '0')
+        band = os.environ.get('GEO_BAND', 'unknown')
+        url = os.environ.get('GEO_URL', '')
+        summary_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+
+        emojis = {'excellent': '🏆', 'good': '✅', 'foundation': '⚠️', 'critical': '❌'}
+        emoji = emojis.get(band, '❓')
+
+        lines = []
+        lines.append(f'## {emoji} GEO Audit Report')
+        lines.append('')
+        lines.append('| Metric | Value |')
+        lines.append('|--------|-------|')
+        lines.append(f'| **URL** | \`{url}\` |')
+        lines.append(f'| **Score** | **{score}**/100 |')
+        lines.append(f'| **Band** | {band} |')
+        lines.append('')
+
+        if report_file and os.path.isfile(report_file):
+            with open(report_file) as f:
+                data = json.load(f)
+
+            checks = data.get('checks', {})
+            labels = {
+                'robots_txt': 'Robots.txt',
+                'llms_txt': 'llms.txt',
+                'schema_jsonld': 'Schema JSON-LD',
+                'meta_tags': 'Meta Tags',
+                'content': 'Content Quality',
+            }
+
+            lines.append('### Check Results')
+            lines.append('')
+            lines.append('| Check | Score | Status |')
+            lines.append('|-------|-------|--------|')
+            for key, label in labels.items():
+                check = checks.get(key, {})
+                s = check.get('score', 0)
+                m = check.get('max', 0)
+                icon = '✅' if check.get('passed', False) else '❌'
+                lines.append(f'| {label} | {s}/{m} | {icon} |')
+
+            recs = data.get('recommendations', [])
+            if recs:
+                lines.append('')
+                lines.append('### Recommendations')
+                lines.append('')
+                for i, rec in enumerate(recs, 1):
+                    lines.append(f'{i}. {rec}')
+
+        lines.append('')
+        lines.append('---')
+        lines.append('*Generated by [GEO Optimizer](https://github.com/auriti-labs/geo-optimizer-skill)*')
+        lines.append('')
+
+        with open(summary_path, 'a') as out:
+            out.write('\n'.join(lines))
+        "
+
+    - name: Check minimum score
+      shell: bash
+      run: |
+        SCORE="${{ steps.audit.outputs.score }}"
+        MIN_SCORE="${{ inputs.min-score }}"
+
+        if [ "$MIN_SCORE" -gt 0 ] 2>/dev/null; then
+          if [ "$SCORE" -lt "$MIN_SCORE" ] 2>/dev/null; then
+            echo "::error::GEO Score $SCORE is below minimum threshold $MIN_SCORE"
+            exit 1
+          else
+            echo "::notice::GEO Score $SCORE meets minimum threshold $MIN_SCORE ✅"
+          fi
+        fi

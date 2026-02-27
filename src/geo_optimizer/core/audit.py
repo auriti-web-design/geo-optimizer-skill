@@ -313,7 +313,7 @@ def build_recommendations(base_url, robots, llms, schema, meta, content) -> list
     return recommendations
 
 
-def run_full_audit(url: str) -> AuditResult:
+def run_full_audit(url: str, use_cache: bool = False) -> AuditResult:
     """Run complete audit and return AuditResult with all sub-results, score, band, and recommendations."""
     from bs4 import BeautifulSoup
 
@@ -322,8 +322,31 @@ def run_full_audit(url: str) -> AuditResult:
     if not base_url.startswith(("http://", "https://")):
         base_url = "https://" + base_url
 
-    # Fetch homepage
-    r, err = fetch_url(base_url)
+    # Fetch homepage (con cache opzionale)
+    if use_cache:
+        from geo_optimizer.utils.cache import FileCache
+
+        cache = FileCache()
+        cached = cache.get(base_url)
+        if cached:
+            # Costruisci un oggetto response-like dalla cache
+            status_code, text, headers = cached
+
+            class CachedResponse:
+                pass
+
+            r = CachedResponse()
+            r.status_code = status_code
+            r.text = text
+            r.content = text.encode("utf-8")
+            r.headers = headers
+            err = None
+        else:
+            r, err = fetch_url(base_url)
+            if r and not err:
+                cache.put(base_url, r.status_code, r.text, dict(r.headers))
+    else:
+        r, err = fetch_url(base_url)
     if err or not r:
         result = AuditResult(url=base_url)
         result.recommendations = [f"Unable to reach {base_url}: {err}"]
@@ -358,3 +381,127 @@ def run_full_audit(url: str) -> AuditResult:
         http_status=r.status_code,
         page_size=len(r.text),
     )
+
+
+async def run_full_audit_async(url: str) -> AuditResult:
+    """Variante asincrona dell'audit completo con fetch parallelo (httpx).
+
+    Esegue homepage, robots.txt e llms.txt in parallelo per uno
+    speedup 2-3x rispetto alla versione sincrona.
+
+    Richiede: pip install geo-optimizer-skill[async]
+    """
+    from bs4 import BeautifulSoup
+
+    from geo_optimizer.utils.http_async import fetch_urls_async
+
+    # Normalizza URL
+    base_url = url.rstrip("/")
+    if not base_url.startswith(("http://", "https://")):
+        base_url = "https://" + base_url
+
+    # Fetch parallelo: homepage + robots.txt + llms.txt
+    robots_url = urljoin(base_url, "/robots.txt")
+    llms_url = urljoin(base_url, "/llms.txt")
+
+    responses = await fetch_urls_async([base_url, robots_url, llms_url])
+
+    # Estrai risposte
+    r_home, err_home = responses.get(base_url, (None, "URL non richiesto"))
+    r_robots, _ = responses.get(robots_url, (None, None))
+    r_llms, _ = responses.get(llms_url, (None, None))
+
+    if err_home or not r_home:
+        result = AuditResult(url=base_url)
+        result.recommendations = [f"Unable to reach {base_url}: {err_home}"]
+        return result
+
+    soup = BeautifulSoup(r_home.text, "html.parser")
+
+    # Sub-audit robots.txt (usa risposta pre-fetched)
+    robots = _audit_robots_from_response(r_robots)
+
+    # Sub-audit llms.txt (usa risposta pre-fetched)
+    llms = _audit_llms_from_response(r_llms)
+
+    # Sub-audit che lavorano sul DOM (non richiedono fetch aggiuntivo)
+    schema = audit_schema(soup, base_url)
+    meta = audit_meta_tags(soup, base_url)
+    content = audit_content_quality(soup, base_url)
+
+    # Calcola score e band
+    score = compute_geo_score(robots, llms, schema, meta, content)
+    band = get_score_band(score)
+
+    # Raccomandazioni
+    recommendations = build_recommendations(base_url, robots, llms, schema, meta, content)
+
+    return AuditResult(
+        url=base_url,
+        score=score,
+        band=band,
+        robots=robots,
+        llms=llms,
+        schema=schema,
+        meta=meta,
+        content=content,
+        recommendations=recommendations,
+        http_status=r_home.status_code,
+        page_size=len(r_home.text),
+    )
+
+
+def _audit_robots_from_response(r) -> RobotsResult:
+    """Analizza robots.txt da una risposta HTTP già scaricata."""
+    result = RobotsResult()
+
+    if not r or r.status_code != 200:
+        return result
+
+    result.found = True
+    content = r.text
+    agent_rules = parse_robots_txt(content)
+
+    for bot, description in AI_BOTS.items():
+        bot_status = classify_bot(bot, description, agent_rules)
+
+        if bot_status.status == "missing":
+            result.bots_missing.append(bot)
+        elif bot_status.status == "blocked":
+            result.bots_blocked.append(bot)
+        else:
+            result.bots_allowed.append(bot)
+
+    result.citation_bots_ok = all(b in result.bots_allowed for b in CITATION_BOTS)
+    return result
+
+
+def _audit_llms_from_response(r) -> LlmsTxtResult:
+    """Analizza llms.txt da una risposta HTTP già scaricata."""
+    result = LlmsTxtResult()
+
+    if not r or r.status_code != 200:
+        return result
+
+    result.found = True
+    content = r.text
+    lines = content.splitlines()
+    result.word_count = len(content.split())
+
+    h1_lines = [line for line in lines if line.startswith("# ")]
+    if h1_lines:
+        result.has_h1 = True
+
+    blockquotes = [line for line in lines if line.startswith("> ")]
+    if blockquotes:
+        result.has_description = True
+
+    h2_lines = [line for line in lines if line.startswith("## ")]
+    if h2_lines:
+        result.has_sections = True
+
+    links = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", content)
+    if links:
+        result.has_links = True
+
+    return result

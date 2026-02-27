@@ -209,7 +209,7 @@ class TestAuditCommand:
         assert "META TAGS" in result.output
         assert "CONTENT QUALITY" in result.output
         assert "75/100" in result.output
-        mock_audit.assert_called_once_with("https://example.com")
+        mock_audit.assert_called_once_with("https://example.com", use_cache=False)
 
     @patch("geo_optimizer.cli.audit_cmd.run_full_audit")
     def test_audit_json_output(self, mock_audit, runner, sample_audit_result):
@@ -308,7 +308,7 @@ class TestAuditCommand:
         """geo audit without --url exits with an error."""
         result = runner.invoke(cli, ["audit"])
         assert result.exit_code != 0
-        assert "Missing option" in result.output or "required" in result.output.lower()
+        assert "Manca" in result.output or "--url" in result.output
 
     @patch("geo_optimizer.cli.audit_cmd.run_full_audit")
     def test_audit_invalid_format_choice(self, mock_audit, runner):
