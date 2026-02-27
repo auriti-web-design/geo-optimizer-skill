@@ -42,5 +42,8 @@ Thumbs.db
 # Claude Code
 CLAUDE.md
 
+# GEO Optimizer cache
+.geo-cache/
+
 # Other
 node_modules/
